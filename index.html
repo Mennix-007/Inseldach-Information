@@ -8,7 +8,7 @@
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:88px;}
-    .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px}
+    .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px;position:relative;}
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-size:26px;font-weight:700}
 
@@ -56,6 +56,23 @@
       border-radius:12px;
       background:#0b0f14;
     }
+
+    /* Logo oben rechts in der QR-Card */
+    .cardLogoTopRight{
+      position:absolute;
+      top:16px;
+      right:16px;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .logoTopRight{
+      height:56px;
+      width:auto;
+      object-fit:contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+    }
   </style>
 </head>
 
@@ -86,7 +103,12 @@
     </div>
 
     <div class="card">
-      <h2>QR-Code</h2>
+      <!-- Logo oben rechts -->
+      <div class="cardLogoTopRight">
+        <img src="logo_menne_MIN.png" alt="Inseldachdecker Logo" class="logoTopRight">
+      </div>
+
+      <h2 style="padding-right:120px;">QR-Code</h2>
 
       <div class="qrBox">
         <div class="qrWrap">
@@ -187,7 +209,6 @@
       } catch (e) {
         status.style.display = 'block';
         status.textContent = 'Update-Fehler (news.json) – zeigt letzten Stand.';
-        // optional: console.log(e);
       }
     }
 
