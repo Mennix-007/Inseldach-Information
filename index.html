@@ -306,9 +306,10 @@
         });
 
         // Ticker
-        const tickerText = (data.ticker || []).join('  •  ');
-        const inner = document.getElementById('tickerInner');
-        inner.textContent = tickerText || '—';
+       const tickerText = (data.ticker || []).join('  •  ');
+       const inner = document.getElementById('tickerInner');
+       inner.textContent = tickerText || 'Keine Hinweise im Laufband.';
+
 
         // QR
         const url = location.origin + location.pathname;
