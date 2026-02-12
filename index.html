@@ -17,6 +17,7 @@
       padding:20px;
       position:relative;
       overflow:hidden;
+      box-sizing:border-box;
     }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -58,7 +59,7 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo oben rechts (kleiner) */
+    /* Logo oben rechts */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -93,10 +94,6 @@
       overflow:hidden;
       background:#0b0f14;
     }
-    .panelBody{
-      padding:12px;
-      background:transparent;
-    }
 
     /* Wetter + Webcam gleich groß */
     .fixedFrame{
@@ -113,36 +110,68 @@
       display:block;
       background:#0b0f14;
     }
+
+    /* LINKER BEREICH: 80/20 Stack */
+    .leftStack{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      height:100%;
+      min-height:0;
+    }
+    .leftMain{flex:8; min-height:0;}
+    .leftLong{flex:2; min-height:0;}
+    .scrollBox{
+      max-height:100%;
+      overflow:auto;
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <!-- Linke Kachel -->
-    <div class="card">
-      <div class="top">
-        <div class="brand">Inseldachdecker</div>
 
-        <div class="time">
-          <div class="clock" id="clock">--:--</div>
-          <div class="weekday" id="weekday">----</div>
-          <div class="date" id="date">--.--.----</div>
+    <!-- LINKS: 80% Heute / 20% Langzeit-Info -->
+    <div class="leftStack">
+      <!-- Hauptkachel (80%) -->
+      <div class="card leftMain">
+        <div class="top">
+          <div class="brand">Inseldachdecker</div>
+
+          <div class="time">
+            <div class="clock" id="clock">--:--</div>
+            <div class="weekday" id="weekday">----</div>
+            <div class="date" id="date">--.--.----</div>
+          </div>
+        </div>
+
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
+
+        <div id="newsStatus" class="error" style="display:none;"></div>
+
+        <h2>Heute wichtig</h2>
+        <div class="scrollBox">
+          <ul id="heuteWichtig"></ul>
+        </div>
+
+        <div class="hint" style="margin-top:16px;">
+          Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
         </div>
       </div>
 
-      <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
-
-      <div id="newsStatus" class="error" style="display:none;"></div>
-
-      <h2>Heute wichtig</h2>
-      <ul id="heuteWichtig"></ul>
-
-      <div class="hint" style="margin-top:16px;">
-        Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
+      <!-- Zusatzkachel (20%) -->
+      <div class="card leftLong">
+        <h2>Info für längeren Zeitraum</h2>
+        <div class="scrollBox">
+          <ul id="langzeitInfo"></ul>
+        </div>
+        <div class="hint" style="margin-top:10px;">
+          (aus <span class="mono">news.json</span>)
+        </div>
       </div>
     </div>
 
-    <!-- Rechte Kachel -->
+    <!-- RECHTS: QR / Wetter / Webcam -->
     <div class="card">
       <!-- Logo oben rechts -->
       <div class="cardLogoTopRight">
@@ -252,6 +281,7 @@
         status.style.display = 'none';
         status.textContent = '';
 
+        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         (data.heuteWichtig || []).forEach(t => {
@@ -260,10 +290,21 @@
           ul.appendChild(li);
         });
 
+        // Langzeit-Info (neu)
+        const ulLong = document.getElementById('langzeitInfo');
+        ulLong.innerHTML = '';
+        (data.langzeitInfo || []).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ulLong.appendChild(li);
+        });
+
+        // Ticker
         const tickerText = (data.ticker || []).join('  •  ');
         const inner = document.getElementById('tickerInner');
         inner.textContent = tickerText || '—';
 
+        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
