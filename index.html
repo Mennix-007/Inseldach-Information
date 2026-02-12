@@ -74,6 +74,9 @@
 
       <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
 
+      <!-- Statuszeile für News-Updates -->
+      <div id="newsStatus" class="error" style="display:none;"></div>
+
       <h2>Heute wichtig</h2>
       <ul id="heuteWichtig"></ul>
 
@@ -150,24 +153,42 @@
     }
 
     async function loadNews() {
-      const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
-      const data = await res.json();
+      const status = document.getElementById('newsStatus');
 
-      const ul = document.getElementById('heuteWichtig');
-      ul.innerHTML = '';
-      (data.heuteWichtig || []).forEach(t => {
-        const li = document.createElement('li');
-        li.textContent = t;
-        ul.appendChild(li);
-      });
+      try {
+        const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
 
-      const tickerText = (data.ticker || []).join('  •  ');
-      const inner = document.getElementById('tickerInner');
-      inner.textContent = tickerText || '—';
+        const data = await res.json();
 
-      const url = location.origin + location.pathname;
-      document.getElementById('qrSub').textContent = url;
-      setQr(url);
+        // Status aus
+        status.style.display = 'none';
+        status.textContent = '';
+
+        // Heute wichtig
+        const ul = document.getElementById('heuteWichtig');
+        ul.innerHTML = '';
+        (data.heuteWichtig || []).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+
+        // Ticker
+        const tickerText = (data.ticker || []).join('  •  ');
+        const inner = document.getElementById('tickerInner');
+        inner.textContent = tickerText || '—';
+
+        // QR: Link zur Seite
+        const url = location.origin + location.pathname;
+        document.getElementById('qrSub').textContent = url;
+        setQr(url);
+
+      } catch (e) {
+        status.style.display = 'block';
+        status.textContent = 'Update-Fehler (news.json) – zeigt letzten Stand.';
+        // optional: console.log(e);
+      }
     }
 
     function startTicker() {
@@ -184,6 +205,7 @@
       requestAnimationFrame(anim);
     }
 
+    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
