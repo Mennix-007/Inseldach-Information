@@ -19,6 +19,11 @@
     .ticker{position:fixed;left:0;right:0;bottom:0;background:#0a0f16;border-top:1px solid #223045;height:64px;display:flex;align-items:center;overflow:hidden}
     .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
     .hint{font-size:18px;opacity:.8}
+
+    /* QR */
+    .qrBox{display:flex;gap:18px;align-items:center}
+    #qrcode{width:160px;height:160px;background:#fff;padding:10px;border-radius:12px}
+    .qrText{font-size:18px;opacity:.9}
   </style>
 </head>
 
@@ -46,10 +51,19 @@
     </div>
 
     <div class="card">
-      <h2>Hinweis</h2>
+      <h2>QR-Code</h2>
+      <div class="qrBox">
+        <div id="qrcode"></div>
+        <div class="qrText">
+          <div id="qrLabel">Scannen für Handy-Ansicht</div>
+          <div style="opacity:0.75;margin-top:8px;" id="qrSub"></div>
+        </div>
+      </div>
+
+      <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
+
       <div class="hint">
-        Wetter + QR-Code kommt als nächstes.<br><br>
-        Erstmal läuft: Uhrzeit, Datum, Heute wichtig, Ticker.
+        Nächster Schritt: Wetter (Borkum).
       </div>
     </div>
   </div>
@@ -57,6 +71,9 @@
   <div class="ticker">
     <div class="inner" id="tickerInner">…</div>
   </div>
+
+  <!-- QRCode Lib -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <script>
     function tickTime() {
@@ -84,6 +101,14 @@
       const tickerText = (data.ticker || []).join('  •  ');
       const inner = document.getElementById('tickerInner');
       inner.textContent = tickerText || '—';
+
+      // QR-Code (Link zur aktuellen Seite)
+      const url = location.href;
+      document.getElementById('qrSub').textContent = url;
+
+      const qr = document.getElementById('qrcode');
+      qr.innerHTML = '';
+      new QRCode(qr, { text: url, width: 160, height: 160 });
     }
 
     function startTicker() {
