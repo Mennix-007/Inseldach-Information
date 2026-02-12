@@ -6,17 +6,108 @@
   <title>Inseldachdecker – Info</title>
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .box{display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;padding:24px;box-sizing:border-box}
-    h1{font-size:48px;margin:0 0 12px}
-    p{font-size:22px;margin:0;opacity:.85}
+    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box}
+    .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .logo{height:64px;object-fit:contain}
+    .time{text-align:right}
+    .time .clock{font-size:44px;font-weight:700}
+    .time .date{font-size:18px;opacity:.85}
+    h2{margin:0 0 12px;font-size:26px}
+    ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
+    li{margin:8px 0}
+    .ticker{position:fixed;left:0;right:0;bottom:0;background:#0a0f16;border-top:1px solid #223045;height:64px;display:flex;align-items:center;overflow:hidden}
+    .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
+    .hint{font-size:18px;opacity:.8}
   </style>
 </head>
+
 <body>
-  <div class="box">
-    <div>
-      <h1>Inseldachdecker</h1>
-      <p>Dashboard ist aktiv. Nächster Schritt: Inhalte (news.json), Uhrzeit, Wetter, QR-Code.</p>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <!-- Logo später: logo.png -->
+        <div style="font-size:26px;font-weight:700">Inseldachdecker</div>
+
+        <div class="time">
+          <div class="clock" id="clock">--:--</div>
+          <div class="date" id="date">--.--.----</div>
+        </div>
+      </div>
+
+      <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
+
+      <h2>Heute wichtig</h2>
+      <ul id="heuteWichtig"></ul>
+
+      <div class="hint" style="margin-top:16px;">
+        Aktualisierung: alle 60 Sekunden (aus news.json)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Hinweis</h2>
+      <div class="hint">
+        Wetter + QR-Code kommt als nächstes.<br><br>
+        Erstmal läuft: Uhrzeit, Datum, Heute wichtig, Ticker.
+      </div>
     </div>
   </div>
+
+  <div class="ticker">
+    <div class="inner" id="tickerInner">…</div>
+  </div>
+
+  <script>
+    function tickTime() {
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      document.getElementById('date').textContent =
+        now.toLocaleDateString('de-DE', { weekday:'long', year:'numeric', month:'2-digit', day:'2-digit' });
+    }
+
+    async function loadNews() {
+      const res = await fetch('news.json?ts=' + Date.now());
+      const data = await res.json();
+
+      // Heute wichtig
+      const ul = document.getElementById('heuteWichtig');
+      ul.innerHTML = '';
+      (data.heuteWichtig || []).forEach(t => {
+        const li = document.createElement('li');
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+
+      // Ticker
+      const tickerText = (data.ticker || []).join('  •  ');
+      const inner = document.getElementById('tickerInner');
+      inner.textContent = tickerText || '—';
+    }
+
+    function startTicker() {
+      const el = document.getElementById('tickerInner');
+      let x = window.innerWidth;
+
+      function anim() {
+        x -= 2;
+        el.style.transform = `translateX(${x}px)`;
+        const w = el.getBoundingClientRect().width;
+        if (x < -w) x = window.innerWidth;
+        requestAnimationFrame(anim);
+      }
+      requestAnimationFrame(anim);
+    }
+
+    // Start
+    tickTime();
+    setInterval(tickTime, 1000);
+
+    loadNews();
+    setInterval(loadNews, 60000);
+
+    startTicker();
+  </script>
 </body>
 </html>
