@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="de">
 <head>
@@ -8,7 +7,7 @@
 
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box}
+    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:88px;}
     .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-size:26px;font-weight:700}
@@ -27,7 +26,7 @@
     .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
 
     /* QR */
-    .qrBox{display:flex;gap:18px;align-items:center}
+    .qrBox{display:flex;gap:18px;align-items:flex-start}
     .qrWrap{
       width:180px;height:180px;
       background:#fff;
@@ -37,6 +36,7 @@
       justify-content:center;
       border:2px solid #ffffff;
       box-sizing:border-box;
+      flex:0 0 180px;
     }
     #qrcodeImg{
       display:block;
@@ -47,6 +47,15 @@
     .qrText{font-size:18px;opacity:.95}
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.75; word-break:break-all}
     .error{color:#ffb3b3; font-size:16px; margin-top:8px}
+
+    /* Wetter */
+    .weatherBox iframe{
+      width:100%;
+      height:300px;
+      border:0;
+      border-radius:12px;
+      background:#0b0f14;
+    }
   </style>
 </head>
 
@@ -78,21 +87,13 @@
 
       <div class="qrBox">
         <div class="qrWrap">
-         <img
-  id="qrcodeImg"
-  alt="QR-Code"
-  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"         
-/>
-          <h2 style="margin-top:0;">Wetter Borkum</h2>
-<div class="weatherBox">
-  <iframe
-    loading="lazy"
-    src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
-  </iframe>
-</div>
-
-
+          <img
+            id="qrcodeImg"
+            alt="QR-Code"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
+          />
         </div>
+
         <div class="qrText">
           <div id="qrLabel">Scannen für Handy-Ansicht</div>
           <div class="mono" id="qrSub"></div>
@@ -102,8 +103,16 @@
 
       <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
 
-      <div class="hint">
-        Nächster Schritt: Wetter (Borkum).
+      <h2>Wetter Borkum</h2>
+      <div class="weatherBox">
+        <iframe
+          loading="lazy"
+          src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
+        </iframe>
+      </div>
+
+      <div class="hint" style="margin-top:12px;">
+        Falls das Wetterfeld leer bleibt: iframe wird ggf. vom Anbieter/Browser blockiert.
       </div>
     </div>
   </div>
@@ -112,28 +121,14 @@
     <div class="inner" id="tickerInner">…</div>
   </div>
 
-  .weatherBox iframe{
-  width:100%;
-  height:300px;
-  border:0;
-  border-radius:12px;
-  background:#0b0f14;
-}
-
-
   <script>
     function pad(n){ return String(n).padStart(2,'0'); }
 
     function tickTime() {
       const now = new Date();
       document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
-      // getrennt, damit es nie "verschluckt" wird
-      document.getElementById('weekday').textContent =
-        now.toLocaleDateString('de-DE', { weekday:'long' });
-
-      document.getElementById('date').textContent =
-        now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
+      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
     }
 
     function setQr(url){
@@ -142,13 +137,11 @@
       err.style.display = 'none';
       err.textContent = '';
 
-      // Wenn das Bild nicht lädt, zeigen wir den Fehlertext an
       img.onerror = () => {
         err.style.display = 'block';
         err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
       };
 
-      // Cache umgehen
       const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
                 + encodeURIComponent(url)
                 + "&nocache=" + Date.now();
@@ -157,10 +150,9 @@
     }
 
     async function loadNews() {
-      const res = await fetch('news.json?ts=' + Date.now());
+      const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
       const data = await res.json();
 
-      // Heute wichtig
       const ul = document.getElementById('heuteWichtig');
       ul.innerHTML = '';
       (data.heuteWichtig || []).forEach(t => {
@@ -169,13 +161,11 @@
         ul.appendChild(li);
       });
 
-      // Ticker
       const tickerText = (data.ticker || []).join('  •  ');
       const inner = document.getElementById('tickerInner');
       inner.textContent = tickerText || '—';
 
-      // QR: Link zur Seite
-      const url = location.origin + location.pathname; // stabil (ohne Hash/Query)
+      const url = location.origin + location.pathname;
       document.getElementById('qrSub').textContent = url;
       setQr(url);
     }
@@ -194,7 +184,6 @@
       requestAnimationFrame(anim);
     }
 
-    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
