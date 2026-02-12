@@ -9,7 +9,7 @@
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:88px;}
 
-    /* KACHELN (Hintergrund rot) */
+    /* Standard-Kachel (rot) */
     .card{
       background:#8b1e1e;
       border:1px solid #b63a3a;
@@ -18,6 +18,12 @@
       position:relative;
       overflow:hidden;
       box-sizing:border-box;
+    }
+
+    /* Langzeit-Kachel (grün) */
+    .cardLongGreen{
+      background:#1f7a36;
+      border:1px solid #2bb457;
     }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -159,8 +165,8 @@
         </div>
       </div>
 
-      <!-- Zusatzkachel (20%) -->
-      <div class="card leftLong">
+      <!-- Zusatzkachel (20%) - GRÜN -->
+      <div class="card leftLong cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
@@ -290,7 +296,7 @@
           ul.appendChild(li);
         });
 
-        // Langzeit-Info (neu)
+        // Langzeit-Info
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         (data.langzeitInfo || []).forEach(t => {
