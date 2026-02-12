@@ -66,12 +66,11 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
-      max-width:160px;
+      max-width:300px;
       text-align:right;
     }
     .logoTopRight{
-      height:56px;
+      height:280px; /* ca. 5x größer als vorher */
       width:auto;
       object-fit:contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
@@ -107,17 +106,19 @@
 
     <div class="card">
       <!-- Logo oben rechts -->
-      <div class="cardLogoTopRight"> 
-        <img src="Logo_Menne_min.png?v=2" alt="Inseldachdecker Logo" class="logoTopRight">
+      <div class="cardLogoTopRight">
+        <img id="logoImg" src="Logo_Menne_min.png?v=300" alt="Inseldachdecker Logo" class="logoTopRight">
         <div class="error" id="logoErr" style="display:none;"></div>
       </div>
 
-      <h2 style="padding-right:140px;">QR-Code</h2>
+      <h2 style="padding-right:320px;">QR-Code</h2>
 
       <div class="qrBox">
         <div class="qrWrap">
-       <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
-          
+          <img
+            id="qrcodeImg"
+            alt="QR-Code"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
           />
         </div>
 
@@ -161,6 +162,7 @@
     function setLogo() {
       const img = document.getElementById('logoImg');
       const err = document.getElementById('logoErr');
+      if (!img || !err) return;
 
       err.style.display = 'none';
       err.textContent = '';
@@ -170,10 +172,8 @@
         err.textContent = 'Logo nicht gefunden.';
       };
 
-      // GitHub Pages Base: https://mennix-007.github.io/Inseldach-Information/
-      const base = location.origin + location.pathname; // endet bei dir mit /
-      const logoUrl = base + "Logo_Menne_min.png?v=" + Date.now();
-      img.src = logoUrl;
+      // Cache umgehen (falls nötig)
+      img.src = "Logo_Menne_min.png?v=" + Date.now();
     }
 
     function setQr(url){
