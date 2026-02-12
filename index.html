@@ -11,11 +11,12 @@
 
     /* KACHELN (Hintergrund rot) */
     .card{
-      background:#8b1e1e;              /* rot */
-      border:1px solid #b63a3a;        /* roter Rahmen */
+      background:#8b1e1e;
+      border:1px solid #b63a3a;
       border-radius:16px;
       padding:20px;
       position:relative;
+      overflow:hidden;
     }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -57,16 +58,7 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Wetter */
-    .weatherBox iframe{
-      width:100%;
-      height:300px;
-      border:0;
-      border-radius:12px;
-      background:#0b0f14;
-    }
-
-    /* Logo oben rechts (um die Hälfte kleiner als vorher) */
+    /* Logo oben rechts (kleiner) */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -78,16 +70,55 @@
       max-width:360px;
     }
     .logoTopRight{
-      height:140px; /* halb so groß wie 280px */
+      height:140px;
       width:auto;
       object-fit:contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
+    }
+
+    /* Rechte Kachel: QR / Wetter / Webcam untereinander */
+    .rightStack{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .panelTitle{
+      margin:0 0 10px;
+      font-size:24px;
+      font-weight:700;
+    }
+    .panel{
+      border:1px solid rgba(255,255,255,.25);
+      border-radius:12px;
+      overflow:hidden;
+      background:#0b0f14;
+    }
+    .panelBody{
+      padding:12px;
+      background:transparent;
+    }
+
+    /* Wetter + Webcam gleich groß */
+    .fixedFrame{
+      width:100%;
+      height:260px;
+      border:0;
+      display:block;
+      background:#0b0f14;
+    }
+    #camImg{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+      display:block;
+      background:#0b0f14;
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
+    <!-- Linke Kachel -->
     <div class="card">
       <div class="top">
         <div class="brand">Inseldachdecker</div>
@@ -111,42 +142,56 @@
       </div>
     </div>
 
+    <!-- Rechte Kachel -->
     <div class="card">
       <!-- Logo oben rechts -->
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
       </div>
 
-      <h2 style="padding-right:200px;">QR-Code</h2>
-
-      <div class="qrBox">
-        <div class="qrWrap">
-          <img
-            id="qrcodeImg"
-            alt="QR-Code"
-            src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
-          />
+      <div class="rightStack">
+        <!-- QR -->
+        <div>
+          <h2 style="padding-right:200px;">QR-Code</h2>
+          <div class="qrBox">
+            <div class="qrWrap">
+              <img
+                id="qrcodeImg"
+                alt="QR-Code"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
+              />
+            </div>
+            <div class="qrText">
+              <div id="qrLabel">Scannen für Handy-Ansicht</div>
+              <div class="mono" id="qrSub"></div>
+              <div class="error" id="qrErr" style="display:none;"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="qrText">
-          <div id="qrLabel">Scannen für Handy-Ansicht</div>
-          <div class="mono" id="qrSub"></div>
-          <div class="error" id="qrErr" style="display:none;"></div>
+        <!-- Wetter -->
+        <div>
+          <div class="panelTitle">Wetter Borkum</div>
+          <div class="panel">
+            <iframe
+              class="fixedFrame"
+              loading="lazy"
+              src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
+            </iframe>
+          </div>
         </div>
-      </div>
 
-      <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
-
-      <h2>Wetter Borkum</h2>
-      <div class="weatherBox">
-        <iframe
-          loading="lazy"
-          src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
-        </iframe>
-      </div>
-
-      <div class="hint" style="margin-top:12px;">
-        Falls das Wetterfeld leer bleibt: iframe wird ggf. vom Anbieter/Browser blockiert.
+        <!-- Webcam -->
+        <div>
+          <div class="panelTitle">Live Webcam</div>
+          <div class="panel">
+            <img
+              id="camImg"
+              alt="Webcam Borkum"
+              src="https://www.insellust-borkum.de/Webcam/axis2/image.jpg">
+          </div>
+          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 10 Sekunden</div>
+        </div>
       </div>
     </div>
   </div>
@@ -181,6 +226,18 @@
                 + "&nocache=" + Date.now();
 
       img.src = src;
+    }
+
+    function startWebcam() {
+      const img = document.getElementById('camImg');
+      if (!img) return;
+
+      function refresh() {
+        img.src = "https://www.insellust-borkum.de/Webcam/axis2/image.jpg?ts=" + Date.now();
+      }
+
+      refresh();
+      setInterval(refresh, 10000);
     }
 
     async function loadNews() {
@@ -231,12 +288,14 @@
       requestAnimationFrame(anim);
     }
 
+    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
     loadNews();
     setInterval(loadNews, 60000);
 
+    startWebcam();
     startTicker();
   </script>
 </body>
