@@ -53,7 +53,7 @@
     <div class="card">
       <h2>QR-Code</h2>
       <div class="qrBox">
-        <div id="qrcode"></div>
+        <img id="qrcodeImg" alt="QR-Code" style="width:160px;height:160px;background:#fff;padding:10px;border-radius:12px" />
         <div class="qrText">
           <div id="qrLabel">Scannen für Handy-Ansicht</div>
           <div style="opacity:0.75;margin-top:8px;" id="qrSub"></div>
@@ -73,7 +73,6 @@
   </div>
 
   <!-- QRCode Lib -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <script>
     function tickTime() {
@@ -108,7 +107,13 @@
 
       const qr = document.getElementById('qrcode');
       qr.innerHTML = '';
-      new QRCode(qr, { text: url, width: 160, height: 160 });
+            // QR-Code als Bild (robust, ohne externe JS-Library)
+      const url = location.href;
+      document.getElementById('qrSub').textContent = url;
+
+      const img = document.getElementById('qrcodeImg');
+      img.src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=" + encodeURIComponent(url);
+
     }
 
     function startTicker() {
