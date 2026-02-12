@@ -10,9 +10,13 @@
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box}
     .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{font-size:26px;font-weight:700}
+
     .time{text-align:right}
     .time .clock{font-size:44px;font-weight:700}
-    .time .date{font-size:18px;opacity:.85}
+    .time .date{font-size:18px;opacity:.9}
+    .time .weekday{font-size:18px;opacity:.85}
+
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
@@ -23,16 +27,25 @@
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:center}
+    .qrWrap{
+      width:180px;height:180px;
+      background:#fff;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid #ffffff;
+      box-sizing:border-box;
+    }
     #qrcodeImg{
       display:block;
       width:160px;
       height:160px;
-      background:#fff;
-      padding:10px;
-      border-radius:12px;
       object-fit:contain;
     }
-    .qrText{font-size:18px;opacity:.9}
+    .qrText{font-size:18px;opacity:.95}
+    .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.75; word-break:break-all}
+    .error{color:#ffb3b3; font-size:16px; margin-top:8px}
   </style>
 </head>
 
@@ -40,10 +53,11 @@
   <div class="wrap">
     <div class="card">
       <div class="top">
-        <div style="font-size:26px;font-weight:700">Inseldachdecker</div>
+        <div class="brand">Inseldachdecker</div>
 
         <div class="time">
           <div class="clock" id="clock">--:--</div>
+          <div class="weekday" id="weekday">----</div>
           <div class="date" id="date">--.--.----</div>
         </div>
       </div>
@@ -54,7 +68,7 @@
       <ul id="heuteWichtig"></ul>
 
       <div class="hint" style="margin-top:16px;">
-        Aktualisierung: alle 60 Sekunden (aus news.json)
+        Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
       </div>
     </div>
 
@@ -62,10 +76,13 @@
       <h2>QR-Code</h2>
 
       <div class="qrBox">
-        <img id="qrcodeImg" alt="QR-Code">
+        <div class="qrWrap">
+          <img id="qrcodeImg" alt="QR-Code">
+        </div>
         <div class="qrText">
           <div id="qrLabel">Scannen für Handy-Ansicht</div>
-          <div style="opacity:0.75;margin-top:8px;" id="qrSub"></div>
+          <div class="mono" id="qrSub"></div>
+          <div class="error" id="qrErr" style="display:none;"></div>
         </div>
       </div>
 
@@ -82,12 +99,38 @@
   </div>
 
   <script>
+    function pad(n){ return String(n).padStart(2,'0'); }
+
     function tickTime() {
       const now = new Date();
-      const pad = n => String(n).padStart(2, '0');
       document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+      // getrennt, damit es nie "verschluckt" wird
+      document.getElementById('weekday').textContent =
+        now.toLocaleDateString('de-DE', { weekday:'long' });
+
       document.getElementById('date').textContent =
-        now.toLocaleDateString('de-DE', { weekday:'long', year:'numeric', month:'2-digit', day:'2-digit' });
+        now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+    }
+
+    function setQr(url){
+      const img = document.getElementById('qrcodeImg');
+      const err = document.getElementById('qrErr');
+      err.style.display = 'none';
+      err.textContent = '';
+
+      // Wenn das Bild nicht lädt, zeigen wir den Fehlertext an
+      img.onerror = () => {
+        err.style.display = 'block';
+        err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
+      };
+
+      // Cache umgehen
+      const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
+                + encodeURIComponent(url)
+                + "&nocache=" + Date.now();
+
+      img.src = src;
     }
 
     async function loadNews() {
@@ -108,13 +151,10 @@
       const inner = document.getElementById('tickerInner');
       inner.textContent = tickerText || '—';
 
-      // QR-Code als Bild (robust, ohne externe JS-Library)
-      const url = location.href;
+      // QR: Link zur Seite
+      const url = location.origin + location.pathname; // stabil (ohne Hash/Query)
       document.getElementById('qrSub').textContent = url;
-
-      const img = document.getElementById('qrcodeImg');
-      img.alt = "QR-Code wird geladen...";
-      img.src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=" + encodeURIComponent(url);
+      setQr(url);
     }
 
     function startTicker() {
