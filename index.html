@@ -4,25 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inseldachdecker – Info</title>
+
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box}
     .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px}
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .logo{height:64px;object-fit:contain}
     .time{text-align:right}
     .time .clock{font-size:44px;font-weight:700}
     .time .date{font-size:18px;opacity:.85}
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
+    .hint{font-size:18px;opacity:.8}
+
     .ticker{position:fixed;left:0;right:0;bottom:0;background:#0a0f16;border-top:1px solid #223045;height:64px;display:flex;align-items:center;overflow:hidden}
     .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
-    .hint{font-size:18px;opacity:.8}
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:center}
-    #qrcode{width:160px;height:160px;background:#fff;padding:10px;border-radius:12px}
+    #qrcodeImg{
+      display:block;
+      width:160px;
+      height:160px;
+      background:#fff;
+      padding:10px;
+      border-radius:12px;
+      object-fit:contain;
+    }
     .qrText{font-size:18px;opacity:.9}
   </style>
 </head>
@@ -31,7 +40,6 @@
   <div class="wrap">
     <div class="card">
       <div class="top">
-        <!-- Logo später: logo.png -->
         <div style="font-size:26px;font-weight:700">Inseldachdecker</div>
 
         <div class="time">
@@ -52,8 +60,9 @@
 
     <div class="card">
       <h2>QR-Code</h2>
+
       <div class="qrBox">
-        <img id="qrcodeImg" alt="QR-Code" style="width:160px;height:160px;background:#fff;padding:10px;border-radius:12px" />
+        <img id="qrcodeImg" alt="QR-Code">
         <div class="qrText">
           <div id="qrLabel">Scannen für Handy-Ansicht</div>
           <div style="opacity:0.75;margin-top:8px;" id="qrSub"></div>
@@ -71,8 +80,6 @@
   <div class="ticker">
     <div class="inner" id="tickerInner">…</div>
   </div>
-
-  <!-- QRCode Lib -->
 
   <script>
     function tickTime() {
@@ -101,19 +108,13 @@
       const inner = document.getElementById('tickerInner');
       inner.textContent = tickerText || '—';
 
-      // QR-Code (Link zur aktuellen Seite)
-      const url = location.href;
-      document.getElementById('qrSub').textContent = url;
-
-      const qr = document.getElementById('qrcode');
-      qr.innerHTML = '';
-            // QR-Code als Bild (robust, ohne externe JS-Library)
+      // QR-Code als Bild (robust, ohne externe JS-Library)
       const url = location.href;
       document.getElementById('qrSub').textContent = url;
 
       const img = document.getElementById('qrcodeImg');
+      img.alt = "QR-Code wird geladen...";
       img.src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=" + encodeURIComponent(url);
-
     }
 
     function startTicker() {
