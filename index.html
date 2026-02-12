@@ -66,6 +66,9 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      gap:10px;
+      max-width:160px;
+      text-align:right;
     }
     .logoTopRight{
       height:56px;
@@ -105,10 +108,11 @@
     <div class="card">
       <!-- Logo oben rechts -->
       <div class="cardLogoTopRight">
-       <img src="Logo_Menne_min.png" alt="Inseldachdecker Logo" class="logoTopRight">
+        <img id="logoImg" src="" alt="Inseldachdecker Logo" class="logoTopRight">
+        <div class="error" id="logoErr" style="display:none;"></div>
       </div>
 
-      <h2 style="padding-right:120px;">QR-Code</h2>
+      <h2 style="padding-right:140px;">QR-Code</h2>
 
       <div class="qrBox">
         <div class="qrWrap">
@@ -156,6 +160,24 @@
       document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
     }
 
+    function setLogo() {
+      const img = document.getElementById('logoImg');
+      const err = document.getElementById('logoErr');
+
+      err.style.display = 'none';
+      err.textContent = '';
+
+      img.onerror = () => {
+        err.style.display = 'block';
+        err.textContent = 'Logo nicht gefunden.';
+      };
+
+      // GitHub Pages Base: https://mennix-007.github.io/Inseldach-Information/
+      const base = location.origin + location.pathname; // endet bei dir mit /
+      const logoUrl = base + "Logo_Menne_min.png?v=" + Date.now();
+      img.src = logoUrl;
+    }
+
     function setQr(url){
       const img = document.getElementById('qrcodeImg');
       const err = document.getElementById('qrErr');
@@ -183,11 +205,9 @@
 
         const data = await res.json();
 
-        // Status aus
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         (data.heuteWichtig || []).forEach(t => {
@@ -196,12 +216,10 @@
           ul.appendChild(li);
         });
 
-        // Ticker
         const tickerText = (data.ticker || []).join('  •  ');
         const inner = document.getElementById('tickerInner');
         inner.textContent = tickerText || '—';
 
-        // QR: Link zur Seite
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
@@ -229,6 +247,8 @@
     // Start
     tickTime();
     setInterval(tickTime, 1000);
+
+    setLogo();
 
     loadNews();
     setInterval(loadNews, 60000);
