@@ -232,7 +232,7 @@
   </div>
 
   <div class="ticker">
-    <div class="inner" id="tickerInner">—</div>
+    <div class="inner" id="tickerInner">Lade Hinweise…</div>
   </div>
 
   <script>
@@ -305,11 +305,10 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker
-       const tickerText = (data.ticker || []).join('  •  ');
-       const inner = document.getElementById('tickerInner');
-       inner.textContent = tickerText || 'Keine Hinweise im Laufband.';
-
+        // Ticker (Fallback-Text)
+        const inner = document.getElementById('tickerInner');
+        const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
+        inner.textContent = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
 
         // QR
         const url = location.origin + location.pathname;
@@ -327,7 +326,7 @@
       let x = window.innerWidth;
 
       function anim() {
-        x -= 2;
+        x -= 3; // etwas schneller (vorher 2)
         el.style.transform = `translateX(${x}px)`;
         const w = el.getBoundingClientRect().width;
         if (x < -w) x = window.innerWidth;
