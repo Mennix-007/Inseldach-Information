@@ -8,7 +8,16 @@
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:88px;}
-    .card{background:#121a24;border:1px solid #223045;border-radius:16px;padding:20px;position:relative;}
+
+    /* KACHELN (Hintergrund rot) */
+    .card{
+      background:#8b1e1e;              /* rot */
+      border:1px solid #b63a3a;        /* roter Rahmen */
+      border-radius:16px;
+      padding:20px;
+      position:relative;
+    }
+
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-size:26px;font-weight:700}
 
@@ -20,7 +29,7 @@
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
-    .hint{font-size:18px;opacity:.8}
+    .hint{font-size:18px;opacity:.85}
 
     .ticker{position:fixed;left:0;right:0;bottom:0;background:#0a0f16;border-top:1px solid #223045;height:64px;display:flex;align-items:center;overflow:hidden}
     .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
@@ -45,8 +54,8 @@
       object-fit:contain;
     }
     .qrText{font-size:18px;opacity:.95}
-    .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.75; word-break:break-all}
-    .error{color:#ffb3b3; font-size:16px; margin-top:8px}
+    .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
+    .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
     /* Wetter */
     .weatherBox iframe{
@@ -57,20 +66,19 @@
       background:#0b0f14;
     }
 
-    /* Logo oben rechts in der QR-Card */
+    /* Logo oben rechts (um die Hälfte kleiner als vorher) */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
       right:16px;
       pointer-events:none;
       display:flex;
-      align-items:center;
-      justify-content:center;
-      max-width:300px;
-      text-align:right;
+      align-items:flex-start;
+      justify-content:flex-end;
+      max-width:360px;
     }
     .logoTopRight{
-      height:280px; /* ca. 5x größer als vorher */
+      height:140px; /* halb so groß wie 280px */
       width:auto;
       object-fit:contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
@@ -91,9 +99,8 @@
         </div>
       </div>
 
-      <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
 
-      <!-- Statuszeile für News-Updates -->
       <div id="newsStatus" class="error" style="display:none;"></div>
 
       <h2>Heute wichtig</h2>
@@ -107,11 +114,10 @@
     <div class="card">
       <!-- Logo oben rechts -->
       <div class="cardLogoTopRight">
-        <img id="logoImg" src="Logo_Menne_min.png?v=300" alt="Inseldachdecker Logo" class="logoTopRight">
-        <div class="error" id="logoErr" style="display:none;"></div>
+        <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
       </div>
 
-      <h2 style="padding-right:320px;">QR-Code</h2>
+      <h2 style="padding-right:200px;">QR-Code</h2>
 
       <div class="qrBox">
         <div class="qrWrap">
@@ -129,7 +135,7 @@
         </div>
       </div>
 
-      <hr style="border:0;border-top:1px solid #223045;margin:18px 0;">
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
 
       <h2>Wetter Borkum</h2>
       <div class="weatherBox">
@@ -146,7 +152,7 @@
   </div>
 
   <div class="ticker">
-    <div class="inner" id="tickerInner">…</div>
+    <div class="inner" id="tickerInner">—</div>
   </div>
 
   <script>
@@ -157,23 +163,6 @@
       document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
       document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
       document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
-    }
-
-    function setLogo() {
-      const img = document.getElementById('logoImg');
-      const err = document.getElementById('logoErr');
-      if (!img || !err) return;
-
-      err.style.display = 'none';
-      err.textContent = '';
-
-      img.onerror = () => {
-        err.style.display = 'block';
-        err.textContent = 'Logo nicht gefunden.';
-      };
-
-      // Cache umgehen (falls nötig)
-      img.src = "Logo_Menne_min.png?v=" + Date.now();
     }
 
     function setQr(url){
@@ -242,11 +231,8 @@
       requestAnimationFrame(anim);
     }
 
-    // Start
     tickTime();
     setInterval(tickTime, 1000);
-
-    setLogo();
 
     loadNews();
     setInterval(loadNews, 60000);
