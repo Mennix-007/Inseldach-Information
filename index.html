@@ -81,8 +81,16 @@
          <img
   id="qrcodeImg"
   alt="QR-Code"
-  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
+  src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"         
 />
+          <h2 style="margin-top:0;">Wetter Borkum</h2>
+<div class="weatherBox">
+  <iframe
+    loading="lazy"
+    src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
+  </iframe>
+</div>
+
 
         </div>
         <div class="qrText">
@@ -103,6 +111,15 @@
   <div class="ticker">
     <div class="inner" id="tickerInner">…</div>
   </div>
+
+  .weatherBox iframe{
+  width:100%;
+  height:300px;
+  border:0;
+  border-radius:12px;
+  background:#0b0f14;
+}
+
 
   <script>
     function pad(n){ return String(n).padStart(2,'0'); }
