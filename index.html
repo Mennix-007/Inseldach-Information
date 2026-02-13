@@ -229,7 +229,7 @@
             <img
               id="camImg"
               alt="Webcam Borkum"
-              src="https://www.insellust-borkum.de/Webcam/axis2/image.jpg">
+              src="https://www.insellust-borkum.de/Webcam/image-hq.jpg">
           </div>
           <div class="hint" style="margin-top:8px;">Aktualisierung: alle 10 Sekunden</div>
         </div>
@@ -274,15 +274,17 @@
       if (!img) return;
 
       function refresh() {
-        img.src = "https://www.insellust-borkum.de/Webcam/axis2/image.jpg?ts=" + Date.now();
+        img.src = "https://www.insellust-borkum.de/Webcam/image-hq.jpg?ts=" + Date.now();
       }
 
       refresh();
       setInterval(refresh, 10000);
     }
 
+    /* Verbesserte Version: zeigt echte Fehlerursache + setzt Ticker auch bei Fehler */
     async function loadNews() {
       const status = document.getElementById('newsStatus');
+      const tickerEl = document.getElementById('tickerInner');
 
       try {
         const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
@@ -290,6 +292,7 @@
 
         const data = await res.json();
 
+        // Status aus
         status.style.display = 'none';
         status.textContent = '';
 
@@ -311,10 +314,9 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker (Fallback-Text)
-        const inner = document.getElementById('tickerInner');
+        // Ticker (immer setzen)
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
-        inner.textContent = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
+        tickerEl.textContent = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
 
         // QR
         const url = location.origin + location.pathname;
@@ -322,8 +324,12 @@
         setQr(url);
 
       } catch (e) {
+        // Status an + genaue Ursache anzeigen
         status.style.display = 'block';
-        status.textContent = 'Update-Fehler (news.json) – zeigt letzten Stand.';
+        status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+
+        // Ticker auch im Fehlerfall sinnvoll befüllen
+        tickerEl.textContent = 'Update-Fehler – bitte news.json prüfen.';
       }
     }
 
