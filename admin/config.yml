@@ -1,0 +1,41 @@
+backend:
+  name: git-gateway
+  branch: main
+
+publish_mode: simple
+
+collections:
+  - name: "content"
+    label: "Inhalte"
+    files:
+      - name: "news"
+        label: "Kacheln & Laufband"
+        file: "news.json"
+        format: "json"
+        fields:
+          - label: "Heute wichtig"
+            name: "heuteWichtig"
+            widget: "list"
+            allow_add: true
+            field:
+              label: "Eintrag"
+              name: "item"
+              widget: "string"
+
+          - label: "Info für längeren Zeitraum"
+            name: "langzeitInfo"
+            widget: "list"
+            allow_add: true
+            field:
+              label: "Eintrag"
+              name: "item"
+              widget: "string"
+
+          - label: "Laufband (Ticker)"
+            name: "ticker"
+            widget: "list"
+            allow_add: true
+            field:
+              label: "Eintrag"
+              name: "item"
+              widget: "string"
