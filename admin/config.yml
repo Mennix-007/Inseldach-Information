@@ -1,14 +1,12 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Mennix-007/Inseldach-Information
   branch: main
 
 publish_mode: simple
 
 media_folder: "uploads"
 public_folder: "/uploads"
-
-media_library:
-  name: uploadcare
 
 collections:
   - name: "content"
