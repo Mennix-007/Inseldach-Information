@@ -6,8 +6,9 @@ publish_mode: simple
 
 media_folder: "uploads"
 public_folder: "/uploads"
+
 media_library:
-  name: local
+  name: uploadcare
 
 collections:
   - name: "content"
