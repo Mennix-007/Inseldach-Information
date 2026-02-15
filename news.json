@@ -1,7 +1,17 @@
 {
-  "heuteWichtig": [],
-  "daueranzeige": [],
-  "daueranzeigeBild": "",
-  "langzeitInfo": [],
-  "ticker": []
+  "heuteWichtig": [
+    "08:00 Lagerbereich A freihalten"
+  ],
+  "daueranzeige": [
+    "Dauerhinweis: Bitte PSA tragen",
+    "Neue Regel gilt ab Montag"
+  ],
+  "daueranzeigeBild": "https://mennix-007.github.io/Inseldach-Information/Logo_Menne_min.png",
+  "langzeitInfo": [
+    "Info, die mehrere Wochen gilt ..."
+  ],
+  "ticker": [
+    "Kaffeemaschine sauber hinterlassen.",
+    "PSA prüfen."
+  ]
 }
