@@ -45,8 +45,17 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    .ticker{position:fixed;left:0;right:0;bottom:0;background:#0a0f16;border-top:1px solid #223045;height:64px;display:flex;align-items:center;overflow:hidden}
-    .ticker .inner{white-space:nowrap;will-change:transform;font-size:28px;padding-left:100%}
+    .ticker{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  background:#ffd400;           /* gelb */
+  border-top:1px solid #c9a800; /* passende Kante */
+  height:72px;                  /* minimal höher (vorher 64px) */
+  display:flex;
+  align-items:center;
+  overflow:hidden
+}
+
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:flex-start}
@@ -173,7 +182,7 @@
 
       <!-- Zusatzkachel (20%) - GRÜN -->
       <div class="card leftLong cardLongGreen">
-        <h2>Info für längeren Zeitraum</h2>
+        <h2>Dauer Info</h2>
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
         </div>
