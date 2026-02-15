@@ -51,7 +51,6 @@
 
       if (hasToken) {
         openIdentity();
-        // CMS erst etwas später initialisieren, damit Token sicher verarbeitet wird
         setTimeout(initCMS, 1500);
       } else {
         initCMS();
@@ -66,9 +65,45 @@
 
   <!-- Decap CMS (startet erst über CMS.init()) -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-  CMS.registerPreviewStyle("https://mennix-007.github.io/Inseldach-Information/index.html");
-</script>
 
+  <!-- Vorschau-Template für news.json -->
+  <script>
+    (function () {
+      if (!window.CMS || !window.React) return;
+
+      var React = window.React;
+
+      function block(title, items) {
+        items = Array.isArray(items) ? items : [];
+        return React.createElement(
+          "div",
+          { style: { marginBottom: "16px", border: "1px solid #ddd", borderRadius: "10px", padding: "12px" } },
+          React.createElement("div", { style: { fontWeight: 700, marginBottom: "8px" } }, title),
+          items.length
+            ? React.createElement(
+                "ul",
+                { style: { margin: 0, paddingLeft: "18px" } },
+                items.map(function (t, i) {
+                  return React.createElement("li", { key: i, style: { margin: "6px 0" } }, t);
+                })
+              )
+            : React.createElement("div", { style: { opacity: 0.7 } }, "— keine Einträge —")
+        );
+      }
+
+      // Template-Name muss exakt dem file.name in config.yml entsprechen: name: "news"
+      window.CMS.registerPreviewTemplate("news", function (props) {
+        var data = props.entry.getIn(["data"]) ? props.entry.getIn(["data"]).toJS() : {};
+        return React.createElement(
+          "div",
+          { style: { fontFamily: "Arial, sans-serif", padding: "12px" } },
+          React.createElement("h2", { style: { marginTop: 0 } }, "Vorschau: Kacheln & Laufband"),
+          block("Heute wichtig", data.heuteWichtig),
+          block("Info für längeren Zeitraum", data.langzeitInfo),
+          block("Laufband (Ticker)", data.ticker)
+        );
+      });
+    })();
+  </script>
 </body>
 </html>
