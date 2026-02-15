@@ -7,7 +7,7 @@
 
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:88px;}
+    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
 
     /* Standard-Kachel (rot) */
     .card{
@@ -45,17 +45,24 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
+    /* Ticker: gelb, schwarz, minimal höher */
     .ticker{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  background:#ffd400;           /* gelb */
-  border-top:1px solid #c9a800; /* passende Kante */
-  height:72px;                  /* minimal höher (vorher 64px) */
-  display:flex;
-  align-items:center;
-  overflow:hidden
-}
-
+      position:fixed;
+      left:0;right:0;bottom:0;
+      background:#ffd400;
+      border-top:1px solid #c9a800;
+      height:72px;
+      display:flex;
+      align-items:center;
+      overflow:hidden
+    }
+    .ticker .inner{
+      white-space:nowrap;
+      will-change:transform;
+      font-size:28px;
+      padding-left:100%;
+      color:#000;
+    }
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:flex-start}
@@ -182,7 +189,7 @@
 
       <!-- Zusatzkachel (20%) - GRÜN -->
       <div class="card leftLong cardLongGreen">
-        <h2>Dauer Info</h2>
+        <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
         </div>
@@ -238,7 +245,7 @@
             <img
               id="camImg"
               alt="Webcam Borkum"
-              src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
+              src="https://www.insellust-borkum.de/Webcam/image-hq.jpg">
           </div>
           <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (nur wenn Seite sichtbar)</div>
         </div>
@@ -249,154 +256,153 @@
   <div class="ticker">
     <div class="inner" id="tickerInner">Lade Hinweise…</div>
   </div>
-<script>
-  const NEWS_INTERVAL_MS = 60000;     // 60s
-  const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
-  const TICKER_SPEED_PX_PER_FRAME = 3;
 
-  // Notfall-Logik: Fehleranzeige beruhigen nach 3x hintereinander
-  const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
-  let consecutiveNewsErrors = 0;
-  let lastGoodTickerText = '';
+  <script>
+    const NEWS_INTERVAL_MS = 60000;     // 60s
+    const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
+    const TICKER_SPEED_PX_PER_FRAME = 3;
 
-  let newsTimer = null;
-  let camTimer  = null;
+    // Notfall-Logik: Fehleranzeige beruhigen nach 3x hintereinander
+    const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
+    let consecutiveNewsErrors = 0;
+    let lastGoodTickerText = '';
 
-  function pad(n){ return String(n).padStart(2,'0'); }
+    let newsTimer = null;
+    let camTimer  = null;
 
-  function tickTime() {
-    const now = new Date();
-    document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
-    document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
-  }
+    function pad(n){ return String(n).padStart(2,'0'); }
 
-  function setQr(url){
-    const img = document.getElementById('qrcodeImg');
-    const err = document.getElementById('qrErr');
-    err.style.display = 'none';
-    err.textContent = '';
+    function tickTime() {
+      const now = new Date();
+      document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
+      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+    }
 
-    img.onerror = () => {
-      err.style.display = 'block';
-      err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
-    };
+    function setQr(url){
+      const img = document.getElementById('qrcodeImg');
+      const err = document.getElementById('qrErr');
+      err.style.display = 'none';
+      err.textContent = '';
 
-    const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
-              + encodeURIComponent(url)
-              + "&nocache=" + Date.now();
+      img.onerror = () => {
+        err.style.display = 'block';
+        err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
+      };
 
-    img.src = src;
-  }
+      const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
+                + encodeURIComponent(url)
+                + "&nocache=" + Date.now();
 
-  async function loadNews() {
-    const status = document.getElementById('newsStatus');
-    const tickerEl = document.getElementById('tickerInner');
+      img.src = src;
+    }
 
-    try {
-      const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+    async function loadNews() {
+      const status = document.getElementById('newsStatus');
+      const tickerEl = document.getElementById('tickerInner');
 
-      const data = await res.json();
+      try {
+        const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
 
-      consecutiveNewsErrors = 0;
-      status.style.display = 'none';
-      status.textContent = '';
+        const data = await res.json();
 
-      const ul = document.getElementById('heuteWichtig');
-      ul.innerHTML = '';
-      (data.heuteWichtig || []).forEach(t => {
-        const li = document.createElement('li');
-        li.textContent = t;
-        ul.appendChild(li);
-      });
-
-      const ulLong = document.getElementById('langzeitInfo');
-      ulLong.innerHTML = '';
-      (data.langzeitInfo || []).forEach(t => {
-        const li = document.createElement('li');
-        li.textContent = t;
-        ulLong.appendChild(li);
-      });
-
-      const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
-      const finalTicker = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
-      tickerEl.textContent = finalTicker;
-      lastGoodTickerText = finalTicker;
-
-      const url = location.origin + location.pathname;
-      document.getElementById('qrSub').textContent = url;
-      setQr(url);
-
-    } catch (e) {
-      consecutiveNewsErrors += 1;
-
-      if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
+        consecutiveNewsErrors = 0;
         status.style.display = 'none';
         status.textContent = '';
-      } else {
-        status.style.display = 'block';
-        status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
-      }
 
-      if (!lastGoodTickerText) {
-        tickerEl.textContent = 'Lade Hinweise…';
-      } else {
-        tickerEl.textContent = lastGoodTickerText;
+        const ul = document.getElementById('heuteWichtig');
+        ul.innerHTML = '';
+        (data.heuteWichtig || []).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+
+        const ulLong = document.getElementById('langzeitInfo');
+        ulLong.innerHTML = '';
+        (data.langzeitInfo || []).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ulLong.appendChild(li);
+        });
+
+        const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
+        const finalTicker = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
+        tickerEl.textContent = finalTicker;
+        lastGoodTickerText = finalTicker;
+
+        const url = location.origin + location.pathname;
+        document.getElementById('qrSub').textContent = url;
+        setQr(url);
+
+      } catch (e) {
+        consecutiveNewsErrors += 1;
+
+        if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
+          status.style.display = 'none';
+          status.textContent = '';
+        } else {
+          status.style.display = 'block';
+          status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+        }
+
+        if (!lastGoodTickerText) {
+          tickerEl.textContent = 'Lade Hinweise…';
+        } else {
+          tickerEl.textContent = lastGoodTickerText;
+        }
       }
     }
-  }
 
-  function refreshWebcamOnce() {
-    if (document.visibilityState !== "visible") return;
-    const img = document.getElementById('camImg');
-    if (!img) return;
-    img.src = "https://www.insellust-borkum.de/Webcam/image-hq.jpg?ts=" + Date.now();
-  }
+    function refreshWebcamOnce() {
+      if (document.visibilityState !== "visible") return;
+      const img = document.getElementById('camImg');
+      if (!img) return;
+      img.src = "https://www.insellust-borkum.de/Webcam/image-hq.jpg?ts=" + Date.now();
+    }
 
-  function startTicker() {
-    const el = document.getElementById('tickerInner');
-    let x = window.innerWidth;
+    function startTicker() {
+      const el = document.getElementById('tickerInner');
+      let x = window.innerWidth;
 
-    function anim() {
-      x -= TICKER_SPEED_PX_PER_FRAME;
-      el.style.transform = `translateX(${x}px)`;
-      const w = el.getBoundingClientRect().width;
-      if (x < -w) x = window.innerWidth;
+      function anim() {
+        x -= TICKER_SPEED_PX_PER_FRAME;
+        el.style.transform = `translateX(${x}px)`;
+        const w = el.getBoundingClientRect().width;
+        if (x < -w) x = window.innerWidth;
+        requestAnimationFrame(anim);
+      }
       requestAnimationFrame(anim);
     }
-    requestAnimationFrame(anim);
-  }
 
-  function startIntervals() {
-    // News nur im Vordergrund
-    if (!newsTimer) {
-      loadNews();
-      newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS);
+    function startIntervals() {
+      if (!newsTimer) {
+        loadNews();
+        newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS);
+      }
+      if (!camTimer) {
+        refreshWebcamOnce();
+        camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
+      }
     }
-    // Webcam nur im Vordergrund
-    if (!camTimer) {
-      refreshWebcamOnce();
-      camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
+
+    function stopIntervals() {
+      if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
+      if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
     }
-  }
 
-  function stopIntervals() {
-    if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
-    if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
-  }
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") startIntervals();
+      else stopIntervals();
+    });
 
-  document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") startIntervals();
-    else stopIntervals();
-  });
+    // Start
+    tickTime();
+    setInterval(tickTime, 1000);
 
-  // Start
-  tickTime();
-  setInterval(tickTime, 1000);
-
-  startIntervals();
-  startTicker();
-</script>
-
- 
+    startIntervals();
+    startTicker();
+  </script>
+</body>
+</html>
