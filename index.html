@@ -246,6 +246,9 @@
     const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
     const TICKER_SPEED_PX_PER_FRAME = 3;
 
+    // Notfall-Logik: Fehleranzeige beruhigen nach 3x hintereinander
+    const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
+    let consecutiveNewsErrors = 0;
     let lastGoodTickerText = ''; // bleibt stehen, wenn news.json kurz nicht erreichbar ist
 
     function pad(n){ return String(n).padStart(2,'0'); }
@@ -298,6 +301,9 @@
 
         const data = await res.json();
 
+        // Erfolg -> Fehlerzähler zurücksetzen
+        consecutiveNewsErrors = 0;
+
         // Status aus
         status.style.display = 'none';
         status.textContent = '';
@@ -332,9 +338,16 @@
         setQr(url);
 
       } catch (e) {
-        // Status an + Ursache (oben links)
-        status.style.display = 'block';
-        status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+        consecutiveNewsErrors += 1;
+
+        // Nach 3 Fehlern: Status ausblenden (Dauerbetrieb beruhigen)
+        if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
+          status.style.display = 'none';
+          status.textContent = '';
+        } else {
+          status.style.display = 'block';
+          status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+        }
 
         // Ticker NICHT überschreiben → letzter Stand bleibt sichtbar
         if (!lastGoodTickerText) {
