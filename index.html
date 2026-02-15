@@ -21,16 +21,16 @@
     }
 
     /* Rechte Kachel (blau) */
-    .cardBlue{
-      background:#163d7a;
-      border:1px solid #2f63c6;
-    }
+    .cardBlue{ background:#163d7a; border:1px solid #2f63c6; }
 
     /* Langzeit-Kachel (grün) */
-    .cardLongGreen{
-      background:#1f7a36;
-      border:1px solid #2bb457;
-    }
+    .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
+
+    /* Daueranzeige (gelb) */
+    .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
+    .cardDurYellow h2{ color:#000; }
+    .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
+    .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-size:26px;font-weight:700}
@@ -60,9 +60,13 @@
       white-space:nowrap;
       will-change:transform;
       font-size:28px;
-      padding-left:100%;
+      padding-left:0;
       color:#000;
+      display:inline-flex;
+      gap:48px; /* Abstand zwischen den 2 Kopien */
+      align-items:center;
     }
+    .ticker .chunk{display:inline-block; white-space:nowrap;}
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:flex-start}
@@ -106,16 +110,8 @@
     }
 
     /* Rechte Kachel: QR / Wetter / Webcam untereinander */
-    .rightStack{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-    .panelTitle{
-      margin:0 0 10px;
-      font-size:24px;
-      font-weight:700;
-    }
+    .rightStack{display:flex;flex-direction:column;gap:16px}
+    .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
     .panel{
       border:1px solid rgba(255,255,255,.25);
       border-radius:12px;
@@ -124,22 +120,10 @@
     }
 
     /* Wetter + Webcam gleich groß */
-    .fixedFrame{
-      width:100%;
-      height:260px;
-      border:0;
-      display:block;
-      background:#0b0f14;
-    }
-    #camImg{
-      width:100%;
-      height:260px;
-      object-fit:cover;
-      display:block;
-      background:#0b0f14;
-    }
+    .fixedFrame{width:100%;height:260px;border:0;display:block;background:#0b0f14}
+    #camImg{width:100%;height:260px;object-fit:cover;display:block;background:#0b0f14}
 
-    /* LINKER BEREICH: 80/20 Stack */
+    /* LINKER BEREICH: 3 Stack (Heute klein / Daueranzeige / Langzeit unten) */
     .leftStack{
       display:flex;
       flex-direction:column;
@@ -147,25 +131,50 @@
       height:100%;
       min-height:0;
     }
-    .leftMain{flex:8; min-height:0;}
-    .leftLong{flex:2; min-height:0;}
-    .scrollBox{
-      max-height:100%;
-      overflow:auto;
+    .leftHeute{flex:6; min-height:0;}
+    .leftDauer{flex:2; min-height:0;}
+    .leftLang{flex:2; min-height:0;}
+
+    .scrollBox{max-height:100%;overflow:auto;}
+
+    /* Daueranzeige Layout: Text links, Bild rechts */
+    .dauerRow{
+      display:flex;
+      gap:14px;
+      align-items:stretch;
     }
+    .dauerText{flex:1; min-width:0;}
+    .dauerImgWrap{
+      flex:0 0 38%;
+      max-width:38%;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.25);
+      background:#fff3a6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    #dauerImg{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .dauerImgWrap.hidden{display:none;}
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <!-- LINKS: 80% Heute / 20% Langzeit-Info -->
+    <!-- LINKS: Heute / Daueranzeige / Langzeit -->
     <div class="leftStack">
-      <!-- Hauptkachel (80%) -->
-      <div class="card leftMain">
+
+      <!-- Heute wichtig (kleiner) -->
+      <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker</div>
-
           <div class="time">
             <div class="clock" id="clock">--:--</div>
             <div class="weekday" id="weekday">----</div>
@@ -182,13 +191,32 @@
           <ul id="heuteWichtig"></ul>
         </div>
 
-        <div class="hint" style="margin-top:16px;">
+        <div class="hint" style="margin-top:12px;">
           Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
         </div>
       </div>
 
-      <!-- Zusatzkachel (20%) - GRÜN -->
-      <div class="card leftLong cardLongGreen">
+      <!-- Daueranzeige (gelb) mit Bild rechts -->
+      <div class="card leftDauer cardDurYellow">
+        <h2>Daueranzeige</h2>
+
+        <div class="dauerRow">
+          <div class="dauerText scrollBox">
+            <ul id="daueranzeige"></ul>
+          </div>
+
+          <div class="dauerImgWrap hidden" id="dauerImgWrap">
+            <img id="dauerImg" alt="Daueranzeige Bild">
+          </div>
+        </div>
+
+        <div class="hint" style="margin-top:10px;">
+          (aus <span class="mono">news.json</span>)
+        </div>
+      </div>
+
+      <!-- Info für längeren Zeitraum (ganz unten, grün) -->
+      <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
@@ -201,7 +229,6 @@
 
     <!-- RECHTS: QR / Wetter / Webcam (BLAU) -->
     <div class="card cardBlue">
-      <!-- Logo oben rechts -->
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
       </div>
@@ -247,25 +274,35 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
           </div>
-          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (nur wenn Seite sichtbar)</div>
+          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (Bildwechsel erst nach vollständigem Laden)</div>
         </div>
       </div>
     </div>
   </div>
 
   <div class="ticker">
-    <div class="inner" id="tickerInner">Lade Hinweise…</div>
+    <div class="inner" id="tickerInner">
+      <span class="chunk">Lade Hinweise…</span>
+      <span class="chunk">Lade Hinweise…</span>
+    </div>
   </div>
 
   <script>
     const NEWS_INTERVAL_MS = 60000;     // 60s
     const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
     const TICKER_SPEED_PX_PER_FRAME = 3;
+    const TICKER_GAP_PX = 48;
 
     // Notfall-Logik: Fehleranzeige beruhigen nach 3x hintereinander
     const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
     let consecutiveNewsErrors = 0;
-    let lastGoodTickerText = '';
+
+    // Ticker: letzter guter Text bleibt
+    let lastGoodTickerText = 'Lade Hinweise…';
+
+    // Webcam: Preload, erst dann umschalten
+    let lastGoodCamSrc = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
+    let camLoading = false;
 
     let newsTimer = null;
     let camTimer  = null;
@@ -297,9 +334,22 @@
       img.src = src;
     }
 
+    function setTickerText(text){
+      const inner = document.getElementById('tickerInner');
+      const safe = (text && String(text).trim()) ? String(text).trim() : 'Keine Hinweise im Laufband.';
+      lastGoodTickerText = safe;
+      inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;');
+    }
+
     async function loadNews() {
       const status = document.getElementById('newsStatus');
-      const tickerEl = document.getElementById('tickerInner');
 
       try {
         const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
@@ -311,6 +361,7 @@
         status.style.display = 'none';
         status.textContent = '';
 
+        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         (data.heuteWichtig || []).forEach(t => {
@@ -319,6 +370,28 @@
           ul.appendChild(li);
         });
 
+        // Daueranzeige (neu)
+        const ulDur = document.getElementById('daueranzeige');
+        ulDur.innerHTML = '';
+        (data.daueranzeige || []).forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ulDur.appendChild(li);
+        });
+
+        // Daueranzeige Bild (URL)
+        const imgWrap = document.getElementById('dauerImgWrap');
+        const img = document.getElementById('dauerImg');
+        const imgUrl = (data.daueranzeigeBild || '').trim();
+        if (imgUrl) {
+          imgWrap.classList.remove('hidden');
+          img.src = imgUrl;
+        } else {
+          imgWrap.classList.add('hidden');
+          img.removeAttribute('src');
+        }
+
+        // Langzeit-Info (unten)
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         (data.langzeitInfo || []).forEach(t => {
@@ -327,11 +400,11 @@
           ulLong.appendChild(li);
         });
 
+        // Ticker (durchgehend)
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
-        const finalTicker = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
-        tickerEl.textContent = finalTicker;
-        lastGoodTickerText = finalTicker;
+        setTickerText(tickerText);
 
+        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
@@ -347,30 +420,53 @@
           status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
         }
 
-        if (!lastGoodTickerText) {
-          tickerEl.textContent = 'Lade Hinweise…';
-        } else {
-          tickerEl.textContent = lastGoodTickerText;
-        }
+        // Ticker bleibt auf letztem Stand
+        setTickerText(lastGoodTickerText);
       }
     }
 
     function refreshWebcamOnce() {
       if (document.visibilityState !== "visible") return;
-      const img = document.getElementById('camImg');
-      if (!img) return;
-      img.src = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg?ts=" + Date.now();
+      if (camLoading) return;
+
+      const target = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg?ts=" + Date.now();
+      const preload = new Image();
+      camLoading = true;
+
+      // Wenn Bild OK geladen: erst dann umschalten
+      preload.onload = () => {
+        const camImg = document.getElementById('camImg');
+        if (camImg) {
+          camImg.src = target;
+          lastGoodCamSrc = target;
+        }
+        camLoading = false;
+      };
+
+      // Wenn Laden fehlschlägt: altes Bild behalten
+      preload.onerror = () => {
+        const camImg = document.getElementById('camImg');
+        if (camImg && lastGoodCamSrc) camImg.src = lastGoodCamSrc;
+        camLoading = false;
+      };
+
+      preload.src = target;
     }
 
     function startTicker() {
       const el = document.getElementById('tickerInner');
-      let x = window.innerWidth;
+      let x = 0;
 
       function anim() {
         x -= TICKER_SPEED_PX_PER_FRAME;
         el.style.transform = `translateX(${x}px)`;
-        const w = el.getBoundingClientRect().width;
-        if (x < -w) x = window.innerWidth;
+
+        const first = el.querySelector('.chunk');
+        if (first) {
+          const w = first.getBoundingClientRect().width;
+          // Reset sobald die erste Kopie komplett raus ist (inkl. Abstand)
+          if (x < -(w + TICKER_GAP_PX)) x = 0;
+        }
         requestAnimationFrame(anim);
       }
       requestAnimationFrame(anim);
