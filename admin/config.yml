@@ -31,6 +31,20 @@ collections:
               name: "item"
               widget: "string"
 
+          - label: "Daueranzeige"
+            name: "daueranzeige"
+            widget: "list"
+            allow_add: true
+            field:
+              label: "Eintrag"
+              name: "item"
+              widget: "string"
+
+          - label: "Daueranzeige Bild"
+            name: "daueranzeigeBild"
+            widget: "image"
+            required: false
+
           - label: "Info für längeren Zeitraum"
             name: "langzeitInfo"
             widget: "list"
