@@ -5,7 +5,7 @@ backend:
 site_url: https://mennix-007.github.io/Inseldach-Information/
 display_url: https://mennix-007.github.io/Inseldach-Information/
 
-publish_mode: editorial_workflow
+publish_mode: simple
 
 media_folder: "uploads"
 public_folder: "/uploads"
