@@ -231,7 +231,7 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/image-hq.jpg">
           </div>
-          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 10 Sekunden</div>
+          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (nur wenn Seite sichtbar)</div>
         </div>
       </div>
     </div>
@@ -242,6 +242,12 @@
   </div>
 
   <script>
+    const NEWS_INTERVAL_MS = 60000;     // 60s
+    const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
+    const TICKER_SPEED_PX_PER_FRAME = 3;
+
+    let lastGoodTickerText = ''; // bleibt stehen, wenn news.json kurz nicht erreichbar ist
+
     function pad(n){ return String(n).padStart(2,'0'); }
 
     function tickTime() {
@@ -269,19 +275,19 @@
       img.src = src;
     }
 
-    function startWebcam() {
+    function refreshWebcamOnce() {
+      if (document.visibilityState !== "visible") return;
       const img = document.getElementById('camImg');
       if (!img) return;
-
-      function refresh() {
-        img.src = "https://www.insellust-borkum.de/Webcam/image-hq.jpg?ts=" + Date.now();
-      }
-
-      refresh();
-      setInterval(refresh, 10000);
+      img.src = "https://www.insellust-borkum.de/Webcam/image-hq.jpg?ts=" + Date.now();
     }
 
-    /* Verbesserte Version: zeigt echte Fehlerursache + setzt Ticker auch bei Fehler */
+    function startWebcam() {
+      refreshWebcamOnce();
+      setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
+      document.addEventListener("visibilitychange", refreshWebcamOnce);
+    }
+
     async function loadNews() {
       const status = document.getElementById('newsStatus');
       const tickerEl = document.getElementById('tickerInner');
@@ -314,9 +320,11 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker (immer setzen)
+        // Ticker: stabil + merken
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
-        tickerEl.textContent = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
+        const finalTicker = tickerText.trim() ? tickerText : 'Keine Hinweise im Laufband.';
+        tickerEl.textContent = finalTicker;
+        lastGoodTickerText = finalTicker;
 
         // QR
         const url = location.origin + location.pathname;
@@ -324,12 +332,16 @@
         setQr(url);
 
       } catch (e) {
-        // Status an + genaue Ursache anzeigen
+        // Status an + Ursache (oben links)
         status.style.display = 'block';
         status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
 
-        // Ticker auch im Fehlerfall sinnvoll befüllen
-        tickerEl.textContent = 'Update-Fehler – bitte news.json prüfen.';
+        // Ticker NICHT überschreiben → letzter Stand bleibt sichtbar
+        if (!lastGoodTickerText) {
+          tickerEl.textContent = 'Lade Hinweise…';
+        } else {
+          tickerEl.textContent = lastGoodTickerText;
+        }
       }
     }
 
@@ -338,7 +350,7 @@
       let x = window.innerWidth;
 
       function anim() {
-        x -= 3;
+        x -= TICKER_SPEED_PX_PER_FRAME;
         el.style.transform = `translateX(${x}px)`;
         const w = el.getBoundingClientRect().width;
         if (x < -w) x = window.innerWidth;
@@ -352,7 +364,7 @@
     setInterval(tickTime, 1000);
 
     loadNews();
-    setInterval(loadNews, 60000);
+    setInterval(loadNews, NEWS_INTERVAL_MS);
 
     startWebcam();
     startTicker();
