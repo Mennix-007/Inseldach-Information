@@ -1,16 +1,7 @@
 {
-  "heuteWichtig": [
-    "Bitte pünktlich zur Baustelle fahren bitte xxxx",
-    "Heute nicht vergessen, Frau Meyer wartet um 14:00 Uhr auf Mitarbeiter",
-    "Das Gerüst in der Ankerstraße muss heute geprüft werden, es kommt Sturm auf"
-  ],
-  "langzeitInfo": [
-    "Guten Morgen miteinander, heute ist kein gutes Wetter",
-    "Wir sind auf Kurzarbeit"
-  ],
-  "ticker": [
-    "Bitte alle Pünktlich zur Baustelle kommen.",
-    "Abends bitte die Zeiterfassung bedienen und Stundenzettel schreiben",
-    "Abends noch laden für den nächsten Tag, ganz wichtig"
-  ]
+  "heuteWichtig": [],
+  "daueranzeige": [],
+  "daueranzeigeBild": "",
+  "langzeitInfo": [],
+  "ticker": []
 }
