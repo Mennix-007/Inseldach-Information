@@ -135,11 +135,11 @@
     .leftLang{flex:2; min-height:0;}
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* Heute-Layout: Text links, Bild rechts */
+    /* Heute (gelb): Text links, Bild rechts, Bild soll von oben bis unten laufen */
     .dauerRow{
       display:flex;
       gap:12px;
-      align-items:flex-start; /* oben ausrichten */
+      align-items:stretch; /* wichtig: beide Spalten gleiche Höhe */
     }
     .dauerText{flex:1; min-width:0;}
 
@@ -151,18 +151,18 @@
       border:1px solid rgba(0,0,0,.25);
       background:#fff3a6;
       display:flex;
-      align-items:flex-start;     /* Bild oben */
-      justify-content:center;
-      padding:2px 4px 4px 2px;    /* oben fast 0, links minimal */
+      align-items:stretch;   /* voll ausfüllen */
+      justify-content:stretch;
+      padding:0;             /* kein Innenabstand -> bis Kachelrand */
       box-sizing:border-box;
+      margin-top:0;          /* nicht nach unten rutschen */
     }
     .dauerImgWrap.hidden{display:none;}
 
     #dauerImg{
       width:100%;
       height:100%;
-      max-height:140px;
-      object-fit:contain;
+      object-fit:cover;      /* füllt die Fläche von oben bis unten */
       display:block;
     }
 
@@ -316,9 +316,9 @@
   </div>
 
   <script>
-    const NEWS_INTERVAL_MS = 60000;     // 60s
-    const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
-    const WEATHER_INTERVAL_MS = 10 * 60 * 1000; // 10 Minuten
+    const NEWS_INTERVAL_MS = 60000;         // 60s
+    const CAM_INTERVAL_MS  = 180000;        // 3 Minuten
+    const WEATHER_INTERVAL_MS = 10*60*1000; // 10 Minuten
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
 
@@ -327,8 +327,10 @@
 
     let lastGoodTickerText = 'Lade Hinweise…';
 
-    let lastGoodCamSrc = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
+    // Webcam (Blob-Variante: zeigt erst vollständiges Bild -> kein "halb")
     let camLoading = false;
+    let lastCamObjectUrl = null;
+    let lastGoodCamSrc = null;
 
     let newsTimer = null;
     let camTimer  = null;
@@ -451,30 +453,46 @@
       }
     }
 
-    function refreshWebcamOnce() {
+    // Webcam: per fetch->blob laden, erst danach anzeigen (verhindert "halbes Bild")
+    async function refreshWebcamOnce() {
       if (document.visibilityState !== "visible") return;
       if (camLoading) return;
 
-      const target = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg?ts=" + Date.now();
-      const preload = new Image();
       camLoading = true;
 
-      preload.onload = () => {
-        const camImg = document.getElementById('camImg');
+      const baseUrl = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
+      const target = baseUrl + "?ts=" + Date.now();
+
+      try {
+        const res = await fetch(target, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+
+        // Optional: dekodieren, dann erst umschalten
+        const testImg = new Image();
+        testImg.src = objectUrl;
+        if (testImg.decode) await testImg.decode();
+
+        const camImg = document.getElementById("camImg");
         if (camImg) {
-          camImg.src = target;
-          lastGoodCamSrc = target;
+          camImg.src = objectUrl;
+
+          if (lastCamObjectUrl) URL.revokeObjectURL(lastCamObjectUrl);
+          lastCamObjectUrl = objectUrl;
+
+          lastGoodCamSrc = objectUrl;
+        } else {
+          URL.revokeObjectURL(objectUrl);
         }
-        camLoading = false;
-      };
 
-      preload.onerror = () => {
-        const camImg = document.getElementById('camImg');
+      } catch (e) {
+        const camImg = document.getElementById("camImg");
         if (camImg && lastGoodCamSrc) camImg.src = lastGoodCamSrc;
+      } finally {
         camLoading = false;
-      };
-
-      preload.src = target;
+      }
     }
 
     function startTicker() {
@@ -516,6 +534,7 @@
       if ([45,48].includes(code)) return "Nebel";
       if ([51,53,55].includes(code)) return "Nieselregen";
       if ([61,63,65].includes(code)) return "Regen";
+      if ([66,67].includes(code)) return "Gefrierender Regen";
       if ([71,73,75,77].includes(code)) return "Schnee";
       if ([80,81,82].includes(code)) return "Regenschauer";
       if ([95,96,99].includes(code)) return "Gewitter";
