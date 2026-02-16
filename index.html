@@ -262,12 +262,17 @@
         <!-- Wetter -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
-          <div class="panel">
-            <iframe
-              class="fixedFrame"
-              loading="lazy"
-              src="https://api.wetteronline.de/wetterwidget?gid=10172&modeid=CW2&seourl=borkum&locationname=Borkum&lang=de">
-            </iframe>
+       <div class="panel" style="padding:14px;">
+  <div id="wxBox" style="display:flex;gap:14px;align-items:center;">
+    <div id="wxIcon" style="font-size:54px;line-height:1;">⛅</div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:22px;font-weight:700;" id="wxTemp">— °C</div>
+      <div style="font-size:18px;opacity:.9;" id="wxDesc">Wetter wird geladen…</div>
+      <div style="font-size:14px;opacity:.75;margin-top:6px;" id="wxTime">—</div>
+    </div>
+  </div>
+</div>
+
           </div>
         </div>
 
