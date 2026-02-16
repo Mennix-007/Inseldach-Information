@@ -31,8 +31,8 @@ collections:
               name: "item"
               widget: "string"
 
-          - label: "Daueranzeige"
-            name: "daueranzeige"
+         - label: "Für heute"
+           name: "daueranzeige"
             widget: "list"
             allow_add: true
             field:
@@ -40,7 +40,7 @@ collections:
               name: "item"
               widget: "string"
 
-          - label: "Daueranzeige Bild"
+          - label: "Bild für heute"
             name: "daueranzeigeBild"
             widget: "image"
             required: false
