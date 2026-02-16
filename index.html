@@ -137,24 +137,27 @@
 
     /* Heute-Layout: Text links, Bild rechts (sauber!) */
     .dauerRow{
-      display:flex;
-      gap:14px;
-      align-items:stretch;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;   /* oben ausrichten */
+}
     }
     .dauerText{flex:1; min-width:0;}
 
     .dauerImgWrap{
-      flex:0 0 28%;
-      max-width:28%;
-      border-radius:12px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.25);
-      background:#fff3a6;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px;               /* wichtig: etwas Luft */
-      box-sizing:border-box;
+  flex:0 0 30%;
+  max-width:30%;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.25);
+  background:#fff3a6;
+  display:flex;
+  align-items:flex-start;     /* Bild oben */
+  justify-content:center;
+  padding:2px 4px 4px 2px;    /* oben fast 0, links minimal */
+  box-sizing:border-box;
+}
+
     }
     .dauerImgWrap.hidden{display:none;}
 
