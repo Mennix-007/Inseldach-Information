@@ -26,7 +26,7 @@
     /* Langzeit-Kachel (grün) */
     .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
 
-    /* Daueranzeige (gelb) */
+    /* Heute (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
@@ -54,7 +54,7 @@
       height:72px;
       display:flex;
       align-items:center;
-      overflow:hidden
+      overflow:hidden;
     }
     .ticker .inner{
       white-space:nowrap;
@@ -63,7 +63,7 @@
       padding-left:0;
       color:#000;
       display:inline-flex;
-      gap:48px; /* Abstand zwischen den 2 Kopien */
+      gap:48px;
       align-items:center;
     }
     .ticker .chunk{display:inline-block; white-space:nowrap;}
@@ -119,11 +119,10 @@
       background:#0b0f14;
     }
 
-    /* Wetter + Webcam gleich groß */
-    .fixedFrame{width:100%;height:260px;border:0;display:block;background:#0b0f14}
+    /* Webcam gleich groß wie Wetter */
     #camImg{width:100%;height:260px;object-fit:cover;display:block;background:#0b0f14}
 
-    /* LINKER BEREICH: 3 Stack (Heute klein / Daueranzeige / Langzeit unten) */
+    /* LINKER BEREICH: 3 Stack */
     .leftStack{
       display:flex;
       flex-direction:column;
@@ -134,22 +133,19 @@
     .leftHeute{flex:6; min-height:0;}
     .leftDauer{flex:2; min-height:0;}
     .leftLang{flex:2; min-height:0;}
-
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* Daueranzeige Layout: Text links, Bild rechts */
+    /* Heute-Layout: Text links, Bild rechts (sauber!) */
     .dauerRow{
       display:flex;
       gap:14px;
       align-items:stretch;
     }
     .dauerText{flex:1; min-width:0;}
-   .dauerImgWrap{
-  flex:0 0 28%;
-  max-width:28%;
-  ...
-}
 
+    .dauerImgWrap{
+      flex:0 0 28%;
+      max-width:28%;
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
@@ -157,27 +153,28 @@
       display:flex;
       align-items:center;
       justify-content:center;
-    }
-  #dauerImg{
-  width:100%;
-  height:100%;
-  object-fit:contain;     /* passt komplett rein */
-  display:block;
-}
-
-    background:#fff3a6;   /* optional: ruhiger Hintergrund */
+      padding:6px;               /* wichtig: etwas Luft */
+      box-sizing:border-box;
     }
     .dauerImgWrap.hidden{display:none;}
+
+    #dauerImg{
+      width:100%;
+      height:100%;
+      max-height:140px;          /* wichtig: Bild wird nie „zu groß“ */
+      object-fit:contain;        /* nie abschneiden */
+      display:block;
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <!-- LINKS: Heute / Daueranzeige / Langzeit -->
+    <!-- LINKS -->
     <div class="leftStack">
 
-      <!-- Heute wichtig (kleiner) -->
+      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker</div>
@@ -189,7 +186,6 @@
         </div>
 
         <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
-
         <div id="newsStatus" class="error" style="display:none;"></div>
 
         <h2>Heute wichtig</h2>
@@ -202,7 +198,7 @@
         </div>
       </div>
 
-      <!-- Daueranzeige (gelb) mit Bild rechts -->
+      <!-- HEUTE (gelb) -->
       <div class="card leftDauer cardDurYellow">
         <h2>Heute</h2>
 
@@ -212,7 +208,7 @@
           </div>
 
           <div class="dauerImgWrap hidden" id="dauerImgWrap">
-            <img id="dauerImg" alt="Daueranzeige Bild">
+            <img id="dauerImg" alt="Bild für heute">
           </div>
         </div>
 
@@ -221,7 +217,7 @@
         </div>
       </div>
 
-      <!-- Info für längeren Zeitraum (ganz unten, grün) -->
+      <!-- Langzeit -->
       <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
@@ -233,7 +229,7 @@
       </div>
     </div>
 
-    <!-- RECHTS: QR / Wetter / Webcam (BLAU) -->
+    <!-- RECHTS -->
     <div class="card cardBlue">
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
@@ -259,21 +255,20 @@
           </div>
         </div>
 
-        <!-- Wetter -->
+        <!-- Wetter (Open-Meteo) -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
-       <div class="panel" style="padding:14px;">
-  <div id="wxBox" style="display:flex;gap:14px;align-items:center;">
-    <div id="wxIcon" style="font-size:54px;line-height:1;">⛅</div>
-    <div style="flex:1;min-width:0;">
-      <div style="font-size:22px;font-weight:700;" id="wxTemp">— °C</div>
-      <div style="font-size:18px;opacity:.9;" id="wxDesc">Wetter wird geladen…</div>
-      <div style="font-size:14px;opacity:.75;margin-top:6px;" id="wxTime">—</div>
-    </div>
-  </div>
-</div>
-
+          <div class="panel" style="padding:14px;">
+            <div id="wxBox" style="display:flex;gap:14px;align-items:center;">
+              <div id="wxIcon" style="font-size:54px;line-height:1;">⛅</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:22px;font-weight:700;" id="wxTemp">— °C</div>
+                <div style="font-size:18px;opacity:.9;" id="wxDesc">Wetter wird geladen…</div>
+                <div style="font-size:14px;opacity:.75;margin-top:6px;" id="wxTime">—</div>
+              </div>
+            </div>
           </div>
+          <div class="hint" style="margin-top:8px;opacity:.9;">Aktualisierung: alle 10 Minuten (Open-Meteo)</div>
         </div>
 
         <!-- Webcam -->
@@ -301,22 +296,21 @@
   <script>
     const NEWS_INTERVAL_MS = 60000;     // 60s
     const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
+    const WEATHER_INTERVAL_MS = 10 * 60 * 1000; // 10 Minuten
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
 
-    // Notfall-Logik: Fehleranzeige beruhigen nach 3x hintereinander
     const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
     let consecutiveNewsErrors = 0;
 
-    // Ticker: letzter guter Text bleibt
     let lastGoodTickerText = 'Lade Hinweise…';
 
-    // Webcam: Preload, erst dann umschalten
     let lastGoodCamSrc = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
     let camLoading = false;
 
     let newsTimer = null;
     let camTimer  = null;
+    let weatherTimer = null;
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -345,18 +339,18 @@
       img.src = src;
     }
 
-    function setTickerText(text){
-      const inner = document.getElementById('tickerInner');
-      const safe = (text && String(text).trim()) ? String(text).trim() : 'Keine Hinweise im Laufband.';
-      lastGoodTickerText = safe;
-      inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
-    }
-
     function escapeHtml(str){
       return String(str)
         .replaceAll('&','&amp;')
         .replaceAll('<','&lt;')
         .replaceAll('>','&gt;');
+    }
+
+    function setTickerText(text){
+      const inner = document.getElementById('tickerInner');
+      const safe = (text && String(text).trim()) ? String(text).trim() : 'Keine Hinweise im Laufband.';
+      lastGoodTickerText = safe;
+      inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
     }
 
     async function loadNews() {
@@ -381,7 +375,7 @@
           ul.appendChild(li);
         });
 
-        // Daueranzeige (neu)
+        // Heute (gelb)
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         (data.daueranzeige || []).forEach(t => {
@@ -390,7 +384,7 @@
           ulDur.appendChild(li);
         });
 
-        // Daueranzeige Bild (URL)
+        // Bild für Heute
         const imgWrap = document.getElementById('dauerImgWrap');
         const img = document.getElementById('dauerImg');
         const imgUrl = (data.daueranzeigeBild || '').trim();
@@ -402,7 +396,7 @@
           img.removeAttribute('src');
         }
 
-        // Langzeit-Info (unten)
+        // Langzeit
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         (data.langzeitInfo || []).forEach(t => {
@@ -411,7 +405,7 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker (durchgehend)
+        // Ticker
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
@@ -431,7 +425,6 @@
           status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
         }
 
-        // Ticker bleibt auf letztem Stand
         setTickerText(lastGoodTickerText);
       }
     }
@@ -444,7 +437,6 @@
       const preload = new Image();
       camLoading = true;
 
-      // Wenn Bild OK geladen: erst dann umschalten
       preload.onload = () => {
         const camImg = document.getElementById('camImg');
         if (camImg) {
@@ -454,7 +446,6 @@
         camLoading = false;
       };
 
-      // Wenn Laden fehlschlägt: altes Bild behalten
       preload.onerror = () => {
         const camImg = document.getElementById('camImg');
         if (camImg && lastGoodCamSrc) camImg.src = lastGoodCamSrc;
@@ -475,12 +466,76 @@
         const first = el.querySelector('.chunk');
         if (first) {
           const w = first.getBoundingClientRect().width;
-          // Reset sobald die erste Kopie komplett raus ist (inkl. Abstand)
           if (x < -(w + TICKER_GAP_PX)) x = 0;
         }
         requestAnimationFrame(anim);
       }
       requestAnimationFrame(anim);
+    }
+
+    /* ===== Open-Meteo Wetter (Borkum) ===== */
+    function weatherIconFromCode(code) {
+      if (code === 0) return "☀️";
+      if ([1,2].includes(code)) return "🌤️";
+      if (code === 3) return "☁️";
+      if ([45,48].includes(code)) return "🌫️";
+      if ([51,53,55,56,57].includes(code)) return "🌦️";
+      if ([61,63,65,66,67].includes(code)) return "🌧️";
+      if ([71,73,75,77].includes(code)) return "❄️";
+      if ([80,81,82].includes(code)) return "🌧️";
+      if ([95,96,99].includes(code)) return "⛈️";
+      return "⛅";
+    }
+    function weatherTextFromCode(code) {
+      if (code === 0) return "Klar";
+      if (code === 1) return "Überwiegend klar";
+      if (code === 2) return "Leicht bewölkt";
+      if (code === 3) return "Bewölkt";
+      if ([45,48].includes(code)) return "Nebel";
+      if ([51,53,55].includes(code)) return "Nieselregen";
+      if ([61,63,65].includes(code)) return "Regen";
+      if ([71,73,75].includes(code)) return "Schnee";
+      if ([80,81,82].includes(code)) return "Regenschauer";
+      if ([95,96,99].includes(code)) return "Gewitter";
+      return "Wetter";
+    }
+
+    async function loadWeather() {
+      try {
+        const url =
+          "https://api.open-meteo.com/v1/forecast"
+          + "?latitude=53.58&longitude=6.67"
+          + "&current_weather=true"
+          + "&timezone=Europe%2FBerlin";
+
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+
+        const cw = data.current_weather || {};
+        const temp = cw.temperature;
+        const wind = cw.windspeed;
+        const code = cw.weathercode;
+        const time = cw.time;
+
+        document.getElementById("wxTemp").textContent =
+          (temp ?? "—") + " °C  ·  Wind " + (wind ?? "—") + " km/h";
+        document.getElementById("wxIcon").textContent = weatherIconFromCode(code);
+        document.getElementById("wxDesc").textContent = weatherTextFromCode(code);
+
+        const t = time ? new Date(time) : new Date();
+        document.getElementById("wxTime").textContent =
+          "Aktualisiert: " + t.toLocaleString("de-DE");
+
+      } catch (e) {
+        document.getElementById("wxDesc").textContent = "Wetter konnte nicht geladen werden.";
+      }
+    }
+
+    function startWeather() {
+      loadWeather();
+      if (weatherTimer) clearInterval(weatherTimer);
+      weatherTimer = setInterval(loadWeather, WEATHER_INTERVAL_MS);
     }
 
     function startIntervals() {
@@ -492,11 +547,15 @@
         refreshWebcamOnce();
         camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
       }
+      if (!weatherTimer) {
+        startWeather();
+      }
     }
 
     function stopIntervals() {
       if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
       if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
+      if (weatherTimer) { clearInterval(weatherTimer); weatherTimer = null; }
     }
 
     document.addEventListener("visibilitychange", () => {
