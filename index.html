@@ -209,6 +209,63 @@
     #wxTemp{ text-shadow:0 2px 10px rgba(0,0,0,.45); }
     #wxDesc{ text-shadow:0 2px 10px rgba(0,0,0,.35); }
     #wxTime{ text-shadow:0 2px 10px rgba(0,0,0,.25); }
+
+    /* ===== MOBILE: alles untereinander + keine abgeschnittenen Inhalte ===== */
+@media (max-width: 900px) {
+
+  /* 1 Spalte statt 2 */
+  .wrap{
+    grid-template-columns: 1fr;
+    height: auto;           /* wichtig: kein 100vh-Zwang */
+    min-height: 100vh;
+    padding-bottom: 96px;   /* Platz für den Ticker */
+  }
+
+  /* Linke Seite: Flex-Höhen AUS -> Kacheln wachsen je nach Inhalt */
+  .leftStack{ height:auto; }
+  .leftHeute, .leftDauer, .leftLang{
+    flex: initial;
+    min-height: unset;
+  }
+
+  /* Scroll-Boxen auf Handy nicht “einsperren” */
+  .scrollBox{
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* Heute-Kachel (gelb): Bild + Text untereinander, damit nichts gequetscht wird */
+  .dauerRow{
+    flex-direction: column;
+  }
+  .dauerImgWrap{
+    max-width: 100%;
+    flex: 0 0 auto;
+    height: 220px;          /* feste Bildhöhe auf Handy, gut lesbar */
+  }
+
+  /* QR-Bereich: Elemente dürfen umbrechen */
+  .qrBox{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .qrWrap{
+    width: 180px;
+    height: 180px;
+  }
+
+  /* Wetter/Webcam etwas kompakter, aber vollständig */
+  .wxBg{ height: 220px; }
+  #camImg{ height: 220px; }
+
+  /* Logo oben rechts kleiner */
+  .logoTopRight{ height: 90px; }
+
+  /* Typo minimal kleiner, damit mehr Text reinpasst */
+  ul{ font-size: 20px; }
+  h2{ font-size: 24px; }
+}
+
   </style>
 </head>
 
