@@ -9,6 +9,7 @@
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
 
+    /* Standard-Kachel (rot) */
     .card{
       background:#8b1e1e;
       border:1px solid #b63a3a;
@@ -19,9 +20,13 @@
       box-sizing:border-box;
     }
 
+    /* Rechte Kachel (blau) */
     .cardBlue{ background:#163d7a; border:1px solid #2f63c6; }
+
+    /* Langzeit-Kachel (grün) */
     .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
 
+    /* Heute-Kachel (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
@@ -40,6 +45,7 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
+    /* Ticker: gelb, schwarz, minimal höher */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
@@ -48,7 +54,7 @@
       height:72px;
       display:flex;
       align-items:center;
-      overflow:hidden;
+      overflow:hidden
     }
     .ticker .inner{
       white-space:nowrap;
@@ -62,6 +68,7 @@
     }
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
+    /* QR */
     .qrBox{display:flex;gap:18px;align-items:flex-start}
     .qrWrap{
       width:180px;height:180px;
@@ -84,6 +91,7 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
+    /* Logo oben rechts */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -101,6 +109,7 @@
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
     }
 
+    /* Rechte Kachel: QR / Wetter / Webcam untereinander */
     .rightStack{display:flex;flex-direction:column;gap:16px}
     .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
     .panel{
@@ -110,7 +119,14 @@
       background:#0b0f14;
     }
 
-    #camImg{width:100%;height:260px;object-fit:cover;display:block;background:#0b0f14}
+    /* Webcam */
+    #camImg{
+      width:100%;
+      height:260px;
+      object-fit:cover;
+      display:block;
+      background:#0b0f14;
+    }
 
     /* LINKS: 3 Stack */
     .leftStack{
@@ -120,24 +136,25 @@
       height:100%;
       min-height:0;
     }
-    /* Änderung: Heute wichtig kleiner, Heute gelb größer */
+    /* Heute wichtig etwas kleiner, Heute (gelb) größer, Langzeit gleich */
     .leftHeute{flex:5; min-height:0;}
     .leftDauer{flex:3; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* Heute (gelb): kompakter Titel + volle Höhe für Row */
+    /* Heute (gelb): kompakter Titel */
     .cardDurYellow h2{
       font-size:22px;
-      margin:0 0 6px;   /* weniger Platzverbrauch */
+      margin:0 0 6px;
       line-height:1.1;
     }
+
+    /* Daueranzeige Layout: Text links, Bild rechts */
     .dauerRow{
       display:flex;
-      gap:12px;
+      gap:14px;
       align-items:stretch;
-      height:100%;      /* nutzt die Kachelhöhe besser */
     }
     .dauerText{flex:1; min-width:0;}
 
@@ -149,22 +166,23 @@
       border:1px solid rgba(0,0,0,.25);
       background:#fff3a6;
       display:flex;
-      align-items:stretch;
+      align-items:stretch;      /* wichtig: Bild bis Ober-/Unterkante */
       justify-content:stretch;
-      padding:0;
-      box-sizing:border-box;
-      margin-top:0;
     }
     .dauerImgWrap.hidden{display:none;}
 
+    /* Bild füllt den Bildbereich – ohne Verzerren */
     #dauerImg{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit:cover;   /* füllt komplett ohne Verzerren (kann minimal beschneiden) */
       display:block;
     }
+    /* Wenn du GAR NICHT beschneiden willst, nimm stattdessen:
+       #dauerImg{ object-fit:contain; background:#fff3a6; }
+    */
 
-    /* Wetter */
+    /* Wetter: etwas “bildoptischer” Hintergrund */
     .wxBg{
       border-radius:12px;
       padding:14px;
@@ -193,6 +211,7 @@
     <!-- LINKS -->
     <div class="leftStack">
 
+      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker</div>
@@ -216,6 +235,7 @@
         </div>
       </div>
 
+      <!-- Heute (gelb) -->
       <div class="card leftDauer cardDurYellow">
         <h2>Heute</h2>
 
@@ -234,6 +254,7 @@
         </div>
       </div>
 
+      <!-- Langzeit -->
       <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
@@ -252,6 +273,8 @@
       </div>
 
       <div class="rightStack">
+
+        <!-- QR -->
         <div>
           <h2 style="padding-right:200px;">QR-Code</h2>
           <div class="qrBox">
@@ -270,6 +293,7 @@
           </div>
         </div>
 
+        <!-- Wetter -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
           <div class="panel wxBg wx-cloudy" id="wxPanel">
@@ -285,6 +309,7 @@
           <div class="hint" style="margin-top:8px;opacity:.9;">Aktualisierung: alle 10 Minuten (Open-Meteo)</div>
         </div>
 
+        <!-- Webcam -->
         <div>
           <div class="panelTitle">Live Webcam</div>
           <div class="panel">
@@ -293,8 +318,9 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
           </div>
-          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (Bildwechsel erst nach vollständigem Laden)</div>
+          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (nur vollständige Bilder werden übernommen)</div>
         </div>
+
       </div>
     </div>
   </div>
@@ -307,9 +333,9 @@
   </div>
 
   <script>
-    const NEWS_INTERVAL_MS = 60000;
-    const CAM_INTERVAL_MS  = 180000;
-    const WEATHER_INTERVAL_MS = 10*60*1000;
+    const NEWS_INTERVAL_MS = 60000;         // 60s
+    const CAM_INTERVAL_MS  = 180000;        // 3 Minuten
+    const WEATHER_INTERVAL_MS = 10*60*1000; // 10 Minuten
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
 
@@ -318,9 +344,9 @@
 
     let lastGoodTickerText = 'Lade Hinweise…';
 
+    // Webcam: last good ObjectURL + Schutz
     let camLoading = false;
     let lastCamObjectUrl = null;
-    let lastGoodCamSrc = null;
 
     let newsTimer = null;
     let camTimer  = null;
@@ -349,7 +375,6 @@
       const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
                 + encodeURIComponent(url)
                 + "&nocache=" + Date.now();
-
       img.src = src;
     }
 
@@ -367,6 +392,28 @@
       inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
     }
 
+    /* Uploadcare: Höhe ist maßgebend, kein Verzerren.
+       - resize/x1200 = Höhe 1200px, Breite automatisch
+       - format/auto + quality/lightest = schnell + wenig Daten
+    */
+    function optimizeUploadcareImage(url){
+      if (!url) return "";
+      const u = String(url).trim();
+      if (!/ucarecdn\./i.test(u)) return u;
+
+      // bereits transformiert? nicht doppelt
+      if (u.includes("/-/resize/") || u.includes("/-/scale_crop/")) return u;
+
+      const ops = "-/resize/x1200/-/format/auto/-/quality/lightest/";
+
+      if (u.endsWith("/")) return u + ops;
+
+      const m = u.match(/^(https?:\/\/[^\/]+\/[0-9a-f-]{32,}\/)(.*)$/i);
+      if (!m) return u;
+
+      return m[1] + ops + m[2];
+    }
+
     async function loadNews() {
       const status = document.getElementById('newsStatus');
 
@@ -380,6 +427,7 @@
         status.style.display = 'none';
         status.textContent = '';
 
+        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         (data.heuteWichtig || []).forEach(t => {
@@ -388,6 +436,7 @@
           ul.appendChild(li);
         });
 
+        // Heute (Daueranzeige)
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         (data.daueranzeige || []).forEach(t => {
@@ -396,17 +445,21 @@
           ulDur.appendChild(li);
         });
 
+        // Heute Bild (optimiert)
         const imgWrap = document.getElementById('dauerImgWrap');
         const img = document.getElementById('dauerImg');
-        const imgUrl = (data.daueranzeigeBild || '').trim();
-        if (imgUrl) {
+        const rawUrl = (data.daueranzeigeBild || '').trim();
+
+        if (rawUrl) {
           imgWrap.classList.remove('hidden');
-          img.src = imgUrl;
+          const optimized = optimizeUploadcareImage(rawUrl);
+          img.src = optimized; // kein Verzerren; Höhe ist maßgebend
         } else {
           imgWrap.classList.add('hidden');
           img.removeAttribute('src');
         }
 
+        // Langzeit-Info
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         (data.langzeitInfo || []).forEach(t => {
@@ -415,9 +468,11 @@
           ulLong.appendChild(li);
         });
 
+        // Ticker
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
+        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
@@ -437,6 +492,35 @@
       }
     }
 
+    /* Webcam: robust – nur übernehmen, wenn vollständig + decodierbar.
+       - fetch + blob + objectURL
+       - decode/onload Prüfung
+       - Timeout + Retry
+    */
+    async function fetchWithTimeout(url, ms){
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), ms);
+      try {
+        const res = await fetch(url, { cache:"no-store", signal: controller.signal });
+        return res;
+      } finally {
+        clearTimeout(t);
+      }
+    }
+
+    async function loadImageFully(objectUrl){
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          // “halb” vermeiden: Bild muss sinnvolle Maße haben
+          if (img.naturalWidth > 200 && img.naturalHeight > 200) resolve(true);
+          else reject(new Error("Image too small / incomplete"));
+        };
+        img.onerror = () => reject(new Error("Image decode error"));
+        img.src = objectUrl;
+      });
+    }
+
     async function refreshWebcamOnce() {
       if (document.visibilityState !== "visible") return;
       if (camLoading) return;
@@ -446,35 +530,42 @@
       const baseUrl = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
       const target = baseUrl + "?ts=" + Date.now();
 
-      try {
-        const res = await fetch(target, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
+      const camImg = document.getElementById("camImg");
 
-        const blob = await res.blob();
-        const objectUrl = URL.createObjectURL(blob);
+      // Wir versuchen 2x (kurz hintereinander). Wenn beides scheitert: letztes Bild bleibt.
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const res = await fetchWithTimeout(target, 20000); // 20s Timeout
+          if (!res.ok) throw new Error("HTTP " + res.status);
 
-        const testImg = new Image();
-        testImg.src = objectUrl;
-        if (testImg.decode) await testImg.decode();
+          const blob = await res.blob();
+          if (!blob || blob.size < 5000) throw new Error("Blob too small");
 
-        const camImg = document.getElementById("camImg");
-        if (camImg) {
-          camImg.src = objectUrl;
+          const objectUrl = URL.createObjectURL(blob);
 
+          // Prüfen, ob das Bild wirklich komplett ist (onload)
+          await loadImageFully(objectUrl);
+
+          // erst jetzt umschalten
+          if (camImg) camImg.src = objectUrl;
+
+          // altes ObjectURL freigeben
           if (lastCamObjectUrl) URL.revokeObjectURL(lastCamObjectUrl);
           lastCamObjectUrl = objectUrl;
 
-          lastGoodCamSrc = objectUrl;
-        } else {
-          URL.revokeObjectURL(objectUrl);
+          camLoading = false;
+          return; // Erfolg -> raus
+        } catch (e) {
+          // kurzer Retry
+          if (attempt === 1) {
+            await new Promise(r => setTimeout(r, 1200));
+            continue;
+          }
+          // am Ende: nichts ändern (letztes Bild bleibt)
         }
-
-      } catch (e) {
-        const camImg = document.getElementById("camImg");
-        if (camImg && lastGoodCamSrc) camImg.src = lastGoodCamSrc;
-      } finally {
-        camLoading = false;
       }
+
+      camLoading = false;
     }
 
     function startTicker() {
@@ -599,6 +690,7 @@
       else stopIntervals();
     });
 
+    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
