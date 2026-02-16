@@ -144,9 +144,12 @@
       align-items:stretch;
     }
     .dauerText{flex:1; min-width:0;}
-    ..dauerImgWrap{
-      flex:0 0 32%;
-      max-width:32%;
+   .dauerImgWrap{
+  flex:0 0 28%;
+  max-width:28%;
+  ...
+}
+
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
@@ -155,11 +158,13 @@
       align-items:center;
       justify-content:center;
     }
-    #dauerImg{
-    width:100%;
-    height:100%;
-    object-fit:contain;   /* passt komplett rein */
-    display:block;
+  #dauerImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;     /* passt komplett rein */
+  display:block;
+}
+
     background:#fff3a6;   /* optional: ruhiger Hintergrund */
     }
     .dauerImgWrap.hidden{display:none;}
