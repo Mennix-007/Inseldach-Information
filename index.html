@@ -145,6 +145,24 @@
       gap:12px;
     }
 
+    /* Linkes Wetter-Widget leicht zoomen, damit beide gleich wirken */
+    :root{ --wxScaleLeft: 1.12; } /* ggf. 1.08–1.20 feinjustieren */
+    .wxFrameLeftFix{
+      transform: scale(var(--wxScaleLeft));
+      transform-origin: 0 0;
+      width: calc(100% / var(--wxScaleLeft));
+      height: calc(var(--rightMediaH) / var(--wxScaleLeft));
+    }
+
+    /* Caption über Wetter-Widget (z.B. Borkum-ID) */
+    .wxCaption{
+      text-align:center;
+      font-weight:700;
+      padding:8px 10px;
+      background:rgba(0,0,0,.35);
+      border-bottom:1px solid rgba(255,255,255,.15);
+    }
+
     /* LINKER BEREICH: 3 Stack */
     .leftStack{
       display:flex;
@@ -228,6 +246,14 @@
 
       /* Höhe auf Handy etwas kleiner, aber Webcam und Wetter bleiben gleich hoch */
       :root{ --rightMediaH: 220px; }
+
+      /* Linkes Wetter-Zoom auf Handy aus (damit nichts abgeschnitten wirkt) */
+      :root{ --wxScaleLeft: 1.0; }
+      .wxFrameLeftFix{
+        transform:none;
+        width:100%;
+        height:var(--rightMediaH);
+      }
 
       .logoTopRight{ height: 90px; }
       ul{ font-size: 20px; }
@@ -329,16 +355,19 @@
           <div class="panelTitle">Wetter Borkum</div>
 
           <div class="wxGrid">
+            <!-- Links: Heute -->
             <div class="panel">
               <iframe
-                class="wxFrame"
+                class="wxFrame wxFrameLeftFix"
                 src="https://www.wetter.de/widget/heute/u1s8zezd/false/"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
               </iframe>
             </div>
 
+            <!-- Rechts: Regen + feste Anzeige Borkum-ID -->
             <div class="panel">
+              <div class="wxCaption">Borkum (2675757)</div>
               <iframe
                 class="wxFrame"
                 src="https://www.wetter.de/widget/rain/#m=9/53.59036/6.66819/"
