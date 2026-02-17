@@ -26,7 +26,7 @@
     /* Langzeit-Kachel (grün) */
     .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
 
-    /* Daueranzeige (gelb) */
+    /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
@@ -63,7 +63,7 @@
       padding-left:0;
       color:#000;
       display:inline-flex;
-      gap:48px; /* Abstand zwischen den 2 Kopien */
+      gap:48px;
       align-items:center;
     }
     .ticker .chunk{display:inline-block; white-space:nowrap;}
@@ -119,16 +119,30 @@
       background:#0b0f14;
     }
 
-    /* Webcam */
-    #camImg{width:100%;height:260px;object-fit:cover;display:block;background:#0b0f14}
+    /* Gleiche Höhe für Wetter-Widgets und Webcam */
+    :root{ --rightMediaH: 260px; }
 
-    /* Wetter-Widget (wetter.de) */
+    #camImg{
+      width:100%;
+      height:var(--rightMediaH);
+      object-fit:cover;
+      display:block;
+      background:#0b0f14
+    }
+
     .wxFrame{
       width:100%;
-      height:260px;
+      height:var(--rightMediaH);
       border:none;
       display:block;
       background:transparent;
+    }
+
+    /* Wetter: 2 Widgets nebeneinander (Desktop), untereinander (Mobile) */
+    .wxGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
     }
 
     /* LINKER BEREICH: 3 Stack */
@@ -167,7 +181,7 @@
     #dauerImg{
       width:100%;
       height:100%;
-      object-fit:contain;
+      object-fit:contain;  /* Bild komplett sichtbar */
       display:block;
       background:#fff3a6;
     }
@@ -206,8 +220,15 @@
         width: 180px;
         height: 180px;
       }
-      #camImg{ height: 220px; }
-      .wxFrame{ height: 220px; }
+
+      /* Widgets untereinander auf Handy */
+      .wxGrid{
+        grid-template-columns: 1fr;
+      }
+
+      /* Höhe auf Handy etwas kleiner, aber Webcam und Wetter bleiben gleich hoch */
+      :root{ --rightMediaH: 220px; }
+
       .logoTopRight{ height: 90px; }
       ul{ font-size: 20px; }
       h2{ font-size: 24px; }
@@ -218,7 +239,7 @@
 <body>
   <div class="wrap">
 
-    <!-- LINKS: Heute wichtig / Hinweise / Langzeit -->
+    <!-- LINKS -->
     <div class="leftStack">
 
       <!-- Heute wichtig -->
@@ -246,7 +267,7 @@
         </div>
       </div>
 
-      <!-- Hinweise (gelb) -->
+      <!-- Hinweise -->
       <div class="card leftDauer cardDurYellow">
         <h2>Hinweise</h2>
 
@@ -277,7 +298,7 @@
       </div>
     </div>
 
-    <!-- RECHTS: QR / Wetter / Webcam -->
+    <!-- RECHTS -->
     <div class="card cardBlue">
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
@@ -303,21 +324,31 @@
           </div>
         </div>
 
-        <!-- Wetter (wetter.de Widget) -->
+        <!-- Wetter: 2 Widgets nebeneinander -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
-          <div class="panel">
-            <iframe
-              class="wxFrame"
-              src="https://www.wetter.de/widget/heute/u1s8zezd/false/"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen>
-            </iframe>
+
+          <div class="wxGrid">
+            <div class="panel">
+              <iframe
+                class="wxFrame"
+                src="https://www.wetter.de/widget/heute/u1s8zezd/false/"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+
+            <div class="panel">
+              <iframe
+                class="wxFrame"
+                src="https://www.wetter.de/widget/rain/#m=9/53.59036/6.66819/"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
           </div>
-          <div class="hint" style="margin-top:8px;opacity:.9;">
-            Quelle: wetter.de
-          </div>
+
+          <div class="hint" style="margin-top:8px;opacity:.9;">Quelle: wetter.de</div>
         </div>
 
         <!-- Webcam -->
