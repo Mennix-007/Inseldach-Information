@@ -9,7 +9,6 @@
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
 
-    /* Standard-Kachel (rot) */
     .card{
       background:#8b1e1e;
       border:1px solid #b63a3a;
@@ -20,13 +19,9 @@
       box-sizing:border-box;
     }
 
-    /* Rechte Kachel (blau) */
     .cardBlue{ background:#163d7a; border:1px solid #2f63c6; }
-
-    /* Langzeit-Kachel (grün) */
     .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
 
-    /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
@@ -45,71 +40,41 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker: gelb, schwarz, minimal höher */
+    /* Ticker */
     .ticker{
-      position:fixed;
-      left:0;right:0;bottom:0;
-      background:#ffd400;
-      border-top:1px solid #c9a800;
-      height:72px;
-      display:flex;
-      align-items:center;
-      overflow:hidden
+      position:fixed;left:0;right:0;bottom:0;
+      background:#ffd400;border-top:1px solid #c9a800;
+      height:72px;display:flex;align-items:center;overflow:hidden
     }
     .ticker .inner{
-      white-space:nowrap;
-      will-change:transform;
-      font-size:28px;
-      padding-left:0;
-      color:#000;
-      display:inline-flex;
-      gap:48px;
-      align-items:center;
+      white-space:nowrap;will-change:transform;font-size:28px;
+      padding-left:0;color:#000;display:inline-flex;gap:48px;align-items:center;
     }
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
     /* QR */
     .qrBox{display:flex;gap:18px;align-items:flex-start}
     .qrWrap{
-      width:180px;height:180px;
-      background:#fff;
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:2px solid #ffffff;
-      box-sizing:border-box;
-      flex:0 0 180px;
+      width:180px;height:180px;background:#fff;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      border:2px solid #ffffff;box-sizing:border-box;flex:0 0 180px;
     }
-    #qrcodeImg{
-      display:block;
-      width:160px;
-      height:160px;
-      object-fit:contain;
-    }
+    #qrcodeImg{display:block;width:160px;height:160px;object-fit:contain;}
     .qrText{font-size:18px;opacity:.95}
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo oben rechts */
+    /* Logo */
     .cardLogoTopRight{
-      position:absolute;
-      top:16px;
-      right:16px;
-      pointer-events:none;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-end;
-      max-width:360px;
+      position:absolute;top:16px;right:16px;pointer-events:none;
+      display:flex;align-items:flex-start;justify-content:flex-end;max-width:360px;
     }
     .logoTopRight{
-      height:140px;
-      width:auto;
-      object-fit:contain;
+      height:140px;width:auto;object-fit:contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
     }
 
-    /* Rechte Kachel: QR / Wetter / Webcam untereinander */
+    /* Rechte Kachel */
     .rightStack{display:flex;flex-direction:column;gap:16px}
     .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
     .panel{
@@ -119,7 +84,7 @@
       background:#0b0f14;
     }
 
-    /* Gleiche Höhe für Wetter-Widgets und Webcam */
+    /* Gleich hoch */
     :root{ --rightMediaH: 260px; }
 
     #camImg{
@@ -138,126 +103,70 @@
       background:transparent;
     }
 
-    /* Wetter: 2 Widgets nebeneinander (Desktop), untereinander (Mobile) */
+    /* Wetter: 2 nebeneinander */
     .wxGrid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
-    /* Linkes Wetter-Widget leicht zoomen, damit beide gleich wirken */
-    :root{ --wxScaleLeft: 1.12; } /* ggf. 1.08–1.20 feinjustieren */
+    /* Linkes Wetter-Widget optisch anpassen: Scale + Verschiebung */
+    :root{
+      --wxScaleLeft: 1.12;   /* Größe */
+      --wxShiftX: 10px;      /* nach rechts */
+      --wxShiftY: 14px;      /* nach unten */
+    }
     .wxFrameLeftFix{
-      transform: scale(var(--wxScaleLeft));
+      transform: translate(var(--wxShiftX), var(--wxShiftY)) scale(var(--wxScaleLeft));
       transform-origin: 0 0;
       width: calc(100% / var(--wxScaleLeft));
       height: calc(var(--rightMediaH) / var(--wxScaleLeft));
     }
 
-    /* Caption über Wetter-Widget (z.B. Borkum-ID) */
     .wxCaption{
-      text-align:center;
-      font-weight:700;
-      padding:8px 10px;
+      text-align:center;font-weight:700;padding:8px 10px;
       background:rgba(0,0,0,.35);
       border-bottom:1px solid rgba(255,255,255,.15);
     }
 
-    /* LINKER BEREICH: 3 Stack */
-    .leftStack{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      height:100%;
-      min-height:0;
-    }
+    /* Linker Bereich */
+    .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
     .leftHeute{flex:6; min-height:0;}
     .leftDauer{flex:2; min-height:0;}
     .leftLang{flex:2; min-height:0;}
-
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* Hinweise Layout: Text links, Bild rechts */
-    .dauerRow{
-      display:flex;
-      gap:14px;
-      align-items:stretch;
-    }
+    .dauerRow{display:flex;gap:14px;align-items:stretch;}
     .dauerText{flex:1; min-width:0;}
-
     .dauerImgWrap{
-      flex:0 0 28%;
-      max-width:28%;
-      border-radius:12px;
-      overflow:hidden;
+      flex:0 0 28%;max-width:28%;
+      border-radius:12px;overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
       background:#fff3a6;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex;align-items:center;justify-content:center;
     }
-    #dauerImg{
-      width:100%;
-      height:100%;
-      object-fit:contain;  /* Bild komplett sichtbar */
-      display:block;
-      background:#fff3a6;
-    }
+    #dauerImg{width:100%;height:100%;object-fit:contain;display:block;background:#fff3a6;}
     .dauerImgWrap.hidden{display:none;}
 
     /* ===== MOBILE ===== */
     @media (max-width: 900px) {
-      .wrap{
-        grid-template-columns: 1fr;
-        height: auto;
-        min-height: 100vh;
-        padding-bottom: 96px;
-      }
-      .leftStack{ height:auto; }
-      .leftHeute, .leftDauer, .leftLang{
-        flex: initial;
-        min-height: unset;
-      }
-      .scrollBox{
-        max-height: none;
-        overflow: visible;
-      }
-      .dauerRow{
-        flex-direction: column;
-      }
-      .dauerImgWrap{
-        max-width: 100%;
-        flex: 0 0 auto;
-        height: 220px;
-      }
-      .qrBox{
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .qrWrap{
-        width: 180px;
-        height: 180px;
-      }
-
-      /* Widgets untereinander auf Handy */
-      .wxGrid{
-        grid-template-columns: 1fr;
-      }
-
-      /* Höhe auf Handy etwas kleiner, aber Webcam und Wetter bleiben gleich hoch */
+      .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:96px;}
+      .leftStack{height:auto;}
+      .leftHeute,.leftDauer,.leftLang{flex:initial;min-height:unset;}
+      .scrollBox{max-height:none;overflow:visible;}
+      .dauerRow{flex-direction:column;}
+      .dauerImgWrap{max-width:100%;flex:0 0 auto;height:220px;}
+      .qrBox{flex-direction:column;align-items:stretch;}
+      .qrWrap{width:180px;height:180px;}
+      .wxGrid{grid-template-columns:1fr;}
       :root{ --rightMediaH: 220px; }
-
-      /* Linkes Wetter-Zoom auf Handy aus (damit nichts abgeschnitten wirkt) */
-      :root{ --wxScaleLeft: 1.0; }
-      .wxFrameLeftFix{
-        transform:none;
-        width:100%;
-        height:var(--rightMediaH);
-      }
-
-      .logoTopRight{ height: 90px; }
-      ul{ font-size: 20px; }
-      h2{ font-size: 24px; }
+      /* kein Shift/Zoom auf Handy */
+      :root{ --wxScaleLeft: 1.0; --wxShiftX: 0px; --wxShiftY: 0px; }
+      .wxFrameLeftFix{ transform:none; width:100%; height:var(--rightMediaH); }
+      #camImg{height:var(--rightMediaH);}
+      .logoTopRight{height:90px;}
+      ul{font-size:20px;}
+      h2{font-size:24px;}
     }
   </style>
 </head>
@@ -268,7 +177,6 @@
     <!-- LINKS -->
     <div class="leftStack">
 
-      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker</div>
@@ -293,7 +201,6 @@
         </div>
       </div>
 
-      <!-- Hinweise -->
       <div class="card leftDauer cardDurYellow">
         <h2>Hinweise</h2>
 
@@ -312,7 +219,6 @@
         </div>
       </div>
 
-      <!-- Langzeit -->
       <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
@@ -350,9 +256,9 @@
           </div>
         </div>
 
-        <!-- Wetter: 2 Widgets nebeneinander -->
+        <!-- Wetter -->
         <div>
-          <div class="panelTitle">Wetter Borkum</div>
+          <div class="panelTitle">Wetter</div>
 
           <div class="wxGrid">
             <!-- Links: Heute -->
@@ -365,12 +271,12 @@
               </iframe>
             </div>
 
-            <!-- Rechts: Regen + feste Anzeige Borkum-ID -->
+            <!-- Rechts: Regenkarte auf Bochum zentriert -->
             <div class="panel">
-              <div class="wxCaption">Borkum (2675757)</div>
+              <div class="wxCaption">Bochum (26757xx)</div>
               <iframe
                 class="wxFrame"
-                src="https://www.wetter.de/widget/rain/#m=9/53.59036/6.66819/"
+                src="https://www.wetter.de/widget/rain/#m=10/51.48185/7.21624/"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade">
               </iframe>
@@ -403,8 +309,8 @@
   </div>
 
   <script>
-    const NEWS_INTERVAL_MS = 60000;     // 60s
-    const CAM_INTERVAL_MS  = 180000;    // 3 Minuten
+    const NEWS_INTERVAL_MS = 60000;
+    const CAM_INTERVAL_MS  = 180000;
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
 
@@ -473,7 +379,6 @@
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         (data.heuteWichtig || []).forEach(t => {
@@ -482,7 +387,6 @@
           ul.appendChild(li);
         });
 
-        // Hinweise
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         (data.daueranzeige || []).forEach(t => {
@@ -491,7 +395,6 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild (URL) -> relativen Pfad auflösen
         const imgWrap = document.getElementById('dauerImgWrap');
         const img = document.getElementById('dauerImg');
         const raw = (data.daueranzeigeBild || '').trim();
@@ -506,7 +409,6 @@
           img.removeAttribute('src');
         }
 
-        // Langzeit-Info
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         (data.langzeitInfo || []).forEach(t => {
@@ -515,11 +417,9 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
-        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
@@ -534,7 +434,6 @@
           status.style.display = 'block';
           status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
         }
-
         setTickerText(lastGoodTickerText);
       }
     }
@@ -604,7 +503,6 @@
       else stopIntervals();
     });
 
-    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
