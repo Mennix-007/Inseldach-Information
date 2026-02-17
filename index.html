@@ -119,9 +119,17 @@
       background:#0b0f14;
     }
 
-    /* Wetter + Webcam gleich groß */
-    .fixedFrame{width:100%;height:260px;border:0;display:block;background:#0b0f14}
+    /* Webcam */
     #camImg{width:100%;height:260px;object-fit:cover;display:block;background:#0b0f14}
+
+    /* Wetter-Widget (wetter.de) */
+    .wxFrame{
+      width:100%;
+      height:260px;
+      border:none;
+      display:block;
+      background:transparent;
+    }
 
     /* LINKER BEREICH: 3 Stack */
     .leftStack{
@@ -137,7 +145,7 @@
 
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* Daueranzeige Layout: Text links, Bild rechts */
+    /* Hinweise Layout: Text links, Bild rechts */
     .dauerRow{
       display:flex;
       gap:14px;
@@ -145,7 +153,6 @@
     }
     .dauerText{flex:1; min-width:0;}
 
-    /* Bildbox sauber (kein kaputtes CSS) */
     .dauerImgWrap{
       flex:0 0 28%;
       max-width:28%;
@@ -157,7 +164,6 @@
       align-items:center;
       justify-content:center;
     }
-    /* Bild immer komplett sichtbar (auch Hochkant), ggf. seitliche Ränder */
     #dauerImg{
       width:100%;
       height:100%;
@@ -167,7 +173,7 @@
     }
     .dauerImgWrap.hidden{display:none;}
 
-    /* ===== MOBILE: alles untereinander + keine abgeschnittenen Inhalte ===== */
+    /* ===== MOBILE ===== */
     @media (max-width: 900px) {
       .wrap{
         grid-template-columns: 1fr;
@@ -201,6 +207,7 @@
         height: 180px;
       }
       #camImg{ height: 220px; }
+      .wxFrame{ height: 220px; }
       .logoTopRight{ height: 90px; }
       ul{ font-size: 20px; }
       h2{ font-size: 24px; }
@@ -214,7 +221,7 @@
     <!-- LINKS: Heute wichtig / Hinweise / Langzeit -->
     <div class="leftStack">
 
-      <!-- Heute wichtig (rot) -->
+      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker</div>
@@ -239,7 +246,7 @@
         </div>
       </div>
 
-      <!-- Hinweise (gelb) mit Bild rechts -->
+      <!-- Hinweise (gelb) -->
       <div class="card leftDauer cardDurYellow">
         <h2>Hinweise</h2>
 
@@ -258,7 +265,7 @@
         </div>
       </div>
 
-      <!-- Info für längeren Zeitraum (grün) -->
+      <!-- Langzeit -->
       <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
@@ -270,7 +277,7 @@
       </div>
     </div>
 
-    <!-- RECHTS: QR / Wetter / Webcam (blau) -->
+    <!-- RECHTS: QR / Wetter / Webcam -->
     <div class="card cardBlue">
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
@@ -296,18 +303,20 @@
           </div>
         </div>
 
-        <!-- Wetter -->
+        <!-- Wetter (wetter.de Widget) -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
-          <div class="panel" style="padding:14px;">
-            <div id="wxBox" style="display:flex;gap:14px;align-items:center;">
-              <div id="wxIcon" style="font-size:54px;line-height:1;">⛅</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-size:22px;font-weight:700;" id="wxTemp">— °C</div>
-                <div style="font-size:18px;opacity:.9;" id="wxDesc">Wetter wird geladen…</div>
-                <div style="font-size:14px;opacity:.75;margin-top:6px;" id="wxTime">—</div>
-              </div>
-            </div>
+          <div class="panel">
+            <iframe
+              class="wxFrame"
+              src="https://www.wetter.de/widget/heute/u1s8zezd/false/"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="hint" style="margin-top:8px;opacity:.9;">
+            Quelle: wetter.de
           </div>
         </div>
 
@@ -413,7 +422,7 @@
           ul.appendChild(li);
         });
 
-        // Hinweise (daueranzeige)
+        // Hinweise
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         (data.daueranzeige || []).forEach(t => {
@@ -535,65 +544,12 @@
       else stopIntervals();
     });
 
-    // ===== Wetter (Open-Meteo) =====
-    async function loadWeather() {
-      // Borkum: ca. 53.58 / 6.67
-      const lat = 53.58, lon = 6.67;
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=Europe%2FBerlin`;
-
-      try {
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-
-        const cur = data.current || {};
-        const t = cur.temperature_2m;
-        const w = cur.weather_code;
-        const ws = cur.wind_speed_10m;
-        const time = cur.time;
-
-        const { icon, desc } = mapWmo(w);
-
-        document.getElementById("wxIcon").textContent = icon;
-        document.getElementById("wxTemp").textContent = (typeof t === "number" ? `${Math.round(t)} °C` : "— °C");
-        document.getElementById("wxDesc").textContent =
-          `${desc}${typeof ws === "number" ? ` • Wind ${Math.round(ws)} km/h` : ""}`;
-
-        document.getElementById("wxTime").textContent =
-          time ? ("Stand: " + new Date(time).toLocaleString("de-DE")) : "—";
-
-      } catch (e) {
-        document.getElementById("wxDesc").textContent = "Wetter konnte nicht geladen werden.";
-        document.getElementById("wxTime").textContent = "";
-      }
-    }
-
-    function mapWmo(code){
-      // grob, aber stabil
-      if (code === 0) return { icon:"☀️", desc:"Klar" };
-      if (code === 1) return { icon:"🌤️", desc:"Überwiegend klar" };
-      if (code === 2) return { icon:"⛅", desc:"Teilweise bewölkt" };
-      if (code === 3) return { icon:"☁️", desc:"Bedeckt" };
-      if ([45,48].includes(code)) return { icon:"🌫️", desc:"Nebel" };
-      if ([51,53,55].includes(code)) return { icon:"🌦️", desc:"Nieselregen" };
-      if ([61,63,65].includes(code)) return { icon:"🌧️", desc:"Regen" };
-      if ([66,67].includes(code)) return { icon:"🌧️", desc:"Gefrierender Regen" };
-      if ([71,73,75,77].includes(code)) return { icon:"🌨️", desc:"Schnee" };
-      if ([80,81,82].includes(code)) return { icon:"🌦️", desc:"Regenschauer" };
-      if ([85,86].includes(code)) return { icon:"🌨️", desc:"Schneeschauer" };
-      if ([95,96,99].includes(code)) return { icon:"⛈️", desc:"Gewitter" };
-      return { icon:"⛅", desc:"Wetter" };
-    }
-
     // Start
     tickTime();
     setInterval(tickTime, 1000);
 
     startIntervals();
     startTicker();
-
-    loadWeather();
-    setInterval(loadWeather, 10 * 60 * 1000); // Wetter alle 10 Minuten
   </script>
 </body>
 </html>
