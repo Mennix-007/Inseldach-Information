@@ -31,7 +31,7 @@ collections:
               name: "item"
               widget: "string"
 
-          - label: "Für heute"
+          - label: "Hinweise"
             name: "daueranzeige"
             widget: "list"
             allow_add: true
