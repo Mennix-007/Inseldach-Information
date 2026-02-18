@@ -33,7 +33,8 @@
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{font-size:26px;font-weight:700}
+    .brand{font-size:32px;font-weight:800;line-height:1.1} /* größer */
+    .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
 
     .time{text-align:right}
     .time .clock{font-size:44px;font-weight:700}
@@ -148,9 +149,9 @@
 
     /* LINKS: Wetter-Widget soll "auf Kachelgröße ziehen" (crop ok) */
     :root{
-      --wxScaleLeft: 1.35;  /* mehr reinzoomen = weniger Rand */
-      --wxShiftX: -18px;    /* nach links (negativ) / nach rechts (positiv) */
-      --wxShiftY: -10px;    /* nach oben (negativ) / nach unten (positiv) */
+      --wxScaleLeft: 1.35;
+      --wxShiftX: -18px;
+      --wxShiftY: -10px;
     }
     .wxFrameLeftFill{
       transform: translate(var(--wxShiftX), var(--wxShiftY)) scale(var(--wxScaleLeft));
@@ -169,9 +170,12 @@
 
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
-    .leftHeute{flex:6; min-height:0;}
-    .leftDauer{flex:2; min-height:0;}
+
+    /* ANPASSUNG: Heute wichtig kleiner, Hinweise höher */
+    .leftHeute{flex:5; min-height:0;}   /* vorher 6 */
+    .leftDauer{flex:3; min-height:0;}   /* vorher 2 (+50% -> ca. +15% absolut im Gesamtstack) */
     .leftLang{flex:2; min-height:0;}
+
     .scrollBox{max-height:100%;overflow:auto;}
 
     .dauerRow{display:flex;gap:14px;align-items:stretch;}
@@ -201,18 +205,16 @@
       .qrBox{flex-direction:column;align-items:stretch;}
       .qrWrap{width:180px;height:180px;}
 
-      /* Widgets untereinander */
       .wxGrid{grid-template-columns:1fr;}
-
-      /* Höhe auf Handy */
       :root{ --rightMediaH: 220px; }
 
-      /* kein Crop/Shift auf Handy */
       :root{ --wxScaleLeft: 1.0; --wxShiftX: 0px; --wxShiftY: 0px; }
       .wxFrameLeftFill{ transform:none; width:100%; height:var(--rightMediaH); }
 
       #camImg{height:var(--rightMediaH);}
       .logoTopRight{height:90px;}
+
+      .brand{font-size:26px}
       ul{font-size:20px;}
       h2{font-size:24px;}
     }
@@ -225,10 +227,12 @@
     <!-- LINKS -->
     <div class="leftStack">
 
-      <!-- Heute wichtig -->
+      <!-- Heute wichtig (kleiner) -->
       <div class="card leftHeute">
         <div class="top">
-          <div class="brand">Inseldachdecker</div>
+          <div class="brand">
+            Inseldachdecker - Zeitung - Info
+          </div>
           <div class="time">
             <div class="clock" id="clock">--:--</div>
             <div class="weekday" id="weekday">----</div>
@@ -250,7 +254,7 @@
         </div>
       </div>
 
-      <!-- Hinweise -->
+      <!-- Hinweise (höher) -->
       <div class="card leftDauer cardDurYellow">
         <h2>Hinweise</h2>
 
