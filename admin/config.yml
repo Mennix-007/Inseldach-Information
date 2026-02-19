@@ -23,18 +23,18 @@ collections:
         format: "json"
         fields:
          - label: "Heute wichtig"
-  name: "heuteWichtig"
-  widget: "list"
-  allow_add: false
-  allow_delete: false
-  min: 4
-  max: 4
-  default:
-    - ""
-    - ""
-    - ""
-    - ""
-  field:
+           name: "heuteWichtig"
+           widget: "list"
+           allow_add: false
+           allow_delete: false
+           min: 4
+           max: 4
+           default:
+         - ""
+         - ""
+         - ""
+         - ""
+           field:
     label: "Eintrag"
     name: "item"
     widget: "string"
