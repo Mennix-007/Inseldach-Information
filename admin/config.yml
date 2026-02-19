@@ -26,6 +26,11 @@ collections:
             name: "heuteWichtig"
             widget: "list"
             allow_add: true
+            default:
+              - ""
+              - ""
+              - ""
+              - ""
             field:
               label: "Eintrag"
               name: "item"
