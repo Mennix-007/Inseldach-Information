@@ -22,22 +22,23 @@ collections:
         file: "news.json"
         format: "json"
         fields:
-          - label: "Heute wichtig (1)"
-            name: "heute1"
-            widget: "string"
-            required: false
-          - label: "Heute wichtig (2)"
-            name: "heute2"
-            widget: "string"
-            required: false
-          - label: "Heute wichtig (3)"
-            name: "heute3"
-            widget: "string"
-            required: false
-          - label: "Heute wichtig (4)"
-            name: "heute4"
-            widget: "string"
-            required: false
+         - label: "Heute wichtig"
+  name: "heuteWichtig"
+  widget: "list"
+  allow_add: false
+  allow_delete: false
+  min: 4
+  max: 4
+  default:
+    - ""
+    - ""
+    - ""
+    - ""
+  field:
+    label: "Eintrag"
+    name: "item"
+    widget: "string"
+
 
           - label: "Hinweise"
             name: "daueranzeige"
