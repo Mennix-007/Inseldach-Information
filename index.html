@@ -435,29 +435,18 @@
         status.textContent = '';
 
         // Heute wichtig: unterstützt ALTES Format (Liste) ODER neue 4 Felder (heute1..heute4)
-      const ul = document.getElementById('heuteWichtig');
+ // Heute wichtig (Liste aus news.json, fix 4 im Admin)
+const ul = document.getElementById('heuteWichtig');
 ul.innerHTML = '';
-(data.heuteWichtig || []).forEach(t => {
-  const li = document.createElement('li');
-  li.textContent = t;
-  ul.appendChild(li);
-});
+(data.heuteWichtig || [])
+  .map(x => (x ?? '').toString().trim())
+  .filter(x => x.length > 0)
+  .forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    ul.appendChild(li);
+  });
 
-        let items = [];
-        if (Array.isArray(data.heuteWichtig)) {
-          items = data.heuteWichtig;
-        } else {
-          items = [data.heute1, data.heute2, data.heute3, data.heute4];
-        }
-
-        items
-          .map(x => (x ?? '').toString().trim())
-          .filter(x => x.length > 0)
-          .forEach(t => {
-            const li = document.createElement('li');
-            li.textContent = t;
-            ul.appendChild(li);
-          });
 
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
