@@ -22,15 +22,19 @@ collections:
         file: "news.json"
         format: "json"
         fields:
-          # Heute wichtig: klappbar (Liste) + bis zu 4 Einträge
-          # WICHTIG: allow_add muss TRUE sein, sonst kommst du nie von 1 auf 4.
+          # Heute wichtig: exakt 4 Felder (fest), klappbar, bleiben immer da
           - label: "Heute wichtig"
             name: "heuteWichtig"
             widget: "list"
-            allow_add: true
-            allow_delete: true
-            min: 0
+            allow_add: false
+            allow_delete: false
+            min: 4
             max: 4
+            default:
+              - ""
+              - ""
+              - ""
+              - ""
             field:
               label: "Eintrag"
               name: "item"
