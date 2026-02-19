@@ -230,9 +230,7 @@
       <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
-          <div class="brand">
-            Inseldachdecker - Zeitung - Info
-          </div>
+          <div class="brand">Inseldachdecker - Zeitung - Info</div>
           <div class="time">
             <div class="clock" id="clock">--:--</div>
             <div class="weekday" id="weekday">----</div>
@@ -421,6 +419,12 @@
       inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
     }
 
+    function normalizeList(arr){
+      return (Array.isArray(arr) ? arr : [])
+        .map(x => (x ?? '').toString().trim())
+        .filter(x => x.length > 0);
+    }
+
     async function loadNews() {
       const status = document.getElementById('newsStatus');
 
@@ -434,35 +438,42 @@
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig: unterstützt ALTES Format (Liste) ODER neue 4 Felder (heute1..heute4)
- // Heute wichtig (Liste aus news.json, fix 4 im Admin)
-const ul = document.getElementById('heuteWichtig');
-ul.innerHTML = '';
-(data.heuteWichtig || [])
-  .map(x => (x ?? '').toString().trim())
-  .filter(x => x.length > 0)
-  .forEach(t => {
-    const li = document.createElement('li');
-    li.textContent = t;
-    ul.appendChild(li);
-  });
+        // Heute wichtig:
+        // Primär: data.heuteWichtig (Liste, fix 4 im Admin)
+        // Fallback (falls dein JSON noch heute1..heute4 enthält): wird trotzdem angezeigt, bis du es bereinigt hast.
+        const ul = document.getElementById('heuteWichtig');
+        ul.innerHTML = '';
 
+        let heuteItems = normalizeList(data.heuteWichtig);
+        if (heuteItems.length === 0) {
+          heuteItems = normalizeList([data.heute1, data.heute2, data.heute3, data.heute4]);
+        }
 
+        heuteItems.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+
+        // Hinweise
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
-        (data.daueranzeige || []).forEach(t => {
+        normalizeList(data.daueranzeige).forEach(t => {
           const li = document.createElement('li');
           li.textContent = t;
           ulDur.appendChild(li);
         });
 
+        // Hinweise Bild
         const imgWrap = document.getElementById('dauerImgWrap');
         const img = document.getElementById('dauerImg');
         const raw = (data.daueranzeigeBild || '').trim();
 
         if (raw) {
           const base = location.origin + location.pathname.replace(/index\.html$/i, '');
-          const resolved = raw.startsWith('http') ? raw : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
+          const resolved = raw.startsWith('http')
+            ? raw
+            : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
           imgWrap.classList.remove('hidden');
           img.src = resolved;
         } else {
@@ -470,17 +481,20 @@ ul.innerHTML = '';
           img.removeAttribute('src');
         }
 
+        // Langzeit
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
-        (data.langzeitInfo || []).forEach(t => {
+        normalizeList(data.langzeitInfo).forEach(t => {
           const li = document.createElement('li');
           li.textContent = t;
           ulLong.appendChild(li);
         });
 
+        // Ticker
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
+        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
