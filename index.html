@@ -96,7 +96,7 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo */
+    /* Logo (oben rechts in rechter Gesamt-Kachel) */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -217,35 +217,58 @@
 
     /* Heute wichtig kleiner, Hinweise höher */
     .leftHeute{flex:5; min-height:0;}
-    .leftDauer{flex:3; min-height:0;}
+    .leftDauerRow{flex:3; min-height:0;}   /* NEU: Reihe aus 2 gelben Kacheln */
     .leftLang{flex:2; min-height:0;}
 
     .scrollBox{max-height:100%;overflow:auto;}
 
-    .dauerRow{display:flex;gap:14px;align-items:stretch;}
-    .dauerText{flex:1; min-width:0;}
-    .dauerImgWrap{
-      flex:0 0 28%;
-      max-width:28%;
+    /* ====== NEU: Hinweise aufteilen (75/25) ====== */
+    .hintSplitRow{
+      display:grid;
+      grid-template-columns:3fr 1fr; /* 75% / 25% */
+      gap:16px;
+      height:100%;
+      min-height:0;
+    }
+
+    /* Bild-Kachel in gelb, Bild vollständig sichtbar, Rest gelb */
+    .hintImgCard{
+      padding:16px; /* etwas weniger, damit Bild größer wirkt */
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    .hintImgBox{
+      flex:1;
+      min-height:0;
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
-      background:#fff3a6;
+      background:#ffd400; /* gelb bleibt sichtbar, wenn Bild nicht füllt */
       display:flex;
       align-items:center;
       justify-content:center;
     }
-    #dauerImg{width:100%;height:100%;object-fit:contain;display:block;background:#fff3a6;}
-    .dauerImgWrap.hidden{display:none;}
+    #hintImg{
+      width:100%;
+      height:100%;
+      object-fit:contain; /* KEIN schneiden, alles sichtbar */
+      display:block;
+      background:#ffd400; /* gelb an den Rändern */
+    }
+    .hintImgBox.hidden{display:none;}
+
+    /* Text-Kachel: wieder volle Breite im Textbereich (kein Bild rechts) */
+    .hintTextCard{ min-height:0; }
+    .hintTextCard .scrollBox{max-height:100%;overflow:auto;}
 
     /* ===== MOBILE ===== */
     @media (max-width: 900px) {
       .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:96px;}
       .leftStack{height:auto;}
-      .leftHeute,.leftDauer,.leftLang{flex:initial;min-height:unset;}
+      .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
       .scrollBox{max-height:none;overflow:visible;}
-      .dauerRow{flex-direction:column;}
-      .dauerImgWrap{max-width:100%;flex:0 0 auto;height:220px;}
+
       .qrBox{flex-direction:column;align-items:stretch;}
       .qrWrap{width:180px;height:180px;}
 
@@ -261,6 +284,14 @@
       .brand{font-size:26px}
       ul{font-size:20px;}
       h2{font-size:24px;}
+
+      /* NEU: Hinweise split auf Handy untereinander */
+      .hintSplitRow{
+        grid-template-columns:1fr;
+        height:auto;
+      }
+      .hintImgCard{height:220px;}
+      .hintImgBox{flex:1;}
     }
   </style>
 </head>
@@ -296,22 +327,28 @@
         </div>
       </div>
 
-      <!-- Hinweise -->
-      <div class="card leftDauer cardDurYellow">
-        <h2>Hinweise</h2>
-
-        <div class="dauerRow">
-          <div class="dauerText scrollBox">
+      <!-- NEU: Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
+      <div class="hintSplitRow leftDauerRow">
+        <!-- Hinweise Text (75%) -->
+        <div class="card hintTextCard cardDurYellow">
+          <h2>Hinweise</h2>
+          <div class="scrollBox">
             <ul id="daueranzeige"></ul>
           </div>
-
-          <div class="dauerImgWrap hidden" id="dauerImgWrap">
-            <img id="dauerImg" alt="Hinweise Bild">
+          <div class="hint" style="margin-top:10px;">
+            (aus <span class="mono">news.json</span>)
           </div>
         </div>
 
-        <div class="hint" style="margin-top:10px;">
-          (aus <span class="mono">news.json</span>)
+        <!-- Hinweise Bild (25%) -->
+        <div class="card hintImgCard cardDurYellow">
+          <h2>Bild</h2>
+          <div class="hintImgBox hidden" id="hintImgBox">
+            <img id="hintImg" alt="Hinweise Bild">
+          </div>
+          <div class="hint" style="margin-top:10px;">
+            (aus <span class="mono">news.json</span>)
+          </div>
         </div>
       </div>
 
@@ -516,7 +553,7 @@
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig (Liste max 4)
+        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         normalizeList(data.heuteWichtig).forEach(t => {
@@ -525,7 +562,7 @@
           ul.appendChild(li);
         });
 
-        // Hinweise
+        // Hinweise Text
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         normalizeList(data.daueranzeige).forEach(t => {
@@ -534,9 +571,9 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild
-        const imgWrap = document.getElementById('dauerImgWrap');
-        const img = document.getElementById('dauerImg');
+        // Hinweise Bild (separate Kachel)
+        const imgBox = document.getElementById('hintImgBox');
+        const img = document.getElementById('hintImg');
         const raw = (data.daueranzeigeBild || '').trim();
 
         if (raw) {
@@ -544,10 +581,10 @@
           const resolved = raw.startsWith('http')
             ? raw
             : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
-          imgWrap.classList.remove('hidden');
+          imgBox.classList.remove('hidden');
           img.src = resolved;
         } else {
-          imgWrap.classList.add('hidden');
+          imgBox.classList.add('hidden');
           img.removeAttribute('src');
         }
 
@@ -662,7 +699,6 @@
     }
 
     function findIndexForLocalHour(times, hourWanted){
-      // times: ISO strings in Europe/Berlin (Open-Meteo liefert passend zu timezone)
       const now = new Date();
       for (let i=0;i<times.length;i++){
         const t = new Date(times[i]);
@@ -670,7 +706,6 @@
         if (!isTodayOrFuture) continue;
         if (t.getHours() === hourWanted) return i;
       }
-      // fallback: erster Eintrag
       return 0;
     }
 
@@ -688,7 +723,6 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
 
-        // Aktuell
         const curT = data?.current?.temperature_2m;
         const curC = data?.current?.weather_code;
 
@@ -699,7 +733,6 @@
         document.getElementById("wxNowDesc").textContent =
           wxTextForCode(curC);
 
-        // 08 / 13 / 17
         const times = data?.hourly?.time || [];
         const temps = data?.hourly?.temperature_2m || [];
         const pops  = data?.hourly?.precipitation_probability || [];
@@ -735,7 +768,7 @@
     let radarMap = null;
     let radarLayer = null;
     let radarAnimTimer = null;
-    let radarFrames = [];   // {time, path}
+    let radarFrames = [];
     let radarFrameIdx = 0;
 
     function stopRadarAnim(){
@@ -754,9 +787,8 @@
       const res = await fetch("https://api.rainviewer.com/public/weather-maps.json?ts=" + Date.now(), { cache:"no-store" });
       if (!res.ok) throw new Error("HTTP " + res.status);
       const json = await res.json();
-      const host = json.host; // z.B. https://tilecache.rainviewer.com
+      const host = json.host;
       const past = (json?.radar?.past || []);
-      // letzte 90 Minuten ~ 9 Frames à 10 Minuten (RainViewer liefert ca. 2h)
       const last = past.slice(-9);
       radarFrames = last.map(x => ({ time: x.time, path: x.path, host }));
       return radarFrames;
@@ -765,7 +797,6 @@
     function setRadarLayer(frame){
       if (!radarMap || !frame) return;
       const url = frame.host + frame.path + "/512/{z}/{x}/{y}/2/1_1.png";
-      // Opacity und z-index
       if (radarLayer) {
         radarLayer.setUrl(url);
       } else {
@@ -776,7 +807,6 @@
     }
 
     async function initRadar(){
-      // Leaflet ist "defer" -> warten bis es wirklich da ist
       if (!window.L) {
         setTimeout(initRadar, 200);
         return;
@@ -794,16 +824,13 @@
         tap: true
       });
 
-      // ca. 30km um Borkum: Zoom ~ 9-10
       radarMap.setView([BORKUM.lat, BORKUM.lon], 10);
 
-      // Base map
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 18,
         opacity: 0.9
       }).addTo(radarMap);
 
-      // Marker in der Mitte
       L.circleMarker([BORKUM.lat, BORKUM.lon], {
         radius: 5,
         weight: 2,
@@ -822,7 +849,6 @@
         if (!frames.length) throw new Error("Keine Radarframes");
         radarFrameIdx = 0;
 
-        // Start mit ältestem der letzten 90min, dann animieren bis neuestes
         setRadarLayer(frames[0]);
 
         radarAnimTimer = setInterval(() => {
