@@ -33,7 +33,7 @@
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{font-size:32px;font-weight:800;line-height:1.1} /* größer */
+    .brand{font-size:32px;font-weight:800;line-height:1.1}
     .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
 
     .time{text-align:right}
@@ -171,9 +171,9 @@
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* ANPASSUNG: Heute wichtig kleiner, Hinweise höher */
-    .leftHeute{flex:5; min-height:0;}   /* vorher 6 */
-    .leftDauer{flex:3; min-height:0;}   /* vorher 2 (+50% -> ca. +15% absolut im Gesamtstack) */
+    /* Heute wichtig kleiner, Hinweise höher */
+    .leftHeute{flex:5; min-height:0;}
+    .leftDauer{flex:3; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
     .scrollBox{max-height:100%;overflow:auto;}
@@ -227,7 +227,7 @@
     <!-- LINKS -->
     <div class="leftStack">
 
-      <!-- Heute wichtig (kleiner) -->
+      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">
@@ -254,7 +254,7 @@
         </div>
       </div>
 
-      <!-- Hinweise (höher) -->
+      <!-- Hinweise -->
       <div class="card leftDauer cardDurYellow">
         <h2>Hinweise</h2>
 
@@ -434,13 +434,25 @@
         status.style.display = 'none';
         status.textContent = '';
 
+        // Heute wichtig: unterstützt ALTES Format (Liste) ODER neue 4 Felder (heute1..heute4)
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
-        (data.heuteWichtig || []).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ul.appendChild(li);
-        });
+
+        let items = [];
+        if (Array.isArray(data.heuteWichtig)) {
+          items = data.heuteWichtig;
+        } else {
+          items = [data.heute1, data.heute2, data.heute3, data.heute4];
+        }
+
+        items
+          .map(x => (x ?? '').toString().trim())
+          .filter(x => x.length > 0)
+          .forEach(t => {
+            const li = document.createElement('li');
+            li.textContent = t;
+            ul.appendChild(li);
+          });
 
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
