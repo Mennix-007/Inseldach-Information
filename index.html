@@ -435,8 +435,13 @@
         status.textContent = '';
 
         // Heute wichtig: unterstützt ALTES Format (Liste) ODER neue 4 Felder (heute1..heute4)
-        const ul = document.getElementById('heuteWichtig');
-        ul.innerHTML = '';
+      const ul = document.getElementById('heuteWichtig');
+ul.innerHTML = '';
+(data.heuteWichtig || []).forEach(t => {
+  const li = document.createElement('li');
+  li.textContent = t;
+  ul.appendChild(li);
+});
 
         let items = [];
         if (Array.isArray(data.heuteWichtig)) {
