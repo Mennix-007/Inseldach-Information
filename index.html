@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inseldachdecker – Info</title>
 
-  <!-- Leaflet (für Radar-Karte) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
     .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
@@ -33,12 +29,10 @@
     /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
-    .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
     .brand{font-size:32px;font-weight:800;line-height:1.1}
-    .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
 
     .time{text-align:right}
     .time .clock{font-size:44px;font-weight:700}
@@ -48,7 +42,6 @@
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
-    .hint{font-size:18px;opacity:.85}
 
     /* Ticker */
     .ticker{
@@ -96,7 +89,7 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo (oben rechts in rechter Gesamt-Kachel) */
+    /* Logo */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -124,7 +117,7 @@
       background:#0b0f14;
     }
 
-    /* Gleich hoch: Wetter + Radar + Webcam */
+    /* Gleich hoch: Wetter + Webcam */
     :root{ --rightMediaH: 260px; }
 
     #camImg{
@@ -135,63 +128,33 @@
       background:#0b0f14
     }
 
-    /* Wetter & Radar nebeneinander */
+    /* Wetter-iframe */
+    .wxFrame{
+      width:100%;
+      height:var(--rightMediaH);
+      border:none;
+      display:block;
+      background:transparent;
+    }
+
+    /* Wetter: 2 nebeneinander */
     .wxGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
-    /* Wetter-Kachel (links) */
-    .wxBox{
-      height:var(--rightMediaH);
-      padding:14px;
-      box-sizing:border-box;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+    /* LINKS: Wetter-Widget soll "auf Kachelgröße ziehen" (crop ok) */
+    :root{
+      --wxScaleLeft: 1.35;
+      --wxShiftX: -18px;
+      --wxShiftY: -10px;
     }
-    .wxNow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding-bottom:10px;
-      border-bottom:1px solid rgba(255,255,255,.15);
-    }
-    .wxNowLeft{min-width:0}
-    .wxTitle{font-weight:800;font-size:18px;opacity:.95}
-    .wxTempBig{font-weight:900;font-size:34px;line-height:1}
-    .wxDesc{font-size:16px;opacity:.9}
-    .wxIconBig{font-size:44px;line-height:1}
-
-    .wxSlots{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:10px;
-      flex:1;
-      align-content:start;
-    }
-    .wxSlot{
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:12px;
-      padding:10px;
-      background:rgba(255,255,255,.06);
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .wxSlotTime{font-size:14px;opacity:.85;font-weight:700}
-    .wxSlotIcon{font-size:26px;line-height:1}
-    .wxSlotTemp{font-size:20px;font-weight:800}
-    .wxSlotPop{font-size:14px;opacity:.9}
-
-    /* Radar-Karte (rechts) */
-    #radarMap{
-      width:100%;
-      height:var(--rightMediaH);
-      background:#0b0f14;
+    .wxFrameLeftFill{
+      transform: translate(var(--wxShiftX), var(--wxShiftY)) scale(var(--wxScaleLeft));
+      transform-origin: 0 0;
+      width: calc(100% / var(--wxScaleLeft));
+      height: calc(var(--rightMediaH) / var(--wxScaleLeft));
     }
     .wxCaption{
       text-align:center;
@@ -200,98 +163,86 @@
       background:rgba(0,0,0,.35);
       border-bottom:1px solid rgba(255,255,255,.15);
     }
-    .radarFooter{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      padding:8px 10px;
-      font-size:12px;
-      opacity:.85;
-      border-top:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.22);
-    }
-    .radarFooter span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
     /* Heute wichtig kleiner, Hinweise höher */
     .leftHeute{flex:5; min-height:0;}
-    .leftDauerRow{flex:3; min-height:0;}   /* NEU: Reihe aus 2 gelben Kacheln */
+    .leftDauer{flex:3; min-height:0; display:flex; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
     .scrollBox{max-height:100%;overflow:auto;}
 
-    /* ====== NEU: Hinweise aufteilen (75/25) ====== */
+    .hidden{display:none !important;}
+
+    /* === NEU: Hinweise aufteilen 75/25 === */
     .hintSplitRow{
       display:grid;
-      grid-template-columns:3fr 1fr; /* 75% / 25% */
+      grid-template-columns: 3fr 1fr; /* 75% / 25% */
       gap:16px;
+      width:100%;
       height:100%;
       min-height:0;
     }
-
-    /* Bild-Kachel in gelb, Bild vollständig sichtbar, Rest gelb */
-    .hintImgCard{
-      padding:16px; /* etwas weniger, damit Bild größer wirkt */
-      display:flex;
-      flex-direction:column;
-      min-height:0;
+    /* Wenn kein Bild: nur 1 Spalte, Text 100% */
+    .hintSplitRow.noImage{
+      grid-template-columns: 1fr !important;
     }
+    .hintSplitRow.noImage .hintImgCard{
+      display:none !important;
+    }
+
+    /* Bildkachel-Inhalt: immer ganzes Bild sichtbar, gelber Hintergrund bleibt */
     .hintImgBox{
-      flex:1;
-      min-height:0;
+      width:100%;
+      height: calc(100% - 44px); /* ca. Platz für Überschrift */
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
-      background:#ffd400; /* gelb bleibt sichtbar, wenn Bild nicht füllt */
+      background:#ffd400; /* gelb wie Kachel */
       display:flex;
       align-items:center;
       justify-content:center;
+      box-sizing:border-box;
     }
     #hintImg{
       width:100%;
       height:100%;
-      object-fit:contain; /* KEIN schneiden, alles sichtbar */
+      object-fit:contain; /* NIE verzerren, ganzes Bild */
       display:block;
-      background:#ffd400; /* gelb an den Rändern */
+      background:#ffd400; /* falls Ränder sichtbar */
     }
-    .hintImgBox.hidden{display:none;}
-
-    /* Text-Kachel: wieder volle Breite im Textbereich (kein Bild rechts) */
-    .hintTextCard{ min-height:0; }
-    .hintTextCard .scrollBox{max-height:100%;overflow:auto;}
 
     /* ===== MOBILE ===== */
     @media (max-width: 900px) {
       .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:96px;}
       .leftStack{height:auto;}
-      .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
+      .leftHeute,.leftDauer,.leftLang{flex:initial;min-height:unset;}
       .scrollBox{max-height:none;overflow:visible;}
 
       .qrBox{flex-direction:column;align-items:stretch;}
       .qrWrap{width:180px;height:180px;}
 
       .wxGrid{grid-template-columns:1fr;}
-      :root{ --rightMediaH: 240px; }
+      :root{ --rightMediaH: 220px; }
+
+      :root{ --wxScaleLeft: 1.0; --wxShiftX: 0px; --wxShiftY: 0px; }
+      .wxFrameLeftFill{ transform:none; width:100%; height:var(--rightMediaH); }
 
       #camImg{height:var(--rightMediaH);}
-      #radarMap{height:var(--rightMediaH);}
-      .wxBox{height:var(--rightMediaH);}
-
       .logoTopRight{height:90px;}
 
       .brand{font-size:26px}
       ul{font-size:20px;}
       h2{font-size:24px;}
 
-      /* NEU: Hinweise split auf Handy untereinander */
+      /* Split auf Mobile untereinander */
       .hintSplitRow{
-        grid-template-columns:1fr;
+        grid-template-columns: 1fr;
         height:auto;
       }
-      .hintImgCard{height:220px;}
-      .hintImgBox{flex:1;}
+      .hintImgBox{height:220px;}
     }
   </style>
 </head>
@@ -321,33 +272,25 @@
         <div class="scrollBox">
           <ul id="heuteWichtig"></ul>
         </div>
-
-        <div class="hint" style="margin-top:12px;">
-          Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
-        </div>
       </div>
 
-      <!-- NEU: Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
-      <div class="hintSplitRow leftDauerRow">
-        <!-- Hinweise Text (75%) -->
-        <div class="card hintTextCard cardDurYellow">
-          <h2>Hinweise</h2>
-          <div class="scrollBox">
-            <ul id="daueranzeige"></ul>
+      <!-- Hinweise: 75% Text + 25% Bild (Bild als separate Kachel) -->
+      <div class="leftDauer">
+        <div class="hintSplitRow" id="hintSplitRow">
+          <!-- Text -->
+          <div class="card cardDurYellow hintTextCard">
+            <h2>Hinweise</h2>
+            <div class="scrollBox">
+              <ul id="daueranzeige"></ul>
+            </div>
           </div>
-          <div class="hint" style="margin-top:10px;">
-            (aus <span class="mono">news.json</span>)
-          </div>
-        </div>
 
-        <!-- Hinweise Bild (25%) -->
-        <div class="card hintImgCard cardDurYellow">
-          <h2>Bild</h2>
-          <div class="hintImgBox hidden" id="hintImgBox">
-            <img id="hintImg" alt="Hinweise Bild">
-          </div>
-          <div class="hint" style="margin-top:10px;">
-            (aus <span class="mono">news.json</span>)
+          <!-- Bild -->
+          <div class="card cardDurYellow hintImgCard">
+            <h2>Bild</h2>
+            <div class="hintImgBox hidden" id="hintImgBox">
+              <img id="hintImg" alt="Hinweise Bild">
+            </div>
           </div>
         </div>
       </div>
@@ -357,9 +300,6 @@
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
-        </div>
-        <div class="hint" style="margin-top:10px;">
-          (aus <span class="mono">news.json</span>)
         </div>
       </div>
     </div>
@@ -390,58 +330,30 @@
           </div>
         </div>
 
-        <!-- Wetter -->
+        <!-- Wetter (noch unverändert – wie bei dir aktuell) -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
 
           <div class="wxGrid">
-            <!-- Links: eigenes Widget (Open-Meteo) -->
             <div class="panel">
-              <div class="wxBox">
-                <div class="wxNow">
-                  <div class="wxNowLeft">
-                    <div class="wxTitle">Aktuell</div>
-                    <div class="wxTempBig" id="wxNowTemp">— °C</div>
-                    <div class="wxDesc" id="wxNowDesc">Wetter wird geladen…</div>
-                  </div>
-                  <div class="wxIconBig" id="wxNowIcon">⛅</div>
-                </div>
-
-                <div class="wxSlots">
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">08:00</div>
-                    <div class="wxSlotIcon" id="wx8Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx8Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx8Pop">Regen: —%</div>
-                  </div>
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">13:00</div>
-                    <div class="wxSlotIcon" id="wx13Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx13Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx13Pop">Regen: —%</div>
-                  </div>
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">17:00</div>
-                    <div class="wxSlotIcon" id="wx17Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx17Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx17Pop">Regen: —%</div>
-                  </div>
-                </div>
-              </div>
+              <iframe
+                class="wxFrame wxFrameLeftFill"
+                src="https://www.wetter.de/widget/heute/u1s8zezd/false/"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
             </div>
 
-            <!-- Rechts: Radar (RainViewer via Leaflet) -->
             <div class="panel">
-              <div class="wxCaption">Radar (≈30 km um Borkum) • letzte 90 Min</div>
-              <div id="radarMap"></div>
-              <div class="radarFooter">
-                <span id="radarTime">Radar: —</span>
-                <span id="radarStatus">Quelle: RainViewer</span>
-              </div>
+              <div class="wxCaption">Borkum (2675757)</div>
+              <iframe
+                class="wxFrame"
+                src="https://www.wetter.de/widget/rain/#m=10/53.5830/6.6660/"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
             </div>
           </div>
-
-          <div class="hint" style="margin-top:8px;opacity:.9;">Links: Open-Meteo • Rechts: RainViewer</div>
         </div>
 
         <!-- Webcam -->
@@ -453,7 +365,6 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
           </div>
-          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (Bildwechsel erst nach vollständigem Laden)</div>
         </div>
       </div>
     </div>
@@ -469,11 +380,6 @@
   <script>
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
-
-    const WX_INTERVAL_MS   = 15 * 60 * 1000;   // 15 Minuten
-    const RADAR_INTERVAL_MS= 15 * 60 * 1000;   // 15 Minuten
-    const RADAR_ANIM_MS    = 1500;             // Animation: 1.5s pro Frame
-
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
 
@@ -487,11 +393,6 @@
 
     let newsTimer = null;
     let camTimer  = null;
-    let wxTimer   = null;
-    let radarTimer= null;
-
-    // Borkum
-    const BORKUM = { lat: 53.58, lon: 6.67 };
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -553,10 +454,15 @@
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig
+        // Heute wichtig: Liste (max 4 im Admin)
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
-        normalizeList(data.heuteWichtig).forEach(t => {
+
+        let heuteItems = normalizeList(data.heuteWichtig);
+        if (heuteItems.length === 0) {
+          heuteItems = normalizeList([data.heute1, data.heute2, data.heute3, data.heute4]); // Fallback
+        }
+        heuteItems.forEach(t => {
           const li = document.createElement('li');
           li.textContent = t;
           ul.appendChild(li);
@@ -571,8 +477,9 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild (separate Kachel)
-        const imgBox = document.getElementById('hintImgBox');
+        // Hinweise Bild: separate Kachel + Auto-Ausblenden wenn leer
+        const splitRow = document.getElementById('hintSplitRow');
+        const box = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
         const raw = (data.daueranzeigeBild || '').trim();
 
@@ -581,11 +488,14 @@
           const resolved = raw.startsWith('http')
             ? raw
             : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
-          imgBox.classList.remove('hidden');
-          img.src = resolved;
+
+          if (splitRow) splitRow.classList.remove('noImage');
+          if (box) box.classList.remove('hidden');
+          if (img) img.src = resolved;
         } else {
-          imgBox.classList.add('hidden');
-          img.removeAttribute('src');
+          if (img) img.removeAttribute('src');
+          if (box) box.classList.add('hidden');
+          if (splitRow) splitRow.classList.add('noImage'); // Text wird 100%
         }
 
         // Langzeit
@@ -664,209 +574,6 @@
       requestAnimationFrame(anim);
     }
 
-    /* =========================
-       Wetter (Open-Meteo)
-       ========================= */
-
-    function wxIconForCode(code){
-      const c = Number(code);
-      if ([0].includes(c)) return "☀️";
-      if ([1].includes(c)) return "🌤️";
-      if ([2].includes(c)) return "⛅";
-      if ([3].includes(c)) return "☁️";
-      if ([45,48].includes(c)) return "🌫️";
-      if ([51,53,55,56,57].includes(c)) return "🌦️";
-      if ([61,63,65,66,67].includes(c)) return "🌧️";
-      if ([71,73,75,77].includes(c)) return "🌨️";
-      if ([80,81,82].includes(c)) return "🌧️";
-      if ([95,96,99].includes(c)) return "⛈️";
-      return "⛅";
-    }
-
-    function wxTextForCode(code){
-      const c = Number(code);
-      if (c===0) return "Klar";
-      if (c===1) return "Meist klar";
-      if (c===2) return "Teilweise wolkig";
-      if (c===3) return "Bedeckt";
-      if (c===45 || c===48) return "Nebel";
-      if ([51,53,55,56,57].includes(c)) return "Niesel";
-      if ([61,63,65,66,67].includes(c)) return "Regen";
-      if ([71,73,75,77].includes(c)) return "Schnee";
-      if ([80,81,82].includes(c)) return "Schauer";
-      if ([95,96,99].includes(c)) return "Gewitter";
-      return "Wetter";
-    }
-
-    function findIndexForLocalHour(times, hourWanted){
-      const now = new Date();
-      for (let i=0;i<times.length;i++){
-        const t = new Date(times[i]);
-        const isTodayOrFuture = (t.getTime() >= now.getTime() - 5*60*1000);
-        if (!isTodayOrFuture) continue;
-        if (t.getHours() === hourWanted) return i;
-      }
-      return 0;
-    }
-
-    async function loadWeather() {
-      try{
-        const url =
-          "https://api.open-meteo.com/v1/forecast"
-          + `?latitude=${encodeURIComponent(BORKUM.lat)}`
-          + `&longitude=${encodeURIComponent(BORKUM.lon)}`
-          + "&current=temperature_2m,weather_code"
-          + "&hourly=temperature_2m,precipitation_probability,weather_code"
-          + "&timezone=Europe%2FBerlin";
-
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-
-        const curT = data?.current?.temperature_2m;
-        const curC = data?.current?.weather_code;
-
-        document.getElementById("wxNowTemp").textContent =
-          (curT ?? "—") + " °C";
-        document.getElementById("wxNowIcon").textContent =
-          wxIconForCode(curC);
-        document.getElementById("wxNowDesc").textContent =
-          wxTextForCode(curC);
-
-        const times = data?.hourly?.time || [];
-        const temps = data?.hourly?.temperature_2m || [];
-        const pops  = data?.hourly?.precipitation_probability || [];
-        const codes = data?.hourly?.weather_code || [];
-
-        const i8  = findIndexForLocalHour(times, 8);
-        const i13 = findIndexForLocalHour(times, 13);
-        const i17 = findIndexForLocalHour(times, 17);
-
-        function setSlot(prefix, idx){
-          const t = temps[idx];
-          const p = pops[idx];
-          const c = codes[idx];
-
-          document.getElementById(prefix+"Temp").textContent = (t ?? "—") + " °C";
-          document.getElementById(prefix+"Icon").textContent = wxIconForCode(c);
-          document.getElementById(prefix+"Pop").textContent  = "Regen: " + (p ?? "—") + "%";
-        }
-
-        setSlot("wx8", i8);
-        setSlot("wx13", i13);
-        setSlot("wx17", i17);
-
-      } catch(e){
-        document.getElementById("wxNowDesc").textContent = "Wetter konnte nicht geladen werden.";
-      }
-    }
-
-    /* =========================
-       Radar (RainViewer + Leaflet)
-       ========================= */
-
-    let radarMap = null;
-    let radarLayer = null;
-    let radarAnimTimer = null;
-    let radarFrames = [];
-    let radarFrameIdx = 0;
-
-    function stopRadarAnim(){
-      if (radarAnimTimer){ clearInterval(radarAnimTimer); radarAnimTimer = null; }
-    }
-
-    function setRadarFooter(ts){
-      const el = document.getElementById("radarTime");
-      if (!el) return;
-      if (!ts) { el.textContent = "Radar: —"; return; }
-      const d = new Date(ts * 1000);
-      el.textContent = "Radar: " + d.toLocaleString("de-DE", { hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit" });
-    }
-
-    async function loadRadarFrames(){
-      const res = await fetch("https://api.rainviewer.com/public/weather-maps.json?ts=" + Date.now(), { cache:"no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json();
-      const host = json.host;
-      const past = (json?.radar?.past || []);
-      const last = past.slice(-9);
-      radarFrames = last.map(x => ({ time: x.time, path: x.path, host }));
-      return radarFrames;
-    }
-
-    function setRadarLayer(frame){
-      if (!radarMap || !frame) return;
-      const url = frame.host + frame.path + "/512/{z}/{x}/{y}/2/1_1.png";
-      if (radarLayer) {
-        radarLayer.setUrl(url);
-      } else {
-        radarLayer = L.tileLayer(url, { opacity: 0.65, zIndex: 10 });
-        radarLayer.addTo(radarMap);
-      }
-      setRadarFooter(frame.time);
-    }
-
-    async function initRadar(){
-      if (!window.L) {
-        setTimeout(initRadar, 200);
-        return;
-      }
-      if (radarMap) return;
-
-      radarMap = L.map("radarMap", {
-        zoomControl: false,
-        attributionControl: false,
-        dragging: true,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        keyboard: false,
-        tap: true
-      });
-
-      radarMap.setView([BORKUM.lat, BORKUM.lon], 10);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        opacity: 0.9
-      }).addTo(radarMap);
-
-      L.circleMarker([BORKUM.lat, BORKUM.lon], {
-        radius: 5,
-        weight: 2,
-        color: "#fff",
-        fillColor: "#fff",
-        fillOpacity: 0.7
-      }).addTo(radarMap);
-
-      await refreshRadar();
-    }
-
-    async function refreshRadar(){
-      try{
-        stopRadarAnim();
-        const frames = await loadRadarFrames();
-        if (!frames.length) throw new Error("Keine Radarframes");
-        radarFrameIdx = 0;
-
-        setRadarLayer(frames[0]);
-
-        radarAnimTimer = setInterval(() => {
-          if (!radarFrames.length) return;
-          radarFrameIdx = (radarFrameIdx + 1) % radarFrames.length;
-          setRadarLayer(radarFrames[radarFrameIdx]);
-        }, RADAR_ANIM_MS);
-
-      } catch(e){
-        const st = document.getElementById("radarStatus");
-        if (st) st.textContent = "Radar: Fehler beim Laden";
-      }
-    }
-
-    /* =========================
-       Interval-Management (Dauerbetrieb)
-       ========================= */
-
     function startIntervals() {
       if (!newsTimer) {
         loadNews();
@@ -876,24 +583,11 @@
         refreshWebcamOnce();
         camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
       }
-      if (!wxTimer) {
-        loadWeather();
-        wxTimer = setInterval(loadWeather, WX_INTERVAL_MS);
-      }
-      if (!radarTimer) {
-        initRadar().then(() => {
-          refreshRadar();
-          radarTimer = setInterval(refreshRadar, RADAR_INTERVAL_MS);
-        });
-      }
     }
 
     function stopIntervals() {
       if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
       if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
-      if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
-      if (radarTimer){ clearInterval(radarTimer);radarTimer= null; }
-      stopRadarAnim();
     }
 
     document.addEventListener("visibilitychange", () => {
@@ -901,7 +595,6 @@
       else stopIntervals();
     });
 
-    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
