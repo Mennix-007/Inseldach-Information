@@ -33,6 +33,7 @@
     /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
+    /* hint/mono sind zwar noch als Klassen da, aber wir zeigen sie nirgends mehr an */
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
     .cardDurYellow ul{ color:#000; }
 
@@ -217,12 +218,13 @@
 
     /* Heute wichtig kleiner, Hinweise höher */
     .leftHeute{flex:5; min-height:0;}
-    .leftDauerRow{flex:3; min-height:0;}   /* NEU: Reihe aus 2 gelben Kacheln */
+    .leftDauerRow{flex:3; min-height:0;}   /* Reihe aus 2 gelben Kacheln */
     .leftLang{flex:2; min-height:0;}
 
-    .scrollBox{max-height:100%;overflow:auto;}
+    /* WICHTIG: keine Scrollbars in den Kacheln */
+    .scrollBox{max-height:none;overflow:visible;}
 
-    /* ====== NEU: Hinweise aufteilen (75/25) ====== */
+    /* ====== Hinweise aufteilen (75/25) ====== */
     .hintSplitRow{
       display:grid;
       grid-template-columns:3fr 1fr; /* 75% / 25% */
@@ -230,10 +232,17 @@
       height:100%;
       min-height:0;
     }
+    /* Wenn kein Bild: Bild-Kachel ausblenden, Text über volle Breite */
+    .hintSplitRow.noImage{
+      grid-template-columns:1fr;
+    }
+    .hintSplitRow.noImage .hintImgCard{
+      display:none;
+    }
 
-    /* Bild-Kachel in gelb, Bild vollständig sichtbar, Rest gelb */
+    /* Bild-Kachel: Bild vollständig sichtbar, Rest gelb */
     .hintImgCard{
-      padding:16px; /* etwas weniger, damit Bild größer wirkt */
+      padding:16px;
       display:flex;
       flex-direction:column;
       min-height:0;
@@ -244,7 +253,7 @@
       border-radius:12px;
       overflow:hidden;
       border:1px solid rgba(0,0,0,.25);
-      background:#ffd400; /* gelb bleibt sichtbar, wenn Bild nicht füllt */
+      background:#ffd400;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -252,15 +261,13 @@
     #hintImg{
       width:100%;
       height:100%;
-      object-fit:contain; /* KEIN schneiden, alles sichtbar */
+      object-fit:contain;
       display:block;
-      background:#ffd400; /* gelb an den Rändern */
+      background:#ffd400;
     }
     .hintImgBox.hidden{display:none;}
 
-    /* Text-Kachel: wieder volle Breite im Textbereich (kein Bild rechts) */
     .hintTextCard{ min-height:0; }
-    .hintTextCard .scrollBox{max-height:100%;overflow:auto;}
 
     /* ===== MOBILE ===== */
     @media (max-width: 900px) {
@@ -285,7 +292,6 @@
       ul{font-size:20px;}
       h2{font-size:24px;}
 
-      /* NEU: Hinweise split auf Handy untereinander */
       .hintSplitRow{
         grid-template-columns:1fr;
         height:auto;
@@ -321,23 +327,18 @@
         <div class="scrollBox">
           <ul id="heuteWichtig"></ul>
         </div>
-
-        <div class="hint" style="margin-top:12px;">
-          Aktualisierung: alle 60 Sekunden (aus <span class="mono">news.json</span>)
-        </div>
+        <!-- HINWEIS-ANMERKUNG ENTFERNT -->
       </div>
 
-      <!-- NEU: Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
-      <div class="hintSplitRow leftDauerRow">
+      <!-- Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
+      <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
         <!-- Hinweise Text (75%) -->
         <div class="card hintTextCard cardDurYellow">
           <h2>Hinweise</h2>
           <div class="scrollBox">
             <ul id="daueranzeige"></ul>
           </div>
-          <div class="hint" style="margin-top:10px;">
-            (aus <span class="mono">news.json</span>)
-          </div>
+          <!-- ANMERKUNG ENTFERNT -->
         </div>
 
         <!-- Hinweise Bild (25%) -->
@@ -346,9 +347,7 @@
           <div class="hintImgBox hidden" id="hintImgBox">
             <img id="hintImg" alt="Hinweise Bild">
           </div>
-          <div class="hint" style="margin-top:10px;">
-            (aus <span class="mono">news.json</span>)
-          </div>
+          <!-- ANMERKUNG ENTFERNT -->
         </div>
       </div>
 
@@ -358,9 +357,7 @@
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
         </div>
-        <div class="hint" style="margin-top:10px;">
-          (aus <span class="mono">news.json</span>)
-        </div>
+        <!-- ANMERKUNG ENTFERNT -->
       </div>
     </div>
 
@@ -441,7 +438,7 @@
             </div>
           </div>
 
-          <div class="hint" style="margin-top:8px;opacity:.9;">Links: Open-Meteo • Rechts: RainViewer</div>
+          <!-- QUELLHINWEIS entfernt (falls du ihn auch nicht willst, einfach weglassen) -->
         </div>
 
         <!-- Webcam -->
@@ -453,7 +450,7 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
           </div>
-          <div class="hint" style="margin-top:8px;">Aktualisierung: alle 3 Minuten (Bildwechsel erst nach vollständigem Laden)</div>
+          <!-- ANMERKUNG ENTFERNT -->
         </div>
       </div>
     </div>
@@ -470,9 +467,9 @@
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
 
-    const WX_INTERVAL_MS   = 15 * 60 * 1000;   // 15 Minuten
-    const RADAR_INTERVAL_MS= 15 * 60 * 1000;   // 15 Minuten
-    const RADAR_ANIM_MS    = 1500;             // Animation: 1.5s pro Frame
+    const WX_INTERVAL_MS   = 15 * 60 * 1000;
+    const RADAR_INTERVAL_MS= 15 * 60 * 1000;
+    const RADAR_ANIM_MS    = 1500;
 
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
@@ -571,7 +568,8 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild (separate Kachel)
+        // Hinweise Bild + Auto-Ausblenden (25% weg, Text wird 100%)
+        const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
         const raw = (data.daueranzeigeBild || '').trim();
@@ -581,11 +579,14 @@
           const resolved = raw.startsWith('http')
             ? raw
             : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
+
+          if (splitRow) splitRow.classList.remove('noImage');
           imgBox.classList.remove('hidden');
           img.src = resolved;
         } else {
-          imgBox.classList.add('hidden');
-          img.removeAttribute('src');
+          if (img) img.removeAttribute('src');
+          if (imgBox) imgBox.classList.add('hidden');
+          if (splitRow) splitRow.classList.add('noImage');
         }
 
         // Langzeit
