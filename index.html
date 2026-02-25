@@ -291,34 +291,47 @@
     .hintTextCard{ min-height:0; }
 
     /* ===== MOBILE ===== */
-    @media (max-width: 900px) {
-      .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:80px;}
-      .leftStack{height:auto;}
-      .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
-      .scrollBox{max-height:none;overflow:visible;}
+    <!-- NUR DIESE ÄNDERUNGEN IM BESTEHENDEN CODE EINBAUEN:
+     1) CSS: im @media(max-width:900px) anpassen
+     2) optional: mini-fix für Wetterbox, damit nichts unten abgeschnitten wird
+-->
 
-      .qrBox{flex-direction:column;align-items:stretch;}
-      .qrWrap{width:162px;height:162px;}
-      .qrText{min-height:auto}
+<style>
+/* ... dein kompletter bestehender CSS bleibt ... */
 
-      .wxGrid{grid-template-columns:1fr;}
-      :root{ --rightMediaH: 220px; --camH: 260px; }
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  /* bisher bei dir: .wrap padding-bottom:80px -> lassen wir so */
 
-      #camImg{height:var(--camH);}
-      #radarMap{height:var(--rightMediaH);}
-      .wxBox{height:var(--rightMediaH);}
+  /* 1) Heute wichtig: +15% Höhe (nur mobil) */
+  .leftHeute{
+    min-height: 46vh;   /* sorgt für “spürbar länger”, unabhängig vom Inhalt */
+  }
 
-      .logoTopRight{height:90px;}
+  /* 2) Bild-Kachel: +100% Höhe (nur mobil)
+        (vorher: .hintImgCard{height:220px;} ) */
+  .hintImgCard{
+    height: 440px;      /* 100% mehr als 220px */
+  }
 
-      .brand{font-size:24px}
-      ul{font-size:20px;}
-      h2{font-size:24px;}
+  /* 3) Wetter Borkum (links) nicht unten abschneiden:
+        Auf Mobil ist wxGrid 1 Spalte, wxBox hat feste Höhe (var(--rightMediaH)).
+        Wir geben mobil mehr Höhe und sorgen, dass Inhalte reinpassen. */
+  :root{
+    --rightMediaH: 260px;  /* war 220px mobil -> mehr Platz, kein Abschneiden */
+    --camH: 260px;         /* Webcam bleibt wie bisher */
+  }
 
-      .hintSplitRow{grid-template-columns:1fr;height:auto;}
-      .hintImgCard{height:220px;}
-      .hintImgBox{flex:1;}
-    }
-  </style>
+  /* Sicherheitsnetz: wxBox darf nicht “überlaufen” */
+  .wxBox{
+    height: auto;          /* statt fest: verhindert Abschneiden */
+    min-height: var(--rightMediaH);
+  }
+
+  /* QR-Text bleibt unten, passt */
+  .qrText{min-height:auto;}
+}
+</style>
 </head>
 
 <body>
