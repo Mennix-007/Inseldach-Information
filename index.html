@@ -11,7 +11,16 @@
 
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
+    /* Ticker wird schmaler -> padding-bottom auch kleiner */
+    .wrap{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:24px;
+      padding:24px;
+      height:100vh;
+      box-sizing:border-box;
+      padding-bottom:64px; /* vorher 96px */
+    }
 
     /* Standard-Kachel (rot) */
     .card{
@@ -36,27 +45,34 @@
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
     .cardDurYellow ul{ color:#000; }
 
-    .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
     .brand{font-size:32px;font-weight:800;line-height:1.1}
-    .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
 
-    .time{text-align:right}
-    .time .clock{font-size:44px;font-weight:700}
-    .time .date{font-size:18px;opacity:.9}
+    /* PC: Zeit/Datum kompakter, um Höhe zu sparen */
+    .time{
+      text-align:right;
+      display:flex;
+      flex-direction:row;           /* NEU: nebeneinander */
+      align-items:baseline;
+      gap:10px;
+      white-space:nowrap;
+    }
+    .time .clock{font-size:44px;font-weight:700;line-height:1}
     .time .weekday{font-size:18px;opacity:.85}
+    .time .date{font-size:18px;opacity:.9}
 
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker */
+    /* Ticker: 20–30% schmaler, Schrift bleibt */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
       background:#ffd400;
       border-top:1px solid #c9a800;
-      height:72px;
+      height:52px; /* vorher 72px */
       display:flex;
       align-items:center;
       overflow:hidden
@@ -64,7 +80,7 @@
     .ticker .inner{
       white-space:nowrap;
       will-change:transform;
-      font-size:28px;
+      font-size:28px; /* bleibt gleich */
       padding-left:0;
       color:#000;
       display:inline-flex;
@@ -74,9 +90,10 @@
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
     /* QR */
-    .qrBox{display:flex;gap:18px;align-items:flex-start}
+    .qrBox{display:flex;gap:14px;align-items:flex-start}
+    /* PC: QR etwas kleiner (ohne “Ansichtsmäßig” Layout zu ändern) */
     .qrWrap{
-      width:180px;height:180px;
+      width:155px;height:155px;     /* vorher 180 */
       background:#fff;
       border-radius:12px;
       display:flex;
@@ -84,12 +101,11 @@
       justify-content:center;
       border:2px solid #ffffff;
       box-sizing:border-box;
-      flex:0 0 180px;
+      flex:0 0 155px;
     }
     #qrcodeImg{
       display:block;
-      width:160px;
-      height:160px;
+      width:140px;height:140px;     /* vorher 160 */
       object-fit:contain;
     }
     .qrText{
@@ -97,8 +113,8 @@
       opacity:.95;
       display:flex;
       flex-direction:column;
-      justify-content:flex-end;
-      min-height:180px; /* Text unten neben QR */
+      justify-content:flex-end;     /* Text unten rechts neben QR */
+      min-height:155px;             /* an neue QR-Höhe angepasst */
     }
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
@@ -222,7 +238,7 @@
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* Höhenverteilung PC (wie bei dir) */
+    /* PC Höhenverteilung (wie bei dir) */
     .leftHeute{flex:4.55; min-height:0;}
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
@@ -238,11 +254,9 @@
       height:100%;
       min-height:0;
     }
-    /* Wenn kein Bild: Bild-Kachel ausblenden, Text über volle Breite */
     .hintSplitRow.noImage{ grid-template-columns:1fr; }
     .hintSplitRow.noImage .hintImgCard{ display:none; }
 
-    /* Bild-Kachel: Bild vollständig sichtbar, Rest gelb */
     .hintImgCard{
       padding:16px;
       display:flex;
@@ -268,47 +282,38 @@
       background:#ffd400;
     }
     .hintImgBox.hidden{display:none;}
-
     .hintTextCard{ min-height:0; }
 
-    /* ===== MOBILE ===== */
+    /* ===== MOBILE: NICHT ANFASSEN (wie bei dir zuletzt) ===== */
     @media (max-width: 900px) {
-      /* WICHTIG: ALLES UNTEREINANDER (1 Spalte) */
       .wrap{
         grid-template-columns:1fr;
         height:auto;
         min-height:100vh;
-        padding-bottom:96px;
+        padding-bottom:96px; /* mobil bleibt wie es war */
       }
 
       .leftStack{height:auto;}
       .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
 
-      /* Heute wichtig: +15% Höhe (mobil) */
       .leftHeute{ min-height: 46vh; }
 
-      /* Hinweise-Row mobil: untereinander */
       .hintSplitRow{
         grid-template-columns:1fr;
         height:auto;
       }
 
-      /* Bild-Kachel: +100% Höhe (mobil) */
       .hintImgCard{ height:440px; }
       .hintImgBox{ flex:1; }
 
-      /* QR mobil */
       .qrBox{flex-direction:column;align-items:stretch;}
-      .qrWrap{width:180px;height:180px;}
+      .qrWrap{width:180px;height:180px;}      /* mobil bleibt wie es war */
+      #qrcodeImg{width:160px;height:160px;}
       .qrText{min-height:auto;}
 
-      /* Wetter & Radar mobil: untereinander */
       .wxGrid{grid-template-columns:1fr;}
-
-      /* Wetter nicht unten abschneiden: mobil mehr Platz + Box darf wachsen */
       :root{ --rightMediaH: 260px; }
       .wxBox{ height:auto; min-height:var(--rightMediaH); }
-
       #radarMap{height:var(--rightMediaH);}
       #camImg{height:var(--rightMediaH);}
 
@@ -317,6 +322,9 @@
       .brand{font-size:26px}
       ul{font-size:20px;}
       h2{font-size:24px;}
+
+      /* mobil ticker bleibt unverändert */
+      .ticker{height:72px;}
     }
   </style>
 </head>
@@ -338,7 +346,7 @@
           </div>
         </div>
 
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:14px 0;">
 
         <div id="newsStatus" class="error" style="display:none;"></div>
 
@@ -348,9 +356,8 @@
         </div>
       </div>
 
-      <!-- Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
+      <!-- Hinweise Text + Bild -->
       <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
-        <!-- Hinweise Text (75%) -->
         <div class="card hintTextCard cardDurYellow">
           <h2>Hinweise</h2>
           <div class="scrollBox">
@@ -358,7 +365,6 @@
           </div>
         </div>
 
-        <!-- Hinweise Bild (25%) -->
         <div class="card hintImgCard cardDurYellow">
           <h2>Bild</h2>
           <div class="hintImgBox hidden" id="hintImgBox">
@@ -407,7 +413,6 @@
           <div class="panelTitle">Wetter Borkum</div>
 
           <div class="wxGrid">
-            <!-- Links: eigenes Widget (Open-Meteo) -->
             <div class="panel">
               <div class="wxBox">
                 <div class="wxNow">
@@ -442,7 +447,6 @@
               </div>
             </div>
 
-            <!-- Rechts: Radar (RainViewer via Leaflet) -->
             <div class="panel">
               <div class="wxCaption">Radar (≈30 km um Borkum) • letzte 90 Min</div>
               <div id="radarMap"></div>
@@ -580,7 +584,7 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild + Auto-Ausblenden (25% weg, Text wird 100%)
+        // Hinweise Bild + Auto-Ausblenden
         const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
@@ -870,10 +874,6 @@
       }
     }
 
-    /* =========================
-       Interval-Management (Dauerbetrieb)
-       ========================= */
-
     function startIntervals() {
       if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
       if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
@@ -899,7 +899,6 @@
       else stopIntervals();
     });
 
-    // Start
     tickTime();
     setInterval(tickTime, 1000);
 
