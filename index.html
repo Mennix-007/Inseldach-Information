@@ -11,7 +11,17 @@
 
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
+
+    /* Ticker wird kleiner -> weniger Padding unten nötig */
+    .wrap{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:24px;
+      padding:24px;
+      height:100vh;
+      box-sizing:border-box;
+      padding-bottom:80px; /* vorher 96px */
+    }
 
     /* Standard-Kachel (rot) */
     .card{
@@ -33,31 +43,33 @@
     /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
-    /* hint/mono sind zwar noch als Klassen da, aber wir zeigen sie nirgends mehr an */
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{font-size:32px;font-weight:800;line-height:1.1}
-    .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
+
+    /* Überschrift oben links etwas kleiner -> mehr Höhe für Inhalt */
+    .brand{font-size:28px;font-weight:800;line-height:1.05}
 
     .time{text-align:right}
-    .time .clock{font-size:44px;font-weight:700}
-    .time .date{font-size:18px;opacity:.9}
-    .time .weekday{font-size:18px;opacity:.85}
+    /* Uhr etwas kleiner -> mehr Platz */
+    .time .clock{font-size:40px;font-weight:700;line-height:1}
+    /* Wochentag + Datum in einer Zeile */
+    .time .weekday{font-size:18px;opacity:.9;white-space:nowrap}
+    .time .date{display:none;} /* wir nutzen date nicht mehr separat */
 
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker */
+    /* Ticker (gelbes Feld kleiner, Schrift bleibt gleich) */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
       background:#ffd400;
       border-top:1px solid #c9a800;
-      height:72px;
+      height:58px; /* vorher 72px */
       display:flex;
       align-items:center;
       overflow:hidden
@@ -65,7 +77,7 @@
     .ticker .inner{
       white-space:nowrap;
       will-change:transform;
-      font-size:28px;
+      font-size:28px; /* bleibt gleich */
       padding-left:0;
       color:#000;
       display:inline-flex;
@@ -75,9 +87,9 @@
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
     /* QR */
-    .qrBox{display:flex;gap:18px;align-items:flex-start}
+    .qrBox{display:flex;gap:14px;align-items:flex-start} /* etwas weniger Gap */
     .qrWrap{
-      width:180px;height:180px;
+      width:162px;height:162px; /* 10% kleiner (vorher 180) */
       background:#fff;
       border-radius:12px;
       display:flex;
@@ -85,15 +97,27 @@
       justify-content:center;
       border:2px solid #ffffff;
       box-sizing:border-box;
-      flex:0 0 180px;
+      flex:0 0 162px;
     }
     #qrcodeImg{
       display:block;
-      width:160px;
-      height:160px;
+      width:144px;  /* 10% kleiner (vorher 160) */
+      height:144px;
       object-fit:contain;
     }
-    .qrText{font-size:18px;opacity:.95}
+
+    /* Text neben QR unten rechts positionieren (kein Reinragen ins Logo) */
+    .qrText{
+      font-size:18px;
+      opacity:.95;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end; /* nach unten */
+      align-self:stretch;
+      min-height:162px; /* gleiche Höhe wie QR */
+      padding-bottom:2px;
+    }
+
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
@@ -125,12 +149,15 @@
       background:#0b0f14;
     }
 
-    /* Gleich hoch: Wetter + Radar + Webcam */
-    :root{ --rightMediaH: 260px; }
+    /* Wetter/Radar 10% kleiner, Webcam bleibt gleich */
+    :root{
+      --rightMediaH: 234px; /* 10% kleiner (vorher 260) */
+      --camH: 260px;        /* Webcam unverändert */
+    }
 
     #camImg{
       width:100%;
-      height:var(--rightMediaH);
+      height:var(--camH);
       object-fit:cover;
       display:block;
       background:#0b0f14
@@ -216,31 +243,26 @@
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* Heute wichtig kleiner, Hinweise + Bild ca. +15% höher */
-.leftHeute{flex:4.55; min-height:0;}
-.leftDauerRow{flex:3.45; min-height:0;}
-.leftLang{flex:2; min-height:0;}
+    /* Langzeit ~10% kleiner (2 -> 1.8), Hinweise/Bild ~10% größer (3.45 -> 3.795).
+       Heute bekommt den Rest, damit insgesamt stabil bleibt. */
+    .leftHeute{flex:4.955; min-height:0;}
+    .leftDauerRow{flex:3.795; min-height:0;}
+    .leftLang{flex:1.8; min-height:0;}
 
-    /* WICHTIG: keine Scrollbars in den Kacheln */
+    /* keine Scrollbars in den Kacheln */
     .scrollBox{max-height:none;overflow:visible;}
 
-    /* ====== Hinweise aufteilen (75/25) ====== */
+    /* Hinweise aufteilen (75/25) */
     .hintSplitRow{
       display:grid;
-      grid-template-columns:3fr 1fr; /* 75% / 25% */
+      grid-template-columns:3fr 1fr;
       gap:16px;
       height:100%;
       min-height:0;
     }
-    /* Wenn kein Bild: Bild-Kachel ausblenden, Text über volle Breite */
-    .hintSplitRow.noImage{
-      grid-template-columns:1fr;
-    }
-    .hintSplitRow.noImage .hintImgCard{
-      display:none;
-    }
+    .hintSplitRow.noImage{grid-template-columns:1fr;}
+    .hintSplitRow.noImage .hintImgCard{display:none;}
 
-    /* Bild-Kachel: Bild vollständig sichtbar, Rest gelb */
     .hintImgCard{
       padding:16px;
       display:flex;
@@ -266,36 +288,33 @@
       background:#ffd400;
     }
     .hintImgBox.hidden{display:none;}
-
     .hintTextCard{ min-height:0; }
 
     /* ===== MOBILE ===== */
     @media (max-width: 900px) {
-      .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:96px;}
+      .wrap{grid-template-columns:1fr;height:auto;min-height:100vh;padding-bottom:80px;}
       .leftStack{height:auto;}
       .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
       .scrollBox{max-height:none;overflow:visible;}
 
       .qrBox{flex-direction:column;align-items:stretch;}
-      .qrWrap{width:180px;height:180px;}
+      .qrWrap{width:162px;height:162px;}
+      .qrText{min-height:auto}
 
       .wxGrid{grid-template-columns:1fr;}
-      :root{ --rightMediaH: 240px; }
+      :root{ --rightMediaH: 220px; --camH: 260px; }
 
-      #camImg{height:var(--rightMediaH);}
+      #camImg{height:var(--camH);}
       #radarMap{height:var(--rightMediaH);}
       .wxBox{height:var(--rightMediaH);}
 
       .logoTopRight{height:90px;}
 
-      .brand{font-size:26px}
+      .brand{font-size:24px}
       ul{font-size:20px;}
       h2{font-size:24px;}
 
-      .hintSplitRow{
-        grid-template-columns:1fr;
-        height:auto;
-      }
+      .hintSplitRow{grid-template-columns:1fr;height:auto;}
       .hintImgCard{height:220px;}
       .hintImgBox{flex:1;}
     }
@@ -319,7 +338,8 @@
           </div>
         </div>
 
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
+        <!-- weniger vertikale Höhe durch schmaleren Trenner -->
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:12px 0;">
 
         <div id="newsStatus" class="error" style="display:none;"></div>
 
@@ -327,27 +347,22 @@
         <div class="scrollBox">
           <ul id="heuteWichtig"></ul>
         </div>
-        <!-- HINWEIS-ANMERKUNG ENTFERNT -->
       </div>
 
-      <!-- Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
+      <!-- Hinweise + Bild -->
       <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
-        <!-- Hinweise Text (75%) -->
         <div class="card hintTextCard cardDurYellow">
           <h2>Hinweise</h2>
           <div class="scrollBox">
             <ul id="daueranzeige"></ul>
           </div>
-          <!-- ANMERKUNG ENTFERNT -->
         </div>
 
-        <!-- Hinweise Bild (25%) -->
         <div class="card hintImgCard cardDurYellow">
           <h2>Bild</h2>
           <div class="hintImgBox hidden" id="hintImgBox">
             <img id="hintImg" alt="Hinweise Bild">
           </div>
-          <!-- ANMERKUNG ENTFERNT -->
         </div>
       </div>
 
@@ -357,7 +372,6 @@
         <div class="scrollBox">
           <ul id="langzeitInfo"></ul>
         </div>
-        <!-- ANMERKUNG ENTFERNT -->
       </div>
     </div>
 
@@ -370,7 +384,7 @@
       <div class="rightStack">
         <!-- QR -->
         <div>
-          <h2 style="padding-right:200px;">QR-Code</h2>
+          <h2 style="padding-right:200px;margin-bottom:8px;">QR-Code</h2>
           <div class="qrBox">
             <div class="qrWrap">
               <img
@@ -437,11 +451,9 @@
               </div>
             </div>
           </div>
-
-          <!-- QUELLHINWEIS entfernt (falls du ihn auch nicht willst, einfach weglassen) -->
         </div>
 
-        <!-- Webcam -->
+        <!-- Webcam (bleibt gleich hoch) -->
         <div>
           <div class="panelTitle">Live Webcam</div>
           <div class="panel">
@@ -450,7 +462,6 @@
               alt="Webcam Borkum"
               src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
           </div>
-          <!-- ANMERKUNG ENTFERNT -->
         </div>
       </div>
     </div>
@@ -494,9 +505,13 @@
 
     function tickTime() {
       const now = new Date();
+      const weekday = now.toLocaleDateString('de-DE', { weekday:'long' });
+      const date = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+
       document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
-      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+      document.getElementById('weekday').textContent = `${weekday}, ${date}`;
+      const dateEl = document.getElementById('date');
+      if (dateEl) dateEl.textContent = ""; // bleibt leer (Element ist per CSS ausgeblendet)
     }
 
     function setQr(url){
@@ -568,7 +583,7 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild + Auto-Ausblenden (25% weg, Text wird 100%)
+        // Hinweise Bild + Auto-Ausblenden
         const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
@@ -668,7 +683,6 @@
     /* =========================
        Wetter (Open-Meteo)
        ========================= */
-
     function wxIconForCode(code){
       const c = Number(code);
       if ([0].includes(c)) return "☀️";
@@ -727,12 +741,9 @@
         const curT = data?.current?.temperature_2m;
         const curC = data?.current?.weather_code;
 
-        document.getElementById("wxNowTemp").textContent =
-          (curT ?? "—") + " °C";
-        document.getElementById("wxNowIcon").textContent =
-          wxIconForCode(curC);
-        document.getElementById("wxNowDesc").textContent =
-          wxTextForCode(curC);
+        document.getElementById("wxNowTemp").textContent = (curT ?? "—") + " °C";
+        document.getElementById("wxNowIcon").textContent = wxIconForCode(curC);
+        document.getElementById("wxNowDesc").textContent = wxTextForCode(curC);
 
         const times = data?.hourly?.time || [];
         const temps = data?.hourly?.temperature_2m || [];
@@ -765,7 +776,6 @@
     /* =========================
        Radar (RainViewer + Leaflet)
        ========================= */
-
     let radarMap = null;
     let radarLayer = null;
     let radarAnimTimer = null;
@@ -808,10 +818,7 @@
     }
 
     async function initRadar(){
-      if (!window.L) {
-        setTimeout(initRadar, 200);
-        return;
-      }
+      if (!window.L) { setTimeout(initRadar, 200); return; }
       if (radarMap) return;
 
       radarMap = L.map("radarMap", {
@@ -865,9 +872,8 @@
     }
 
     /* =========================
-       Interval-Management (Dauerbetrieb)
+       Interval-Management
        ========================= */
-
     function startIntervals() {
       if (!newsTimer) {
         loadNews();
