@@ -11,17 +11,7 @@
 
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-
-    /* Ticker wird kleiner -> weniger Padding unten nötig */
-    .wrap{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:24px;
-      padding:24px;
-      height:100vh;
-      box-sizing:border-box;
-      padding-bottom:80px; /* vorher 96px */
-    }
+    .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;padding:24px;height:100vh;box-sizing:border-box;padding-bottom:96px;}
 
     /* Standard-Kachel (rot) */
     .card{
@@ -47,29 +37,26 @@
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-
-    /* Überschrift oben links etwas kleiner -> mehr Höhe für Inhalt */
-    .brand{font-size:28px;font-weight:800;line-height:1.05}
+    .brand{font-size:32px;font-weight:800;line-height:1.1}
+    .brand small{display:block;font-size:16px;font-weight:700;opacity:.9;margin-top:4px}
 
     .time{text-align:right}
-    /* Uhr etwas kleiner -> mehr Platz */
-    .time .clock{font-size:40px;font-weight:700;line-height:1}
-    /* Wochentag + Datum in einer Zeile */
-    .time .weekday{font-size:18px;opacity:.9;white-space:nowrap}
-    .time .date{display:none;} /* wir nutzen date nicht mehr separat */
+    .time .clock{font-size:44px;font-weight:700}
+    .time .date{font-size:18px;opacity:.9}
+    .time .weekday{font-size:18px;opacity:.85}
 
     h2{margin:0 0 12px;font-size:26px}
     ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker (gelbes Feld kleiner, Schrift bleibt gleich) */
+    /* Ticker */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
       background:#ffd400;
       border-top:1px solid #c9a800;
-      height:58px; /* vorher 72px */
+      height:72px;
       display:flex;
       align-items:center;
       overflow:hidden
@@ -77,7 +64,7 @@
     .ticker .inner{
       white-space:nowrap;
       will-change:transform;
-      font-size:28px; /* bleibt gleich */
+      font-size:28px;
       padding-left:0;
       color:#000;
       display:inline-flex;
@@ -87,9 +74,9 @@
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
     /* QR */
-    .qrBox{display:flex;gap:14px;align-items:flex-start} /* etwas weniger Gap */
+    .qrBox{display:flex;gap:18px;align-items:flex-start}
     .qrWrap{
-      width:162px;height:162px; /* 10% kleiner (vorher 180) */
+      width:180px;height:180px;
       background:#fff;
       border-radius:12px;
       display:flex;
@@ -97,27 +84,22 @@
       justify-content:center;
       border:2px solid #ffffff;
       box-sizing:border-box;
-      flex:0 0 162px;
+      flex:0 0 180px;
     }
     #qrcodeImg{
       display:block;
-      width:144px;  /* 10% kleiner (vorher 160) */
-      height:144px;
+      width:160px;
+      height:160px;
       object-fit:contain;
     }
-
-    /* Text neben QR unten rechts positionieren (kein Reinragen ins Logo) */
     .qrText{
       font-size:18px;
       opacity:.95;
       display:flex;
       flex-direction:column;
-      justify-content:flex-end; /* nach unten */
-      align-self:stretch;
-      min-height:162px; /* gleiche Höhe wie QR */
-      padding-bottom:2px;
+      justify-content:flex-end;
+      min-height:180px; /* Text unten neben QR */
     }
-
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
@@ -149,15 +131,12 @@
       background:#0b0f14;
     }
 
-    /* Wetter/Radar 10% kleiner, Webcam bleibt gleich */
-    :root{
-      --rightMediaH: 234px; /* 10% kleiner (vorher 260) */
-      --camH: 260px;        /* Webcam unverändert */
-    }
+    /* Gleich hoch: Wetter + Radar + Webcam */
+    :root{ --rightMediaH: 260px; }
 
     #camImg{
       width:100%;
-      height:var(--camH);
+      height:var(--rightMediaH);
       object-fit:cover;
       display:block;
       background:#0b0f14
@@ -243,26 +222,27 @@
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* Langzeit ~10% kleiner (2 -> 1.8), Hinweise/Bild ~10% größer (3.45 -> 3.795).
-       Heute bekommt den Rest, damit insgesamt stabil bleibt. */
-    .leftHeute{flex:4.955; min-height:0;}
-    .leftDauerRow{flex:3.795; min-height:0;}
-    .leftLang{flex:1.8; min-height:0;}
+    /* Höhenverteilung PC (wie bei dir) */
+    .leftHeute{flex:4.55; min-height:0;}
+    .leftDauerRow{flex:3.45; min-height:0;}
+    .leftLang{flex:2; min-height:0;}
 
-    /* keine Scrollbars in den Kacheln */
+    /* Keine Scrollbars in den Kacheln */
     .scrollBox{max-height:none;overflow:visible;}
 
-    /* Hinweise aufteilen (75/25) */
+    /* ====== Hinweise aufteilen (75/25) ====== */
     .hintSplitRow{
       display:grid;
-      grid-template-columns:3fr 1fr;
+      grid-template-columns:3fr 1fr; /* 75% / 25% */
       gap:16px;
       height:100%;
       min-height:0;
     }
-    .hintSplitRow.noImage{grid-template-columns:1fr;}
-    .hintSplitRow.noImage .hintImgCard{display:none;}
+    /* Wenn kein Bild: Bild-Kachel ausblenden, Text über volle Breite */
+    .hintSplitRow.noImage{ grid-template-columns:1fr; }
+    .hintSplitRow.noImage .hintImgCard{ display:none; }
 
+    /* Bild-Kachel: Bild vollständig sichtbar, Rest gelb */
     .hintImgCard{
       padding:16px;
       display:flex;
@@ -288,50 +268,57 @@
       background:#ffd400;
     }
     .hintImgBox.hidden{display:none;}
+
     .hintTextCard{ min-height:0; }
 
     /* ===== MOBILE ===== */
-    <!-- NUR DIESE ÄNDERUNGEN IM BESTEHENDEN CODE EINBAUEN:
-     1) CSS: im @media(max-width:900px) anpassen
-     2) optional: mini-fix für Wetterbox, damit nichts unten abgeschnitten wird
--->
+    @media (max-width: 900px) {
+      /* WICHTIG: ALLES UNTEREINANDER (1 Spalte) */
+      .wrap{
+        grid-template-columns:1fr;
+        height:auto;
+        min-height:100vh;
+        padding-bottom:96px;
+      }
 
-<style>
-/* ... dein kompletter bestehender CSS bleibt ... */
+      .leftStack{height:auto;}
+      .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
 
-/* ===== MOBILE ===== */
-@media (max-width: 900px) {
-  /* bisher bei dir: .wrap padding-bottom:80px -> lassen wir so */
+      /* Heute wichtig: +15% Höhe (mobil) */
+      .leftHeute{ min-height: 46vh; }
 
-  /* 1) Heute wichtig: +15% Höhe (nur mobil) */
-  .leftHeute{
-    min-height: 46vh;   /* sorgt für “spürbar länger”, unabhängig vom Inhalt */
-  }
+      /* Hinweise-Row mobil: untereinander */
+      .hintSplitRow{
+        grid-template-columns:1fr;
+        height:auto;
+      }
 
-  /* 2) Bild-Kachel: +100% Höhe (nur mobil)
-        (vorher: .hintImgCard{height:220px;} ) */
-  .hintImgCard{
-    height: 440px;      /* 100% mehr als 220px */
-  }
+      /* Bild-Kachel: +100% Höhe (mobil) */
+      .hintImgCard{ height:440px; }
+      .hintImgBox{ flex:1; }
 
-  /* 3) Wetter Borkum (links) nicht unten abschneiden:
-        Auf Mobil ist wxGrid 1 Spalte, wxBox hat feste Höhe (var(--rightMediaH)).
-        Wir geben mobil mehr Höhe und sorgen, dass Inhalte reinpassen. */
-  :root{
-    --rightMediaH: 260px;  /* war 220px mobil -> mehr Platz, kein Abschneiden */
-    --camH: 260px;         /* Webcam bleibt wie bisher */
-  }
+      /* QR mobil */
+      .qrBox{flex-direction:column;align-items:stretch;}
+      .qrWrap{width:180px;height:180px;}
+      .qrText{min-height:auto;}
 
-  /* Sicherheitsnetz: wxBox darf nicht “überlaufen” */
-  .wxBox{
-    height: auto;          /* statt fest: verhindert Abschneiden */
-    min-height: var(--rightMediaH);
-  }
+      /* Wetter & Radar mobil: untereinander */
+      .wxGrid{grid-template-columns:1fr;}
 
-  /* QR-Text bleibt unten, passt */
-  .qrText{min-height:auto;}
-}
-</style>
+      /* Wetter nicht unten abschneiden: mobil mehr Platz + Box darf wachsen */
+      :root{ --rightMediaH: 260px; }
+      .wxBox{ height:auto; min-height:var(--rightMediaH); }
+
+      #radarMap{height:var(--rightMediaH);}
+      #camImg{height:var(--rightMediaH);}
+
+      .logoTopRight{height:90px;}
+
+      .brand{font-size:26px}
+      ul{font-size:20px;}
+      h2{font-size:24px;}
+    }
+  </style>
 </head>
 
 <body>
@@ -351,8 +338,7 @@
           </div>
         </div>
 
-        <!-- weniger vertikale Höhe durch schmaleren Trenner -->
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:12px 0;">
+        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:18px 0;">
 
         <div id="newsStatus" class="error" style="display:none;"></div>
 
@@ -362,8 +348,9 @@
         </div>
       </div>
 
-      <!-- Hinweise + Bild -->
+      <!-- Reihe aus 2 gelben Kacheln (Hinweise Text + Hinweise Bild) -->
       <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
+        <!-- Hinweise Text (75%) -->
         <div class="card hintTextCard cardDurYellow">
           <h2>Hinweise</h2>
           <div class="scrollBox">
@@ -371,6 +358,7 @@
           </div>
         </div>
 
+        <!-- Hinweise Bild (25%) -->
         <div class="card hintImgCard cardDurYellow">
           <h2>Bild</h2>
           <div class="hintImgBox hidden" id="hintImgBox">
@@ -397,7 +385,7 @@
       <div class="rightStack">
         <!-- QR -->
         <div>
-          <h2 style="padding-right:200px;margin-bottom:8px;">QR-Code</h2>
+          <h2 style="padding-right:200px;">QR-Code</h2>
           <div class="qrBox">
             <div class="qrWrap">
               <img
@@ -466,7 +454,7 @@
           </div>
         </div>
 
-        <!-- Webcam (bleibt gleich hoch) -->
+        <!-- Webcam -->
         <div>
           <div class="panelTitle">Live Webcam</div>
           <div class="panel">
@@ -518,13 +506,9 @@
 
     function tickTime() {
       const now = new Date();
-      const weekday = now.toLocaleDateString('de-DE', { weekday:'long' });
-      const date = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
-
       document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-      document.getElementById('weekday').textContent = `${weekday}, ${date}`;
-      const dateEl = document.getElementById('date');
-      if (dateEl) dateEl.textContent = ""; // bleibt leer (Element ist per CSS ausgeblendet)
+      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
+      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
     }
 
     function setQr(url){
@@ -596,7 +580,7 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild + Auto-Ausblenden
+        // Hinweise Bild + Auto-Ausblenden (25% weg, Text wird 100%)
         const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
@@ -696,6 +680,7 @@
     /* =========================
        Wetter (Open-Meteo)
        ========================= */
+
     function wxIconForCode(code){
       const c = Number(code);
       if ([0].includes(c)) return "☀️";
@@ -789,6 +774,7 @@
     /* =========================
        Radar (RainViewer + Leaflet)
        ========================= */
+
     let radarMap = null;
     let radarLayer = null;
     let radarAnimTimer = null;
@@ -885,22 +871,14 @@
     }
 
     /* =========================
-       Interval-Management
+       Interval-Management (Dauerbetrieb)
        ========================= */
+
     function startIntervals() {
-      if (!newsTimer) {
-        loadNews();
-        newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS);
-      }
-      if (!camTimer) {
-        refreshWebcamOnce();
-        camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS);
-      }
-      if (!wxTimer) {
-        loadWeather();
-        wxTimer = setInterval(loadWeather, WX_INTERVAL_MS);
-      }
-      if (!radarTimer) {
+      if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
+      if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
+      if (!wxTimer)   { loadWeather(); wxTimer = setInterval(loadWeather, WX_INTERVAL_MS); }
+      if (!radarTimer){
         initRadar().then(() => {
           refreshRadar();
           radarTimer = setInterval(refreshRadar, RADAR_INTERVAL_MS);
