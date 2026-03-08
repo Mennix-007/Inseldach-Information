@@ -5,13 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Inseldachdecker – Info</title>
 
-  <!-- Leaflet (für Radar-Karte) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    /* Ticker wird schmaler -> padding-bottom auch kleiner */
     .wrap{
       display:grid;
       grid-template-columns:1.2fr 0.8fr;
@@ -19,7 +14,7 @@
       padding:24px;
       height:100vh;
       box-sizing:border-box;
-      padding-bottom:64px; /* vorher 96px */
+      padding-bottom:64px;
     }
 
     /* Standard-Kachel (rot) */
@@ -48,11 +43,10 @@
     .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
     .brand{font-size:32px;font-weight:800;line-height:1.1}
 
-    /* PC: Zeit/Datum kompakter, um Höhe zu sparen */
     .time{
       text-align:right;
       display:flex;
-      flex-direction:row;           /* NEU: nebeneinander */
+      flex-direction:row;
       align-items:baseline;
       gap:10px;
       white-space:nowrap;
@@ -66,13 +60,13 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker: 20–30% schmaler, Schrift bleibt */
+    /* Ticker */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
       background:#ffd400;
       border-top:1px solid #c9a800;
-      height:52px; /* vorher 72px */
+      height:52px;
       display:flex;
       align-items:center;
       overflow:hidden
@@ -80,7 +74,7 @@
     .ticker .inner{
       white-space:nowrap;
       will-change:transform;
-      font-size:28px; /* bleibt gleich */
+      font-size:28px;
       padding-left:0;
       color:#000;
       display:inline-flex;
@@ -91,9 +85,8 @@
 
     /* QR */
     .qrBox{display:flex;gap:14px;align-items:flex-start}
-    /* PC: QR etwas kleiner (ohne “Ansichtsmäßig” Layout zu ändern) */
     .qrWrap{
-      width:155px;height:155px;     /* vorher 180 */
+      width:155px;height:155px;
       background:#fff;
       border-radius:12px;
       display:flex;
@@ -105,7 +98,7 @@
     }
     #qrcodeImg{
       display:block;
-      width:140px;height:140px;     /* vorher 160 */
+      width:140px;height:140px;
       object-fit:contain;
     }
     .qrText{
@@ -113,13 +106,13 @@
       opacity:.95;
       display:flex;
       flex-direction:column;
-      justify-content:flex-end;     /* Text unten rechts neben QR */
-      min-height:155px;             /* an neue QR-Höhe angepasst */
+      justify-content:flex-end;
+      min-height:155px;
     }
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo (oben rechts in rechter Gesamt-Kachel) */
+    /* Logo */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -147,7 +140,6 @@
       background:#0b0f14;
     }
 
-    /* Gleich hoch: Wetter + Radar + Webcam */
     :root{ --rightMediaH: 260px; }
 
     #camImg{
@@ -210,10 +202,17 @@
     .wxSlotTemp{font-size:20px;font-weight:800}
     .wxSlotPop{font-size:14px;opacity:.9}
 
-    /* Radar-Karte (rechts) */
-    #radarMap{
+    /* Windy Radar */
+    .windyWrap{
       width:100%;
       height:var(--rightMediaH);
+      background:#0b0f14;
+    }
+    .windyFrame{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
       background:#0b0f14;
     }
     .wxCaption{
@@ -223,33 +222,21 @@
       background:rgba(0,0,0,.35);
       border-bottom:1px solid rgba(255,255,255,.15);
     }
-    .radarFooter{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      padding:8px 10px;
-      font-size:12px;
-      opacity:.85;
-      border-top:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.22);
-    }
-    .radarFooter span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* PC Höhenverteilung (wie bei dir) */
+    /* PC Höhenverteilung */
     .leftHeute{flex:4.55; min-height:0;}
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
-    /* Keine Scrollbars in den Kacheln */
     .scrollBox{max-height:none;overflow:visible;}
 
-    /* ====== Hinweise aufteilen (75/25) ====== */
+    /* Hinweise aufteilen (75/25) */
     .hintSplitRow{
       display:grid;
-      grid-template-columns:3fr 1fr; /* 75% / 25% */
+      grid-template-columns:3fr 1fr;
       gap:16px;
       height:100%;
       min-height:0;
@@ -284,13 +271,13 @@
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
 
-    /* ===== MOBILE: NICHT ANFASSEN (wie bei dir zuletzt) ===== */
+    /* MOBILE: unverändert lassen */
     @media (max-width: 900px) {
       .wrap{
         grid-template-columns:1fr;
         height:auto;
         min-height:100vh;
-        padding-bottom:96px; /* mobil bleibt wie es war */
+        padding-bottom:96px;
       }
 
       .leftStack{height:auto;}
@@ -307,14 +294,14 @@
       .hintImgBox{ flex:1; }
 
       .qrBox{flex-direction:column;align-items:stretch;}
-      .qrWrap{width:180px;height:180px;}      /* mobil bleibt wie es war */
+      .qrWrap{width:180px;height:180px;}
       #qrcodeImg{width:160px;height:160px;}
       .qrText{min-height:auto;}
 
       .wxGrid{grid-template-columns:1fr;}
       :root{ --rightMediaH: 260px; }
       .wxBox{ height:auto; min-height:var(--rightMediaH); }
-      #radarMap{height:var(--rightMediaH);}
+      .windyWrap{height:var(--rightMediaH);}
       #camImg{height:var(--rightMediaH);}
 
       .logoTopRight{height:90px;}
@@ -323,7 +310,6 @@
       ul{font-size:20px;}
       h2{font-size:24px;}
 
-      /* mobil ticker bleibt unverändert */
       .ticker{height:72px;}
     }
   </style>
@@ -413,6 +399,7 @@
           <div class="panelTitle">Wetter Borkum</div>
 
           <div class="wxGrid">
+            <!-- Links: Open-Meteo -->
             <div class="panel">
               <div class="wxBox">
                 <div class="wxNow">
@@ -447,12 +434,16 @@
               </div>
             </div>
 
+            <!-- Rechts: Windy Radar -->
             <div class="panel">
-              <div class="wxCaption">Radar (≈30 km um Borkum) • letzte 90 Min</div>
-              <div id="radarMap"></div>
-              <div class="radarFooter">
-                <span id="radarTime">Radar: —</span>
-                <span id="radarStatus">Quelle: RainViewer</span>
+              <div class="wxCaption">Radar (Windy, ca. 100 km um Borkum)</div>
+              <div class="windyWrap">
+                <iframe
+                  class="windyFrame"
+                  loading="lazy"
+                  src="https://embed.windy.com/embed2.html?lat=53.58&lon=6.67&detailLat=53.58&detailLon=6.67&width=650&height=450&zoom=8&level=surface&overlay=radar&product=radar&menu=&message=&marker=true&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default"
+                  title="Windy Radar Borkum">
+                </iframe>
               </div>
             </div>
           </div>
@@ -482,10 +473,7 @@
   <script>
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
-
     const WX_INTERVAL_MS   = 15 * 60 * 1000;
-    const RADAR_INTERVAL_MS= 15 * 60 * 1000;
-    const RADAR_ANIM_MS    = 1500;
 
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
@@ -494,16 +482,13 @@
     let consecutiveNewsErrors = 0;
 
     let lastGoodTickerText = 'Lade Hinweise…';
-
     let lastGoodCamSrc = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
     let camLoading = false;
 
     let newsTimer = null;
     let camTimer  = null;
     let wxTimer   = null;
-    let radarTimer= null;
 
-    // Borkum
     const BORKUM = { lat: 53.58, lon: 6.67 };
 
     function pad(n){ return String(n).padStart(2,'0'); }
@@ -566,7 +551,6 @@
         status.style.display = 'none';
         status.textContent = '';
 
-        // Heute wichtig
         const ul = document.getElementById('heuteWichtig');
         ul.innerHTML = '';
         normalizeList(data.heuteWichtig).forEach(t => {
@@ -575,7 +559,6 @@
           ul.appendChild(li);
         });
 
-        // Hinweise Text
         const ulDur = document.getElementById('daueranzeige');
         ulDur.innerHTML = '';
         normalizeList(data.daueranzeige).forEach(t => {
@@ -584,7 +567,6 @@
           ulDur.appendChild(li);
         });
 
-        // Hinweise Bild + Auto-Ausblenden
         const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
@@ -605,7 +587,6 @@
           if (splitRow) splitRow.classList.add('noImage');
         }
 
-        // Langzeit
         const ulLong = document.getElementById('langzeitInfo');
         ulLong.innerHTML = '';
         normalizeList(data.langzeitInfo).forEach(t => {
@@ -614,11 +595,9 @@
           ulLong.appendChild(li);
         });
 
-        // Ticker
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
-        // QR
         const url = location.origin + location.pathname;
         document.getElementById('qrSub').textContent = url;
         setQr(url);
@@ -680,10 +659,6 @@
       }
       requestAnimationFrame(anim);
     }
-
-    /* =========================
-       Wetter (Open-Meteo)
-       ========================= */
 
     function wxIconForCode(code){
       const c = Number(code);
@@ -775,123 +750,16 @@
       }
     }
 
-    /* =========================
-       Radar (RainViewer + Leaflet)
-       ========================= */
-
-    let radarMap = null;
-    let radarLayer = null;
-    let radarAnimTimer = null;
-    let radarFrames = [];
-    let radarFrameIdx = 0;
-
-    function stopRadarAnim(){
-      if (radarAnimTimer){ clearInterval(radarAnimTimer); radarAnimTimer = null; }
-    }
-
-    function setRadarFooter(ts){
-      const el = document.getElementById("radarTime");
-      if (!el) return;
-      if (!ts) { el.textContent = "Radar: —"; return; }
-      const d = new Date(ts * 1000);
-      el.textContent = "Radar: " + d.toLocaleString("de-DE", { hour:"2-digit", minute:"2-digit", day:"2-digit", month:"2-digit" });
-    }
-
-    async function loadRadarFrames(){
-      const res = await fetch("https://api.rainviewer.com/public/weather-maps.json?ts=" + Date.now(), { cache:"no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json();
-      const host = json.host;
-      const past = (json?.radar?.past || []);
-      const last = past.slice(-9);
-      radarFrames = last.map(x => ({ time: x.time, path: x.path, host }));
-      return radarFrames;
-    }
-
-    function setRadarLayer(frame){
-      if (!radarMap || !frame) return;
-      const url = frame.host + frame.path + "/512/{z}/{x}/{y}/2/1_1.png";
-      if (radarLayer) {
-        radarLayer.setUrl(url);
-      } else {
-        radarLayer = L.tileLayer(url, { opacity: 0.65, zIndex: 10 });
-        radarLayer.addTo(radarMap);
-      }
-      setRadarFooter(frame.time);
-    }
-
-    async function initRadar(){
-      if (!window.L) { setTimeout(initRadar, 200); return; }
-      if (radarMap) return;
-
-      radarMap = L.map("radarMap", {
-        zoomControl: false,
-        attributionControl: false,
-        dragging: true,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        boxZoom: false,
-        keyboard: false,
-        tap: true
-      });
-
-      radarMap.setView([BORKUM.lat, BORKUM.lon], 10);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 18,
-        opacity: 0.9
-      }).addTo(radarMap);
-
-      L.circleMarker([BORKUM.lat, BORKUM.lon], {
-        radius: 5,
-        weight: 2,
-        color: "#fff",
-        fillColor: "#fff",
-        fillOpacity: 0.7
-      }).addTo(radarMap);
-
-      await refreshRadar();
-    }
-
-    async function refreshRadar(){
-      try{
-        stopRadarAnim();
-        const frames = await loadRadarFrames();
-        if (!frames.length) throw new Error("Keine Radarframes");
-        radarFrameIdx = 0;
-
-        setRadarLayer(frames[0]);
-
-        radarAnimTimer = setInterval(() => {
-          if (!radarFrames.length) return;
-          radarFrameIdx = (radarFrameIdx + 1) % radarFrames.length;
-          setRadarLayer(radarFrames[radarFrameIdx]);
-        }, RADAR_ANIM_MS);
-
-      } catch(e){
-        const st = document.getElementById("radarStatus");
-        if (st) st.textContent = "Radar: Fehler beim Laden";
-      }
-    }
-
     function startIntervals() {
       if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
       if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
       if (!wxTimer)   { loadWeather(); wxTimer = setInterval(loadWeather, WX_INTERVAL_MS); }
-      if (!radarTimer){
-        initRadar().then(() => {
-          refreshRadar();
-          radarTimer = setInterval(refreshRadar, RADAR_INTERVAL_MS);
-        });
-      }
     }
 
     function stopIntervals() {
       if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
       if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
       if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
-      if (radarTimer){ clearInterval(radarTimer);radarTimer= null; }
-      stopRadarAnim();
     }
 
     document.addEventListener("visibilitychange", () => {
