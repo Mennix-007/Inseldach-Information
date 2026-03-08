@@ -248,14 +248,14 @@
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
-    /* WICHTIG: Karten mit Text als Flex-Spalten, damit echte Resthöhe berechnet werden kann */
+    /* Text-Karten links als echte Flex-Spalten */
     .cardFit{
       display:flex;
       flex-direction:column;
       min-height:0;
     }
 
-    /* Textbereich mit echter verfügbarer Höhe */
+    /* Diese Box ist die echte verfügbare Textfläche */
     .scrollBox{
       flex:1;
       min-height:0;
@@ -563,24 +563,83 @@
       const box = document.getElementById(boxId);
       if (!list || !box) return;
 
-      const maxSize = settings.maxSize || 30;
-      const minSize = settings.minSize || 10;
-      const lineHeight = settings.lineHeight || 1.35;
-      const itemMargin = settings.itemMargin || 6;
+      const items = Array.from(list.querySelectorAll('li'));
+      if (!items.length) {
+        list.style.fontSize = (settings.maxSize || 40) + 'px';
+        list.style.visibility = 'visible';
+        return;
+      }
+
+      const maxSize = settings.maxSize || 40;
+      const minSize = settings.minSize || 17;
+      const baseLineHeight = settings.baseLineHeight || 1.40;
+      const maxLineHeight = settings.maxLineHeight || 1.62;
+      const baseMargin = settings.baseMargin || 6;
+      const maxExtraMargin = settings.maxExtraMargin || 22;
 
       list.style.visibility = 'hidden';
+      list.style.paddingTop = '0px';
+      list.style.paddingBottom = '0px';
+
+      let fittedSize = minSize;
+      let fittedLineHeight = baseLineHeight;
 
       for (let size = maxSize; size >= minSize; size -= 1) {
         list.style.fontSize = size + 'px';
-        list.style.lineHeight = lineHeight;
+        list.style.lineHeight = baseLineHeight;
 
-        Array.from(list.querySelectorAll('li')).forEach(li => {
-          li.style.marginTop = itemMargin + 'px';
-          li.style.marginBottom = itemMargin + 'px';
+        items.forEach(li => {
+          li.style.marginTop = baseMargin + 'px';
+          li.style.marginBottom = baseMargin + 'px';
         });
 
         if (list.scrollHeight <= box.clientHeight) {
+          fittedSize = size;
           break;
+        }
+      }
+
+      list.style.fontSize = fittedSize + 'px';
+      list.style.lineHeight = baseLineHeight;
+
+      items.forEach(li => {
+        li.style.marginTop = baseMargin + 'px';
+        li.style.marginBottom = baseMargin + 'px';
+      });
+
+      // Flughafen-/Bahnhof-Effekt:
+      // verfügbare Resthöhe zuerst für Zeilenabstand, dann für Luft zwischen Punkten nutzen
+      for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
+        list.style.lineHeight = lh.toFixed(2);
+        if (list.scrollHeight <= box.clientHeight) {
+          fittedLineHeight = lh;
+        } else {
+          break;
+        }
+      }
+      list.style.lineHeight = fittedLineHeight.toFixed(2);
+
+      for (let extra = 0; extra <= maxExtraMargin; extra += 1) {
+        items.forEach((li, idx) => {
+          li.style.marginTop = baseMargin + 'px';
+          li.style.marginBottom = (idx === items.length - 1 ? baseMargin : baseMargin + extra) + 'px';
+        });
+
+        if (list.scrollHeight > box.clientHeight) {
+          const finalExtra = Math.max(0, extra - 1);
+          items.forEach((li, idx) => {
+            li.style.marginTop = baseMargin + 'px';
+            li.style.marginBottom = (idx === items.length - 1 ? baseMargin : baseMargin + finalExtra) + 'px';
+          });
+          break;
+        }
+      }
+
+      // Bei nur einem Punkt etwas angenehmer im Feld platzieren
+      if (items.length === 1) {
+        const spare = box.clientHeight - list.scrollHeight;
+        if (spare > 0) {
+          list.style.paddingTop = Math.min(24, Math.floor(spare * 0.18)) + 'px';
         }
       }
 
@@ -588,9 +647,32 @@
     }
 
     function fitAllLeftLists() {
-      fitListToBox('heuteWichtig', 'boxHeute',     { maxSize: 30, minSize: 10, lineHeight: 1.45, itemMargin: 6 });
-      fitListToBox('daueranzeige', 'boxHinweise',  { maxSize: 28, minSize: 10, lineHeight: 1.38, itemMargin: 6 });
-      fitListToBox('langzeitInfo', 'boxLangzeit',  { maxSize: 28, minSize: 10, lineHeight: 1.36, itemMargin: 6 });
+      fitListToBox('heuteWichtig','boxHeute',{
+        maxSize:40,
+        minSize:17,
+        baseLineHeight:1.44,
+        maxLineHeight:1.62,
+        baseMargin:6,
+        maxExtraMargin:24
+      });
+
+      fitListToBox('daueranzeige','boxHinweise',{
+        maxSize:36,
+        minSize:17,
+        baseLineHeight:1.40,
+        maxLineHeight:1.56,
+        baseMargin:6,
+        maxExtraMargin:20
+      });
+
+      fitListToBox('langzeitInfo','boxLangzeit',{
+        maxSize:36,
+        minSize:17,
+        baseLineHeight:1.38,
+        maxLineHeight:1.54,
+        baseMargin:6,
+        maxExtraMargin:18
+      });
     }
 
     async function loadNews() {
@@ -659,7 +741,7 @@
 
         requestAnimationFrame(() => {
           fitAllLeftLists();
-          setTimeout(fitAllLeftLists, 150);
+          setTimeout(fitAllLeftLists, 180);
         });
 
       } catch (e) {
@@ -828,13 +910,13 @@
 
     window.addEventListener('resize', () => {
       clearTimeout(window.__fitTimer);
-      window.__fitTimer = setTimeout(fitAllLeftLists, 140);
+      window.__fitTimer = setTimeout(fitAllLeftLists, 160);
     });
 
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") {
         startIntervals();
-        setTimeout(fitAllLeftLists, 150);
+        setTimeout(fitAllLeftLists, 180);
       } else {
         stopIntervals();
       }
@@ -848,7 +930,7 @@
 
     window.addEventListener('load', () => {
       fitAllLeftLists();
-      setTimeout(fitAllLeftLists, 200);
+      setTimeout(fitAllLeftLists, 220);
     });
   </script>
 </body>
