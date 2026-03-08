@@ -17,7 +17,6 @@
       padding-bottom:64px;
     }
 
-    /* Standard-Kachel (rot) */
     .card{
       background:#8b1e1e;
       border:1px solid #b63a3a;
@@ -28,13 +27,16 @@
       box-sizing:border-box;
     }
 
-    /* Rechte Kachel (blau) */
-    .cardBlue{ background:#163d7a; border:1px solid #2f63c6; }
+    .cardBlue{
+      background:#163d7a;
+      border:1px solid #2f63c6;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
 
-    /* Langzeit-Kachel (grün) */
     .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
 
-    /* Hinweise (gelb) */
     .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
     .cardDurYellow h2{ color:#000; }
     .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
@@ -60,7 +62,6 @@
     li{margin:8px 0}
     .hint{font-size:18px;opacity:.85}
 
-    /* Ticker */
     .ticker{
       position:fixed;
       left:0;right:0;bottom:0;
@@ -83,7 +84,6 @@
     }
     .ticker .chunk{display:inline-block; white-space:nowrap;}
 
-    /* QR */
     .qrBox{display:flex;gap:14px;align-items:flex-start}
     .qrWrap{
       width:155px;height:155px;
@@ -112,7 +112,6 @@
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
-    /* Logo */
     .cardLogoTopRight{
       position:absolute;
       top:16px;
@@ -130,8 +129,14 @@
       filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
     }
 
-    /* Rechte Kachel */
-    .rightStack{display:flex;flex-direction:column;gap:16px}
+    .rightStack{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      height:100%;
+      min-height:0;
+      flex:1;
+    }
     .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
     .panel{
       border:1px solid rgba(255,255,255,.25);
@@ -140,11 +145,10 @@
       background:#0b0f14;
     }
 
-    /* Höhen rechts */
     :root{
-      --wxH: 220px;      /* Wetter */
-      --camH: 220px;     /* Webcam */
-      --windyH: 420px;   /* Windy größer */
+      --wxH: 250px;      /* etwas höher, damit es nicht abgeschnitten wirkt */
+      --camH: 250px;     /* ebenso höher */
+      --windyMinH: 260px;
     }
 
     #camImg{
@@ -155,14 +159,12 @@
       background:#0b0f14;
     }
 
-    /* Wetter + Webcam nebeneinander */
     .wxGrid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
-    /* Wetter-Kachel */
     .wxBox{
       height:var(--wxH);
       padding:14px;
@@ -207,10 +209,22 @@
     .wxSlotTemp{font-size:20px;font-weight:800}
     .wxSlotPop{font-size:14px;opacity:.9}
 
-    /* Windy Radar */
+    .windySection{
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      flex:1; /* nimmt den Rest der rechten Höhe */
+    }
+    .windyPanel{
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      flex:1;
+    }
     .windyWrap{
       width:100%;
-      height:var(--windyH);
+      flex:1;
+      min-height:var(--windyMinH);
       background:#0b0f14;
     }
     .windyFrame{
@@ -228,7 +242,6 @@
       border-bottom:1px solid rgba(255,255,255,.15);
     }
 
-    /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
     .leftHeute{flex:4.55; min-height:0;}
@@ -237,7 +250,6 @@
 
     .scrollBox{max-height:none;overflow:visible;}
 
-    /* Hinweise aufteilen (75/25) */
     .hintSplitRow{
       display:grid;
       grid-template-columns:3fr 1fr;
@@ -275,7 +287,6 @@
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
 
-    /* MOBILE: unverändert lassen */
     @media (max-width: 900px) {
       .wrap{
         grid-template-columns:1fr;
@@ -306,10 +317,10 @@
       :root{
         --wxH: 260px;
         --camH: 260px;
-        --windyH: 340px;
+        --windyMinH: 340px;
       }
       .wxBox{ height:auto; min-height:var(--wxH); }
-      .windyWrap{height:var(--windyH);}
+      .windyWrap{min-height:var(--windyMinH);}
       #camImg{height:var(--camH);}
 
       .logoTopRight{height:90px;}
@@ -326,10 +337,7 @@
 <body>
   <div class="wrap">
 
-    <!-- LINKS -->
     <div class="leftStack">
-
-      <!-- Heute wichtig -->
       <div class="card leftHeute">
         <div class="top">
           <div class="brand">Inseldachdecker - Zeitung - Info</div>
@@ -350,7 +358,6 @@
         </div>
       </div>
 
-      <!-- Hinweise Text + Bild -->
       <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
         <div class="card hintTextCard cardDurYellow">
           <h2>Hinweise</h2>
@@ -367,7 +374,6 @@
         </div>
       </div>
 
-      <!-- Langzeit -->
       <div class="card leftLang cardLongGreen">
         <h2>Info für längeren Zeitraum</h2>
         <div class="scrollBox">
@@ -376,14 +382,12 @@
       </div>
     </div>
 
-    <!-- RECHTS -->
     <div class="card cardBlue">
       <div class="cardLogoTopRight">
         <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
       </div>
 
       <div class="rightStack">
-        <!-- QR -->
         <div>
           <h2 style="padding-right:200px;">QR-Code</h2>
           <div class="qrBox">
@@ -402,12 +406,10 @@
           </div>
         </div>
 
-        <!-- Wetter + Live Webcam nebeneinander -->
         <div>
           <div class="panelTitle">Wetter Borkum / Live Webcam</div>
 
           <div class="wxGrid">
-            <!-- Wetter links -->
             <div class="panel">
               <div class="wxBox">
                 <div class="wxNow">
@@ -442,7 +444,6 @@
               </div>
             </div>
 
-            <!-- Webcam rechts -->
             <div class="panel">
               <img
                 id="camImg"
@@ -452,10 +453,9 @@
           </div>
         </div>
 
-        <!-- Windy Radar unten und größer -->
-        <div>
+        <div class="windySection">
           <div class="panelTitle">Radar Borkum</div>
-          <div class="panel">
+          <div class="panel windyPanel">
             <div class="wxCaption">Windy Radar, Zoom 7</div>
             <div class="windyWrap">
               <iframe
