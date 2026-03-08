@@ -58,30 +58,8 @@
     .time .date{font-size:18px;opacity:.9}
 
     h2{margin:0 0 12px;font-size:26px}
-
-    /* Grundstil Listen */
-    ul{
-      margin:0;
-      padding-left:22px;
-      font-size:22px;
-      line-height:1.4;
-    }
+    ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
     li{margin:8px 0}
-
-    /* Automatisch angepasste Listen links */
-    #heuteWichtig,
-    #daueranzeige,
-    #langzeitInfo{
-      font-size:22px;
-      line-height:1.42;
-    }
-
-    #heuteWichtig li,
-    #daueranzeige li,
-    #langzeitInfo li{
-      margin:8px 0;
-    }
-
     .hint{font-size:18px;opacity:.85}
 
     .ticker{
@@ -270,9 +248,18 @@
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
+    /* WICHTIG: Karten mit Text als Flex-Spalten, damit echte Resthöhe berechnet werden kann */
+    .cardFit{
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
+    /* Textbereich mit echter verfügbarer Höhe */
     .scrollBox{
-      max-height:none;
-      overflow:visible;
+      flex:1;
+      min-height:0;
+      overflow:hidden;
     }
 
     .hintSplitRow{
@@ -363,7 +350,7 @@
   <div class="wrap">
 
     <div class="leftStack">
-      <div class="card leftHeute" id="cardHeute">
+      <div class="card cardFit leftHeute" id="cardHeute">
         <div class="top">
           <div class="brand">Inseldachdecker - Zeitung - Info</div>
           <div class="time">
@@ -378,15 +365,15 @@
         <div id="newsStatus" class="error" style="display:none;"></div>
 
         <h2>Heute wichtig</h2>
-        <div class="scrollBox">
+        <div class="scrollBox" id="boxHeute">
           <ul id="heuteWichtig"></ul>
         </div>
       </div>
 
       <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
-        <div class="card hintTextCard cardDurYellow" id="cardHinweise">
+        <div class="card cardFit hintTextCard cardDurYellow" id="cardHinweise">
           <h2>Hinweise</h2>
-          <div class="scrollBox">
+          <div class="scrollBox" id="boxHinweise">
             <ul id="daueranzeige"></ul>
           </div>
         </div>
@@ -399,9 +386,9 @@
         </div>
       </div>
 
-      <div class="card leftLang cardLongGreen" id="cardLangzeit">
+      <div class="card cardFit leftLang cardLongGreen" id="cardLangzeit">
         <h2>Info für längeren Zeitraum</h2>
-        <div class="scrollBox">
+        <div class="scrollBox" id="boxLangzeit">
           <ul id="langzeitInfo"></ul>
         </div>
       </div>
@@ -571,44 +558,39 @@
         .filter(x => x.length > 0);
     }
 
-    function fitListToCard(cardId, listId, opts = {}) {
-      const card = document.getElementById(cardId);
+    function fitListToBox(listId, boxId, settings = {}) {
       const list = document.getElementById(listId);
-      if (!card || !list) return;
+      const box = document.getElementById(boxId);
+      if (!list || !box) return;
 
-      const wrapper = list.parentElement;
-      if (!wrapper) return;
+      const maxSize = settings.maxSize || 30;
+      const minSize = settings.minSize || 10;
+      const lineHeight = settings.lineHeight || 1.35;
+      const itemMargin = settings.itemMargin || 6;
 
-      const maxFont = opts.maxFont || 24;
-      const minFont = opts.minFont || 16;
-      const step = opts.step || 1;
-      const lineHeight = opts.lineHeight || 1.42;
-      const reserveBottom = opts.reserveBottom || 10;
-
-      list.style.fontSize = maxFont + 'px';
-      list.style.lineHeight = lineHeight;
       list.style.visibility = 'hidden';
 
-      const availableHeight = card.clientHeight - wrapper.offsetTop - reserveBottom;
-      let fitted = maxFont;
-
-      for (let size = maxFont; size >= minFont; size -= step) {
+      for (let size = maxSize; size >= minSize; size -= 1) {
         list.style.fontSize = size + 'px';
-        if (list.scrollHeight <= availableHeight) {
-          fitted = size;
+        list.style.lineHeight = lineHeight;
+
+        Array.from(list.querySelectorAll('li')).forEach(li => {
+          li.style.marginTop = itemMargin + 'px';
+          li.style.marginBottom = itemMargin + 'px';
+        });
+
+        if (list.scrollHeight <= box.clientHeight) {
           break;
         }
       }
 
-      list.style.fontSize = fitted + 'px';
-      list.style.lineHeight = lineHeight;
       list.style.visibility = 'visible';
     }
 
     function fitAllLeftLists() {
-      fitListToCard('cardHeute', 'heuteWichtig',   { maxFont: 25, minFont: 16, lineHeight: 1.48, reserveBottom: 10 });
-      fitListToCard('cardHinweise', 'daueranzeige', { maxFont: 24, minFont: 16, lineHeight: 1.42, reserveBottom: 10 });
-      fitListToCard('cardLangzeit', 'langzeitInfo', { maxFont: 24, minFont: 16, lineHeight: 1.40, reserveBottom: 10 });
+      fitListToBox('heuteWichtig', 'boxHeute',     { maxSize: 30, minSize: 10, lineHeight: 1.45, itemMargin: 6 });
+      fitListToBox('daueranzeige', 'boxHinweise',  { maxSize: 28, minSize: 10, lineHeight: 1.38, itemMargin: 6 });
+      fitListToBox('langzeitInfo', 'boxLangzeit',  { maxSize: 28, minSize: 10, lineHeight: 1.36, itemMargin: 6 });
     }
 
     async function loadNews() {
@@ -677,7 +659,7 @@
 
         requestAnimationFrame(() => {
           fitAllLeftLists();
-          setTimeout(fitAllLeftLists, 120);
+          setTimeout(fitAllLeftLists, 150);
         });
 
       } catch (e) {
@@ -846,7 +828,7 @@
 
     window.addEventListener('resize', () => {
       clearTimeout(window.__fitTimer);
-      window.__fitTimer = setTimeout(fitAllLeftLists, 120);
+      window.__fitTimer = setTimeout(fitAllLeftLists, 140);
     });
 
     document.addEventListener("visibilitychange", () => {
