@@ -140,11 +140,16 @@
       background:#0b0f14;
     }
 
-    :root{ --rightMediaH: 260px; }
+    /* Höhen rechts */
+    :root{
+      --wxH: 220px;      /* Wetter etwas kompakter */
+      --camH: 220px;     /* Webcam an Windy-Stelle oben */
+      --windyH: 340px;   /* Windy deutlich größer unten */
+    }
 
     #camImg{
       width:100%;
-      height:var(--rightMediaH);
+      height:var(--camH);
       object-fit:cover;
       display:block;
       background:#0b0f14
@@ -153,13 +158,13 @@
     /* Wetter & Radar nebeneinander */
     .wxGrid{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:1fr;
       gap:12px;
     }
 
-    /* Wetter-Kachel (links) */
+    /* Wetter-Kachel */
     .wxBox{
-      height:var(--rightMediaH);
+      height:var(--wxH);
       padding:14px;
       box-sizing:border-box;
       display:flex;
@@ -205,7 +210,7 @@
     /* Windy Radar */
     .windyWrap{
       width:100%;
-      height:var(--rightMediaH);
+      height:var(--windyH);
       background:#0b0f14;
     }
     .windyFrame{
@@ -226,7 +231,6 @@
     /* Linker Bereich */
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
 
-    /* PC Höhenverteilung */
     .leftHeute{flex:4.55; min-height:0;}
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
@@ -299,10 +303,14 @@
       .qrText{min-height:auto;}
 
       .wxGrid{grid-template-columns:1fr;}
-      :root{ --rightMediaH: 260px; }
-      .wxBox{ height:auto; min-height:var(--rightMediaH); }
-      .windyWrap{height:var(--rightMediaH);}
-      #camImg{height:var(--rightMediaH);}
+      :root{
+        --wxH: 260px;
+        --camH: 260px;
+        --windyH: 340px;
+      }
+      .wxBox{ height:auto; min-height:var(--wxH); }
+      .windyWrap{height:var(--windyH);}
+      #camImg{height:var(--camH);}
 
       .logoTopRight{height:90px;}
 
@@ -394,12 +402,22 @@
           </div>
         </div>
 
+        <!-- Live Webcam jetzt oben -->
+        <div>
+          <div class="panelTitle">Live Webcam</div>
+          <div class="panel">
+            <img
+              id="camImg"
+              alt="Webcam Borkum"
+              src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
+          </div>
+        </div>
+
         <!-- Wetter -->
         <div>
           <div class="panelTitle">Wetter Borkum</div>
 
           <div class="wxGrid">
-            <!-- Links: Open-Meteo -->
             <div class="panel">
               <div class="wxBox">
                 <div class="wxNow">
@@ -433,30 +451,22 @@
                 </div>
               </div>
             </div>
-
-            <!-- Rechts: Windy Radar -->
-            <div class="panel">
-              <div class="wxCaption">Radar (Windy, ca. 100 km um Borkum)</div>
-              <div class="windyWrap">
-                <iframe
-                  class="windyFrame"
-                  loading="lazy"
-                  src="https://embed.windy.com/embed2.html?lat=53.58&lon=6.67&detailLat=53.58&detailLon=6.67&width=650&height=450&zoom=7&level=surface&overlay=radar&product=radar&menu=&message=&marker=true&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default"
-                  title="Windy Radar Borkum">
-                </iframe>
-              </div>
-            </div>
           </div>
         </div>
 
-        <!-- Webcam -->
+        <!-- Windy Radar jetzt unten und größer -->
         <div>
-          <div class="panelTitle">Live Webcam</div>
+          <div class="panelTitle">Radar Borkum</div>
           <div class="panel">
-            <img
-              id="camImg"
-              alt="Webcam Borkum"
-              src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
+            <div class="wxCaption">Windy Radar, Zoom 7</div>
+            <div class="windyWrap">
+              <iframe
+                class="windyFrame"
+                loading="lazy"
+                src="https://embed.windy.com/embed2.html?lat=53.58&lon=6.67&detailLat=53.58&detailLon=6.67&width=650&height=450&zoom=7&level=surface&overlay=radar&product=radar&menu=&message=&marker=true&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default"
+                title="Windy Radar Borkum">
+              </iframe>
+            </div>
           </div>
         </div>
       </div>
