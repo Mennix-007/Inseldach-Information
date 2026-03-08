@@ -1,785 +1,441 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Inseldachdecker – Info</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inseldachdecker – Info</title>
 
-  <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
-    .wrap{
-      display:grid;
-      grid-template-columns:1.2fr 0.8fr;
-      gap:24px;
-      padding:24px;
-      height:100vh;
-      box-sizing:border-box;
-      padding-bottom:64px;
-    }
+<style>
 
-    .card{
-      background:#8b1e1e;
-      border:1px solid #b63a3a;
-      border-radius:16px;
-      padding:20px;
-      position:relative;
-      overflow:hidden;
-      box-sizing:border-box;
-    }
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
 
-    .cardBlue{
-      background:#163d7a;
-      border:1px solid #2f63c6;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-    }
+.wrap{
+display:grid;
+grid-template-columns:1.2fr 0.8fr;
+gap:24px;
+padding:24px;
+height:100vh;
+box-sizing:border-box;
+padding-bottom:64px;
+}
 
-    .cardLongGreen{ background:#1f7a36; border:1px solid #2bb457; }
+.card{
+background:#8b1e1e;
+border:1px solid #b63a3a;
+border-radius:16px;
+padding:20px;
+position:relative;
+overflow:hidden;
+box-sizing:border-box;
+}
 
-    .cardDurYellow{ background:#ffd400; border:1px solid #c9a800; color:#000; }
-    .cardDurYellow h2{ color:#000; }
-    .cardDurYellow .hint, .cardDurYellow .mono{ color:#111; opacity:.85; }
-    .cardDurYellow ul{ color:#000; }
+.cardBlue{
+background:#163d7a;
+border:1px solid #2f63c6;
+display:flex;
+flex-direction:column;
+min-height:0;
+}
 
-    .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-    .brand{font-size:32px;font-weight:800;line-height:1.1}
+.cardLongGreen{background:#1f7a36;border:1px solid #2bb457;}
 
-    .time{
-      text-align:right;
-      display:flex;
-      flex-direction:row;
-      align-items:baseline;
-      gap:10px;
-      white-space:nowrap;
-    }
-    .time .clock{font-size:44px;font-weight:700;line-height:1}
-    .time .weekday{font-size:18px;opacity:.85}
-    .time .date{font-size:18px;opacity:.9}
+.cardDurYellow{background:#ffd400;border:1px solid #c9a800;color:#000;}
 
-    h2{margin:0 0 12px;font-size:26px}
-    ul{margin:0;padding-left:22px;font-size:22px;line-height:1.35}
-    li{margin:8px 0}
-    .hint{font-size:18px;opacity:.85}
+.cardDurYellow h2{color:#000;}
 
-    .ticker{
-      position:fixed;
-      left:0;right:0;bottom:0;
-      background:#ffd400;
-      border-top:1px solid #c9a800;
-      height:52px;
-      display:flex;
-      align-items:center;
-      overflow:hidden
-    }
-    .ticker .inner{
-      white-space:nowrap;
-      will-change:transform;
-      font-size:28px;
-      padding-left:0;
-      color:#000;
-      display:inline-flex;
-      gap:48px;
-      align-items:center;
-    }
-    .ticker .chunk{display:inline-block; white-space:nowrap;}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 
-    .qrBox{display:flex;gap:14px;align-items:flex-start}
-    .qrWrap{
-      width:155px;height:155px;
-      background:#fff;
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:2px solid #ffffff;
-      box-sizing:border-box;
-      flex:0 0 155px;
-    }
-    #qrcodeImg{
-      display:block;
-      width:140px;height:140px;
-      object-fit:contain;
-    }
-    .qrText{
-      font-size:18px;
-      opacity:.95;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-      min-height:155px;
-    }
-    .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
-    .error{color:#ffe2e2; font-size:16px; margin-top:8px}
+.brand{font-size:32px;font-weight:800}
 
-    .cardLogoTopRight{
-      position:absolute;
-      top:16px;
-      right:16px;
-      pointer-events:none;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-end;
-      max-width:360px;
-    }
-    .logoTopRight{
-      height:140px;
-      width:auto;
-      object-fit:contain;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,.35));
-    }
+.time{
+text-align:right;
+display:flex;
+flex-direction:row;
+align-items:baseline;
+gap:10px;
+white-space:nowrap;
+}
 
-    .rightStack{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-      height:100%;
-      min-height:0;
-      flex:1;
-    }
-    .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
-    .panel{
-      border:1px solid rgba(255,255,255,.25);
-      border-radius:12px;
-      overflow:hidden;
-      background:#0b0f14;
-    }
+.time .clock{font-size:44px;font-weight:700}
 
-    :root{
-      --wxH: 250px;      /* etwas höher, damit es nicht abgeschnitten wirkt */
-      --camH: 250px;     /* ebenso höher */
-      --windyMinH: 260px;
-    }
+.time .weekday{font-size:18px}
 
-    #camImg{
-      width:100%;
-      height:var(--camH);
-      object-fit:cover;
-      display:block;
-      background:#0b0f14;
-    }
+.time .date{font-size:18px}
 
-    .wxGrid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
+h2{margin:0 0 12px;font-size:26px}
 
-    .wxBox{
-      height:var(--wxH);
-      padding:14px;
-      box-sizing:border-box;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .wxNow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding-bottom:10px;
-      border-bottom:1px solid rgba(255,255,255,.15);
-    }
-    .wxNowLeft{min-width:0}
-    .wxTitle{font-weight:800;font-size:18px;opacity:.95}
-    .wxTempBig{font-weight:900;font-size:34px;line-height:1}
-    .wxDesc{font-size:16px;opacity:.9}
-    .wxIconBig{font-size:44px;line-height:1}
+/* LISTEN GRUND */
+ul{margin:0;padding-left:22px;line-height:1.35}
 
-    .wxSlots{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:10px;
-      flex:1;
-      align-content:start;
-    }
-    .wxSlot{
-      border:1px solid rgba(255,255,255,.18);
-      border-radius:12px;
-      padding:10px;
-      background:rgba(255,255,255,.06);
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      min-width:0;
-    }
-    .wxSlotTime{font-size:14px;opacity:.85;font-weight:700}
-    .wxSlotIcon{font-size:26px;line-height:1}
-    .wxSlotTemp{font-size:20px;font-weight:800}
-    .wxSlotPop{font-size:14px;opacity:.9}
+li{margin:8px 0}
 
-    .windySection{
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-      flex:1; /* nimmt den Rest der rechten Höhe */
-    }
-    .windyPanel{
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-      flex:1;
-    }
-    .windyWrap{
-      width:100%;
-      flex:1;
-      min-height:var(--windyMinH);
-      background:#0b0f14;
-    }
-    .windyFrame{
-      width:100%;
-      height:100%;
-      border:0;
-      display:block;
-      background:#0b0f14;
-    }
-    .wxCaption{
-      text-align:center;
-      font-weight:700;
-      padding:8px 10px;
-      background:rgba(0,0,0,.35);
-      border-bottom:1px solid rgba(255,255,255,.15);
-    }
+/* SCHRIFTGRÖSSEN KACHELN */
 
-    .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
+#heuteWichtig li{
+font-size:24px;
+}
 
-    .leftHeute{flex:4.55; min-height:0;}
-    .leftDauerRow{flex:3.45; min-height:0;}
-    .leftLang{flex:2; min-height:0;}
+#daueranzeige li{
+font-size:23px;
+}
 
-    .scrollBox{max-height:none;overflow:visible;}
+#langzeitInfo li{
+font-size:23px;
+}
 
-    .hintSplitRow{
-      display:grid;
-      grid-template-columns:3fr 1fr;
-      gap:16px;
-      height:100%;
-      min-height:0;
-    }
-    .hintSplitRow.noImage{ grid-template-columns:1fr; }
-    .hintSplitRow.noImage .hintImgCard{ display:none; }
+.ticker{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+background:#ffd400;
+border-top:1px solid #c9a800;
+height:52px;
+display:flex;
+align-items:center;
+overflow:hidden;
+}
 
-    .hintImgCard{
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      min-height:0;
-    }
-    .hintImgBox{
-      flex:1;
-      min-height:0;
-      border-radius:12px;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,.25);
-      background:#ffd400;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    #hintImg{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-      background:#ffd400;
-    }
-    .hintImgBox.hidden{display:none;}
-    .hintTextCard{ min-height:0; }
+.ticker .inner{
+white-space:nowrap;
+font-size:28px;
+display:inline-flex;
+gap:48px;
+color:#000;
+}
 
-    @media (max-width: 900px) {
-      .wrap{
-        grid-template-columns:1fr;
-        height:auto;
-        min-height:100vh;
-        padding-bottom:96px;
-      }
+.qrWrap{
+width:155px;
+height:155px;
+background:#fff;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+border:2px solid #fff;
+}
 
-      .leftStack{height:auto;}
-      .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
+#qrcodeImg{
+width:140px;
+height:140px;
+object-fit:contain;
+}
 
-      .leftHeute{ min-height: 46vh; }
+.rightStack{
+display:flex;
+flex-direction:column;
+gap:16px;
+height:100%;
+min-height:0;
+flex:1;
+}
 
-      .hintSplitRow{
-        grid-template-columns:1fr;
-        height:auto;
-      }
+.panel{
+border:1px solid rgba(255,255,255,.25);
+border-radius:12px;
+overflow:hidden;
+background:#0b0f14;
+}
 
-      .hintImgCard{ height:440px; }
-      .hintImgBox{ flex:1; }
+:root{
+--wxH:250px;
+--camH:250px;
+--windyMinH:260px;
+}
 
-      .qrBox{flex-direction:column;align-items:stretch;}
-      .qrWrap{width:180px;height:180px;}
-      #qrcodeImg{width:160px;height:160px;}
-      .qrText{min-height:auto;}
+.wxGrid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
 
-      .wxGrid{grid-template-columns:1fr;}
-      :root{
-        --wxH: 260px;
-        --camH: 260px;
-        --windyMinH: 340px;
-      }
-      .wxBox{ height:auto; min-height:var(--wxH); }
-      .windyWrap{min-height:var(--windyMinH);}
-      #camImg{height:var(--camH);}
+.wxBox{
+height:var(--wxH);
+padding:14px;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
 
-      .logoTopRight{height:90px;}
+.wxNow{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding-bottom:10px;
+border-bottom:1px solid rgba(255,255,255,.15);
+}
 
-      .brand{font-size:26px}
-      ul{font-size:20px;}
-      h2{font-size:24px;}
+.wxTempBig{font-size:34px;font-weight:900}
 
-      .ticker{height:72px;}
-    }
-  </style>
+.wxSlots{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+}
+
+.wxSlot{
+border:1px solid rgba(255,255,255,.18);
+border-radius:12px;
+padding:10px;
+background:rgba(255,255,255,.06);
+}
+
+.wxSlotTemp{font-size:20px;font-weight:800}
+
+#camImg{
+width:100%;
+height:var(--camH);
+object-fit:cover;
+}
+
+.windyWrap{
+flex:1;
+min-height:var(--windyMinH);
+}
+
+.windyFrame{
+width:100%;
+height:100%;
+border:0;
+}
+
+.leftStack{
+display:flex;
+flex-direction:column;
+gap:16px;
+height:100%;
+}
+
+.leftHeute{flex:4.55}
+
+.leftDauerRow{flex:3.45}
+
+.leftLang{flex:2}
+
+.hintSplitRow{
+display:grid;
+grid-template-columns:3fr 1fr;
+gap:16px;
+height:100%;
+}
+
+.hintImgBox{
+flex:1;
+background:#ffd400;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+#hintImg{
+width:100%;
+height:100%;
+object-fit:contain;
+}
+
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-
-    <div class="leftStack">
-      <div class="card leftHeute">
-        <div class="top">
-          <div class="brand">Inseldachdecker - Zeitung - Info</div>
-          <div class="time">
-            <div class="clock" id="clock">--:--</div>
-            <div class="weekday" id="weekday">----</div>
-            <div class="date" id="date">--.--.----</div>
-          </div>
-        </div>
-
-        <hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:14px 0;">
-
-        <div id="newsStatus" class="error" style="display:none;"></div>
-
-        <h2>Heute wichtig</h2>
-        <div class="scrollBox">
-          <ul id="heuteWichtig"></ul>
-        </div>
-      </div>
-
-      <div class="hintSplitRow leftDauerRow" id="hintSplitRow">
-        <div class="card hintTextCard cardDurYellow">
-          <h2>Hinweise</h2>
-          <div class="scrollBox">
-            <ul id="daueranzeige"></ul>
-          </div>
-        </div>
-
-        <div class="card hintImgCard cardDurYellow">
-          <h2>Bild</h2>
-          <div class="hintImgBox hidden" id="hintImgBox">
-            <img id="hintImg" alt="Hinweise Bild">
-          </div>
-        </div>
-      </div>
-
-      <div class="card leftLang cardLongGreen">
-        <h2>Info für längeren Zeitraum</h2>
-        <div class="scrollBox">
-          <ul id="langzeitInfo"></ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="card cardBlue">
-      <div class="cardLogoTopRight">
-        <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="logoTopRight">
-      </div>
-
-      <div class="rightStack">
-        <div>
-          <h2 style="padding-right:200px;">QR-Code</h2>
-          <div class="qrBox">
-            <div class="qrWrap">
-              <img
-                id="qrcodeImg"
-                alt="QR-Code"
-                src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
-              />
-            </div>
-            <div class="qrText">
-              <div id="qrLabel">Scannen für Handy-Ansicht</div>
-              <div class="mono" id="qrSub"></div>
-              <div class="error" id="qrErr" style="display:none;"></div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="panelTitle">Wetter Borkum / Live Webcam</div>
-
-          <div class="wxGrid">
-            <div class="panel">
-              <div class="wxBox">
-                <div class="wxNow">
-                  <div class="wxNowLeft">
-                    <div class="wxTitle">Aktuell</div>
-                    <div class="wxTempBig" id="wxNowTemp">— °C</div>
-                    <div class="wxDesc" id="wxNowDesc">Wetter wird geladen…</div>
-                  </div>
-                  <div class="wxIconBig" id="wxNowIcon">⛅</div>
-                </div>
-
-                <div class="wxSlots">
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">08:00</div>
-                    <div class="wxSlotIcon" id="wx8Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx8Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx8Pop">Regen: —%</div>
-                  </div>
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">13:00</div>
-                    <div class="wxSlotIcon" id="wx13Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx13Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx13Pop">Regen: —%</div>
-                  </div>
-                  <div class="wxSlot">
-                    <div class="wxSlotTime">17:00</div>
-                    <div class="wxSlotIcon" id="wx17Icon">⛅</div>
-                    <div class="wxSlotTemp" id="wx17Temp">— °C</div>
-                    <div class="wxSlotPop" id="wx17Pop">Regen: —%</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <img
-                id="camImg"
-                alt="Webcam Borkum"
-                src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
-            </div>
-          </div>
-        </div>
-
-        <div class="windySection">
-          <div class="panelTitle">Radar Borkum</div>
-          <div class="panel windyPanel">
-            <div class="wxCaption">Windy Radar, Zoom 7</div>
-            <div class="windyWrap">
-              <iframe
-                class="windyFrame"
-                loading="lazy"
-                src="https://embed.windy.com/embed2.html?lat=53.58&lon=6.67&detailLat=53.58&detailLon=6.67&width=650&height=450&zoom=7&level=surface&overlay=radar&product=radar&menu=&message=&marker=true&calendar=24&pressure=&type=map&location=coordinates&detail=&metricWind=default&metricTemp=default"
-                title="Windy Radar Borkum">
-              </iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="ticker">
-    <div class="inner" id="tickerInner">
-      <span class="chunk">Lade Hinweise…</span>
-      <span class="chunk">Lade Hinweise…</span>
-    </div>
-  </div>
-
-  <script>
-    const NEWS_INTERVAL_MS = 60000;
-    const CAM_INTERVAL_MS  = 180000;
-    const WX_INTERVAL_MS   = 15 * 60 * 1000;
-
-    const TICKER_SPEED_PX_PER_FRAME = 3;
-    const TICKER_GAP_PX = 48;
-
-    const MAX_CONSECUTIVE_ERRORS_TO_HIDE = 3;
-    let consecutiveNewsErrors = 0;
-
-    let lastGoodTickerText = 'Lade Hinweise…';
-    let lastGoodCamSrc = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg";
-    let camLoading = false;
-
-    let newsTimer = null;
-    let camTimer  = null;
-    let wxTimer   = null;
-
-    const BORKUM = { lat: 53.58, lon: 6.67 };
-
-    function pad(n){ return String(n).padStart(2,'0'); }
-
-    function tickTime() {
-      const now = new Date();
-      document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
-      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
-    }
-
-    function setQr(url){
-      const img = document.getElementById('qrcodeImg');
-      const err = document.getElementById('qrErr');
-      err.style.display = 'none';
-      err.textContent = '';
-
-      img.onerror = () => {
-        err.style.display = 'block';
-        err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
-      };
-
-      const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
-                + encodeURIComponent(url)
-                + "&nocache=" + Date.now();
-
-      img.src = src;
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;');
-    }
-
-    function setTickerText(text){
-      const inner = document.getElementById('tickerInner');
-      const safe = (text && String(text).trim()) ? String(text).trim() : 'Keine Hinweise im Laufband.';
-      lastGoodTickerText = safe;
-      inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
-    }
-
-    function normalizeList(arr){
-      return (Array.isArray(arr) ? arr : [])
-        .map(x => (x ?? '').toString().trim())
-        .filter(x => x.length > 0);
-    }
-
-    async function loadNews() {
-      const status = document.getElementById('newsStatus');
-
-      try {
-        const res = await fetch('news.json?ts=' + Date.now(), { cache: "no-store" });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-
-        const data = await res.json();
-
-        consecutiveNewsErrors = 0;
-        status.style.display = 'none';
-        status.textContent = '';
-
-        const ul = document.getElementById('heuteWichtig');
-        ul.innerHTML = '';
-        normalizeList(data.heuteWichtig).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ul.appendChild(li);
-        });
-
-        const ulDur = document.getElementById('daueranzeige');
-        ulDur.innerHTML = '';
-        normalizeList(data.daueranzeige).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ulDur.appendChild(li);
-        });
-
-        const splitRow = document.getElementById('hintSplitRow');
-        const imgBox = document.getElementById('hintImgBox');
-        const img = document.getElementById('hintImg');
-        const raw = (data.daueranzeigeBild || '').trim();
-
-        if (raw) {
-          const base = location.origin + location.pathname.replace(/index\.html$/i, '');
-          const resolved = raw.startsWith('http')
-            ? raw
-            : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
-
-          if (splitRow) splitRow.classList.remove('noImage');
-          imgBox.classList.remove('hidden');
-          img.src = resolved;
-        } else {
-          if (img) img.removeAttribute('src');
-          if (imgBox) imgBox.classList.add('hidden');
-          if (splitRow) splitRow.classList.add('noImage');
-        }
-
-        const ulLong = document.getElementById('langzeitInfo');
-        ulLong.innerHTML = '';
-        normalizeList(data.langzeitInfo).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ulLong.appendChild(li);
-        });
-
-        const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
-        setTickerText(tickerText);
-
-        const url = location.origin + location.pathname;
-        document.getElementById('qrSub').textContent = url;
-        setQr(url);
-
-      } catch (e) {
-        consecutiveNewsErrors += 1;
-
-        if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
-          status.style.display = 'none';
-          status.textContent = '';
-        } else {
-          status.style.display = 'block';
-          status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
-        }
-        setTickerText(lastGoodTickerText);
-      }
-    }
-
-    function refreshWebcamOnce() {
-      if (document.visibilityState !== "visible") return;
-      if (camLoading) return;
-
-      const target = "https://www.insellust-borkum.de/Webcam/axis1/image.jpg?ts=" + Date.now();
-      const preload = new Image();
-      camLoading = true;
-
-      preload.onload = () => {
-        const camImg = document.getElementById('camImg');
-        if (camImg) {
-          camImg.src = target;
-          lastGoodCamSrc = target;
-        }
-        camLoading = false;
-      };
-
-      preload.onerror = () => {
-        const camImg = document.getElementById('camImg');
-        if (camImg && lastGoodCamSrc) camImg.src = lastGoodCamSrc;
-        camLoading = false;
-      };
-
-      preload.src = target;
-    }
-
-    function startTicker() {
-      const el = document.getElementById('tickerInner');
-      let x = 0;
-
-      function anim() {
-        x -= TICKER_SPEED_PX_PER_FRAME;
-        el.style.transform = `translateX(${x}px)`;
-
-        const first = el.querySelector('.chunk');
-        if (first) {
-          const w = first.getBoundingClientRect().width;
-          if (x < -(w + TICKER_GAP_PX)) x = 0;
-        }
-        requestAnimationFrame(anim);
-      }
-      requestAnimationFrame(anim);
-    }
-
-    function wxIconForCode(code){
-      const c = Number(code);
-      if ([0].includes(c)) return "☀️";
-      if ([1].includes(c)) return "🌤️";
-      if ([2].includes(c)) return "⛅";
-      if ([3].includes(c)) return "☁️";
-      if ([45,48].includes(c)) return "🌫️";
-      if ([51,53,55,56,57].includes(c)) return "🌦️";
-      if ([61,63,65,66,67].includes(c)) return "🌧️";
-      if ([71,73,75,77].includes(c)) return "🌨️";
-      if ([80,81,82].includes(c)) return "🌧️";
-      if ([95,96,99].includes(c)) return "⛈️";
-      return "⛅";
-    }
-
-    function wxTextForCode(code){
-      const c = Number(code);
-      if (c===0) return "Klar";
-      if (c===1) return "Meist klar";
-      if (c===2) return "Teilweise wolkig";
-      if (c===3) return "Bedeckt";
-      if (c===45 || c===48) return "Nebel";
-      if ([51,53,55,56,57].includes(c)) return "Niesel";
-      if ([61,63,65,66,67].includes(c)) return "Regen";
-      if ([71,73,75,77].includes(c)) return "Schnee";
-      if ([80,81,82].includes(c)) return "Schauer";
-      if ([95,96,99].includes(c)) return "Gewitter";
-      return "Wetter";
-    }
-
-    function findIndexForLocalHour(times, hourWanted){
-      const now = new Date();
-      for (let i=0;i<times.length;i++){
-        const t = new Date(times[i]);
-        const isTodayOrFuture = (t.getTime() >= now.getTime() - 5*60*1000);
-        if (!isTodayOrFuture) continue;
-        if (t.getHours() === hourWanted) return i;
-      }
-      return 0;
-    }
-
-    async function loadWeather() {
-      try{
-        const url =
-          "https://api.open-meteo.com/v1/forecast"
-          + `?latitude=${encodeURIComponent(BORKUM.lat)}`
-          + `&longitude=${encodeURIComponent(BORKUM.lon)}`
-          + "&current=temperature_2m,weather_code"
-          + "&hourly=temperature_2m,precipitation_probability,weather_code"
-          + "&timezone=Europe%2FBerlin";
-
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-
-        const curT = data?.current?.temperature_2m;
-        const curC = data?.current?.weather_code;
-
-        document.getElementById("wxNowTemp").textContent = (curT ?? "—") + " °C";
-        document.getElementById("wxNowIcon").textContent = wxIconForCode(curC);
-        document.getElementById("wxNowDesc").textContent = wxTextForCode(curC);
-
-        const times = data?.hourly?.time || [];
-        const temps = data?.hourly?.temperature_2m || [];
-        const pops  = data?.hourly?.precipitation_probability || [];
-        const codes = data?.hourly?.weather_code || [];
-
-        const i8  = findIndexForLocalHour(times, 8);
-        const i13 = findIndexForLocalHour(times, 13);
-        const i17 = findIndexForLocalHour(times, 17);
-
-        function setSlot(prefix, idx){
-          const t = temps[idx];
-          const p = pops[idx];
-          const c = codes[idx];
-
-          document.getElementById(prefix+"Temp").textContent = (t ?? "—") + " °C";
-          document.getElementById(prefix+"Icon").textContent = wxIconForCode(c);
-          document.getElementById(prefix+"Pop").textContent  = "Regen: " + (p ?? "—") + "%";
-        }
-
-        setSlot("wx8", i8);
-        setSlot("wx13", i13);
-        setSlot("wx17", i17);
-
-      } catch(e){
-        document.getElementById("wxNowDesc").textContent = "Wetter konnte nicht geladen werden.";
-      }
-    }
-
-    function startIntervals() {
-      if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
-      if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
-      if (!wxTimer)   { loadWeather(); wxTimer = setInterval(loadWeather, WX_INTERVAL_MS); }
-    }
-
-    function stopIntervals() {
-      if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
-      if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
-      if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
-    }
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") startIntervals();
-      else stopIntervals();
-    });
-
-    tickTime();
-    setInterval(tickTime, 1000);
-
-    startIntervals();
-    startTicker();
-  </script>
+
+<div class="wrap">
+
+<div class="leftStack">
+
+<div class="card leftHeute">
+
+<div class="top">
+
+<div class="brand">
+Inseldachdecker - Zeitung - Info
+</div>
+
+<div class="time">
+<div class="clock" id="clock"></div>
+<div class="weekday" id="weekday"></div>
+<div class="date" id="date"></div>
+</div>
+
+</div>
+
+<hr style="border:0;border-top:1px solid rgba(255,255,255,.25);margin:14px 0;">
+
+<h2>Heute wichtig</h2>
+
+<ul id="heuteWichtig"></ul>
+
+</div>
+
+<div class="hintSplitRow leftDauerRow">
+
+<div class="card cardDurYellow">
+
+<h2>Hinweise</h2>
+
+<ul id="daueranzeige"></ul>
+
+</div>
+
+<div class="card cardDurYellow">
+
+<h2>Bild</h2>
+
+<div class="hintImgBox">
+
+<img id="hintImg">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card leftLang cardLongGreen">
+
+<h2>Info für längeren Zeitraum</h2>
+
+<ul id="langzeitInfo"></ul>
+
+</div>
+
+</div>
+
+<div class="card cardBlue">
+
+<div class="rightStack">
+
+<div>
+
+<h2>QR-Code</h2>
+
+<div class="qrWrap">
+
+<img id="qrcodeImg">
+
+</div>
+
+</div>
+
+<div>
+
+<div class="panelTitle">Wetter Borkum / Live Webcam</div>
+
+<div class="wxGrid">
+
+<div class="panel">
+
+<div class="wxBox">
+
+<div class="wxNow">
+
+<div>
+
+<div class="wxTempBig" id="wxNowTemp"></div>
+
+<div id="wxNowDesc"></div>
+
+</div>
+
+<div id="wxNowIcon"></div>
+
+</div>
+
+<div class="wxSlots">
+
+<div class="wxSlot">
+
+<div>08:00</div>
+
+<div id="wx8Temp"></div>
+
+</div>
+
+<div class="wxSlot">
+
+<div>13:00</div>
+
+<div id="wx13Temp"></div>
+
+</div>
+
+<div class="wxSlot">
+
+<div>17:00</div>
+
+<div id="wx17Temp"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<img id="camImg"
+src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
+
+</div>
+
+</div>
+
+</div>
+
+<div>
+
+<div class="panelTitle">Radar Borkum</div>
+
+<div class="panel">
+
+<div class="windyWrap">
+
+<iframe
+class="windyFrame"
+src="https://embed.windy.com/embed2.html?lat=53.58&lon=6.67&zoom=7&overlay=radar">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="ticker">
+
+<div class="inner" id="tickerInner"></div>
+
+</div>
+
+<script>
+
+function pad(n){return String(n).padStart(2,'0')}
+
+function tickTime(){
+
+const now=new Date()
+
+document.getElementById('clock').textContent=
+pad(now.getHours())+":"+pad(now.getMinutes())
+
+document.getElementById('weekday').textContent=
+now.toLocaleDateString('de-DE',{weekday:'long'})
+
+document.getElementById('date').textContent=
+now.toLocaleDateString('de-DE')
+
+}
+
+setInterval(tickTime,1000)
+
+</script>
+
 </body>
 </html>
