@@ -142,9 +142,9 @@
 
     /* Höhen rechts */
     :root{
-      --wxH: 220px;      /* Wetter etwas kompakter */
-      --camH: 220px;     /* Webcam an Windy-Stelle oben */
-      --windyH: 340px;   /* Windy deutlich größer unten */
+      --wxH: 220px;      /* Wetter */
+      --camH: 220px;     /* Webcam */
+      --windyH: 420px;   /* Windy größer */
     }
 
     #camImg{
@@ -152,13 +152,13 @@
       height:var(--camH);
       object-fit:cover;
       display:block;
-      background:#0b0f14
+      background:#0b0f14;
     }
 
-    /* Wetter & Radar nebeneinander */
+    /* Wetter + Webcam nebeneinander */
     .wxGrid{
       display:grid;
-      grid-template-columns:1fr;
+      grid-template-columns:1fr 1fr;
       gap:12px;
     }
 
@@ -402,22 +402,12 @@
           </div>
         </div>
 
-        <!-- Live Webcam jetzt oben -->
+        <!-- Wetter + Live Webcam nebeneinander -->
         <div>
-          <div class="panelTitle">Live Webcam</div>
-          <div class="panel">
-            <img
-              id="camImg"
-              alt="Webcam Borkum"
-              src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
-          </div>
-        </div>
-
-        <!-- Wetter -->
-        <div>
-          <div class="panelTitle">Wetter Borkum</div>
+          <div class="panelTitle">Wetter Borkum / Live Webcam</div>
 
           <div class="wxGrid">
+            <!-- Wetter links -->
             <div class="panel">
               <div class="wxBox">
                 <div class="wxNow">
@@ -451,10 +441,18 @@
                 </div>
               </div>
             </div>
+
+            <!-- Webcam rechts -->
+            <div class="panel">
+              <img
+                id="camImg"
+                alt="Webcam Borkum"
+                src="https://www.insellust-borkum.de/Webcam/axis1/image.jpg">
+            </div>
           </div>
         </div>
 
-        <!-- Windy Radar jetzt unten und größer -->
+        <!-- Windy Radar unten und größer -->
         <div>
           <div class="panelTitle">Radar Borkum</div>
           <div class="panel">
