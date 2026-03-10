@@ -7,7 +7,7 @@
   "daueranzeige": [
     "Das Material für Ankerstraße ist bei Janssen & Kruse    Materiały na Ankerstraße pochodzą z Janssen & Kruse.",
     "Ab den 30.03.2026 ist wieder Saisonbeschränkung = rote und blaue Zone beachten. Ab dem 29.03. - 12.04. gilt die Lärmschutzverordnung. Und ab dem 30.03. wieder Ruhezeit von 13-15:00 Uhr  ",
-    " Od 30 marca 2026 roku ponownie zaczną obowiązywać ograniczenia sezonowe; prosimy o przestrzeganie stref czerwonej i niebieskiej. Rozporządzenie w sprawie kontroli hałasu obowiązuje od 29 marca do 12 kwietnia. Od 30 marca ponownie obowiązywać będzie cisza nocna w godzinach 13:00-15:00."
+    "x"
   ],
   "langzeitInfo": [
     "Osterferien für unser Betrieb ist vom 02.04.2026 bis 07.04.2026 einschließlich, Am 08.04.2026 sind alle wieder da (Büro wird separat geklärt.)",
@@ -15,13 +15,13 @@
     "Wir brauchen Euch jeden Samstag wer nicht absagt, kommt !     Potrzebujemy Cię w każdą sobotę. Kto nie odwołuje, niech przychodzi!"
   ],
   "ticker": [
-    "Wer ist Samstag da, bitte Namen an die weiße Tafel schreiben.  Jeśli przyjedziesz w sobotę, napisz swoje imię na tablicy."
+    "Niko und Dominik heute zu Tide 42, eben Wolfgang anrufen"
   ],
   "heuteWichtig": [
-    "Guten Morgen,     Dzień dobry    ",
-    "Triflex soll heute ins Lager  kommen was fehlt",
-    "Triflex powinien dziś dotrzeć do magazynu. Czego brakuje?",
-    "Wir habe viel zu viel zu tun, Samstag ?            Mamy za dużo do zrobienia, sobota?"
+    "Guten Morgen,     Dzień dobry     heute Planungsänderung      Dziś zmiana planów",
+    "Triflex abholen Hafen 8:00 Uhr      Odbiór Triflex w porcie o 8:00 rano",
+    "Waldeck Gully abholen Hafen 10:30 Uhr        Odbiór z portu Waldeck Gully o 10:30",
+    "Rafal heute mit Krystian siehe Plan, Wolfgang anrufen       Rafał z Krystianem dzisiaj, zobacz plan, zadzwoń do Wolfganga"
   ],
-  "daueranzeigeBild": "/uploads/inseldachdecker_2025_68.jpg"
+  "daueranzeigeBild": "/uploads/inseldachdecker-09.2025-zimmermannsarbeiten-1423.jpg"
 }
