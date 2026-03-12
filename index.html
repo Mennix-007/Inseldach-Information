@@ -106,10 +106,12 @@
       opacity:.95;
       display:flex;
       flex-direction:column;
-      justify-content:flex-end;
+      justify-content:flex-start;
       min-height:155px;
       flex:1;
       min-width:0;
+      padding-right:155px; /* Platz fürs Logo oben rechts */
+      box-sizing:border-box;
     }
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
@@ -123,6 +125,7 @@
       align-items:flex-start;
       justify-content:flex-end;
       max-width:360px;
+      z-index:2;
     }
     .logoTopRight{
       height:140px;
@@ -299,31 +302,50 @@
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
 
-    /* Team Buttons neben QR */
-    .teamButtonGrid{
+    /* Team Buttons */
+    .teamButtonShell{
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
+      grid-template-columns:120px 120px;
+      gap:8px 10px;
+      align-items:start;
+      width:max-content;
+      max-width:100%;
+    }
+    .teamButtonCol{
+      display:flex;
+      flex-direction:column;
       gap:8px;
-      align-content:start;
-      width:100%;
+    }
+    .teamButtonCol.rightOffset{
+      margin-top:28px; /* rechte 2 Buttons tiefer */
+    }
+    .teamButtonBottom{
+      grid-column:1 / -1;
+      margin-top:2px;
     }
     .teamBtn{
-      border:1px solid rgba(255,255,255,.25);
-      background:#0b0f14;
-      color:#e9eef5;
+      border:1px solid #c9a800;
+      background:#ffd400;
+      color:#000;
       border-radius:10px;
-      padding:10px 8px;
-      font-size:14px;
-      font-weight:700;
-      line-height:1.2;
+      padding:9px 8px;
+      font-size:13px;
+      font-weight:800;
+      line-height:1.15;
       cursor:pointer;
       transition:transform .12s ease, background .12s ease, border-color .12s ease;
-      min-height:52px;
+      min-height:48px;
+      box-sizing:border-box;
+      width:120px;
+      text-align:center;
     }
     .teamBtn:hover{
       transform:translateY(-1px);
-      background:#102033;
-      border-color:rgba(255,255,255,.4);
+      background:#ffe14a;
+      border-color:#e0b800;
+    }
+    .teamBtn.wide{
+      width:250px;
     }
 
     /* Modal */
@@ -466,6 +488,11 @@
       color:#fff;
       border:1px solid rgba(255,255,255,.18);
     }
+    .btnDanger{
+      background:#8b1e1e;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.18);
+    }
     .btnWhatsApp{
       background:#25D366;
       color:#111;
@@ -495,10 +522,21 @@
       .qrBox{flex-direction:column;align-items:stretch;}
       .qrWrap{width:180px;height:180px;}
       #qrcodeImg{width:160px;height:160px;}
-      .qrText{min-height:auto;}
+      .qrText{
+        min-height:auto;
+        padding-right:0;
+      }
 
-      .teamButtonGrid{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
+      .teamButtonShell{
+        grid-template-columns:1fr 1fr;
+        width:100%;
+      }
+      .teamButtonCol.rightOffset{
+        margin-top:0;
+      }
+      .teamBtn,
+      .teamBtn.wide{
+        width:100%;
       }
 
       .wxGrid{grid-template-columns:1fr;}
@@ -598,12 +636,19 @@
             </div>
 
             <div class="qrText">
-              <div class="teamButtonGrid">
-                <button class="teamBtn" data-team="steildach">Team Steildach</button>
-                <button class="teamBtn" data-team="flachdach">Team Flachdach</button>
-                <button class="teamBtn" data-team="klempner">Team Klempner</button>
-                <button class="teamBtn" data-team="reparatur">Team Reparatur</button>
-                <button class="teamBtn" data-team="zimmermann">Team Zimmermann</button>
+              <div class="teamButtonShell">
+                <div class="teamButtonCol">
+                  <button class="teamBtn" data-team="steildach">Team Steildach</button>
+                  <button class="teamBtn" data-team="flachdach">Team Flachdach</button>
+                  <button class="teamBtn" data-team="klempner">Team Klempner</button>
+                </div>
+                <div class="teamButtonCol rightOffset">
+                  <button class="teamBtn" data-team="reparatur">Team Reparatur</button>
+                  <button class="teamBtn" data-team="zimmermann">Team Zimmermann</button>
+                </div>
+                <div class="teamButtonBottom">
+                  <button class="teamBtn wide" data-team="frei">Mitarbeiter wählen</button>
+                </div>
               </div>
 
               <div style="margin-top:10px;" id="qrLabel">Scannen für Handy-Ansicht</div>
@@ -696,6 +741,11 @@
       <div class="modalGrid">
         <div class="editorPanel">
           <div class="formGrid">
+            <div class="fieldWrap fullCol" id="freeNumberWrap" style="display:none;">
+              <label for="freieNummer">Telefonnummer frei eingeben</label>
+              <input id="freieNummer" type="text" placeholder="z. B. 491721234567">
+            </div>
+
             <div class="fieldWrap fullCol">
               <label for="baustellenname">Baustellenname</label>
               <input id="baustellenname" type="text" placeholder="z. B. Haus Alter Leuchtturm">
@@ -738,6 +788,7 @@
           <div class="previewBox" id="messagePreview"></div>
 
           <div class="modalActions">
+            <button class="actionBtn btnDanger" type="button" id="clearDraftBtn">Inhalt löschen und Neu</button>
             <button class="actionBtn btnGhost" type="button" id="copyPreviewBtn">Text kopieren</button>
             <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtn">In WhatsApp öffnen</button>
           </div>
@@ -767,7 +818,7 @@
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
 
-    /* Einstellbare Teamnummern */
+    /* WhatsApp-Zielnummern hier ändern, falls sich später eine Nummer ändert */
     const TEAM_NUMBERS = {
       steildach:   "48505743447",
       flachdach:   "4917643377953",
@@ -781,10 +832,11 @@
       flachdach: "Team Flachdach",
       klempner: "Team Klempner",
       reparatur: "Team Reparatur",
-      zimmermann: "Team Zimmermann"
+      zimmermann: "Team Zimmermann",
+      frei: "Mitarbeiter wählen"
     };
 
-    /* Werkzeugliste später hier einfach erweitern */
+    /* Werkzeugliste hier später einfach erweitern */
     const TOOL_OPTIONS = [
       "Brenner",
       "Akkuschrauben",
@@ -1185,7 +1237,16 @@
       }
     }
 
-    /* Team Modal */
+    /* ========== Team Modal / WhatsApp ========== */
+
+    function getDraftKey(teamKey) {
+      return 'teamDraft_' + teamKey;
+    }
+
+    function normalizePhone(input) {
+      return String(input || '').replace(/\D+/g, '');
+    }
+
     function createToolSelect(index) {
       const wrap = document.createElement('div');
       wrap.className = 'fieldWrap';
@@ -1210,7 +1271,7 @@
         select.appendChild(opt);
       });
 
-      select.addEventListener('change', updateTeamPreview);
+      select.addEventListener('change', handleDraftInputChange);
 
       wrap.appendChild(label);
       wrap.appendChild(select);
@@ -1229,6 +1290,60 @@
       return Array.from(document.querySelectorAll('#toolGrid select'))
         .map(sel => sel.value.trim())
         .filter(Boolean);
+    }
+
+    function collectDraftData() {
+      return {
+        freieNummer: document.getElementById('freieNummer').value.trim(),
+        baustellenname: document.getElementById('baustellenname').value.trim(),
+        strasse: document.getElementById('strasse').value.trim(),
+        ort: document.getElementById('ort').value.trim(),
+        baustelleWas: document.getElementById('baustelleWas').value.trim(),
+        baustelleBeachten: document.getElementById('baustelleBeachten').value.trim(),
+        dranDenken: document.getElementById('dranDenken').value.trim(),
+        tools: Array.from(document.querySelectorAll('#toolGrid select')).map(sel => sel.value || '')
+      };
+    }
+
+    function applyDraftData(data = {}) {
+      document.getElementById('freieNummer').value = data.freieNummer || '';
+      document.getElementById('baustellenname').value = data.baustellenname || '';
+      document.getElementById('strasse').value = data.strasse || '';
+      document.getElementById('ort').value = data.ort || '';
+      document.getElementById('baustelleWas').value = data.baustelleWas || '';
+      document.getElementById('baustelleBeachten').value = data.baustelleBeachten || '';
+      document.getElementById('dranDenken').value = data.dranDenken || '';
+
+      const toolValues = Array.isArray(data.tools) ? data.tools : [];
+      document.querySelectorAll('#toolGrid select').forEach((sel, idx) => {
+        sel.value = toolValues[idx] || '';
+      });
+    }
+
+    function saveCurrentDraft() {
+      if (!activeTeamKey) return;
+      try {
+        localStorage.setItem(getDraftKey(activeTeamKey), JSON.stringify(collectDraftData()));
+      } catch(e) {}
+    }
+
+    function loadDraft(teamKey) {
+      try {
+        const raw = localStorage.getItem(getDraftKey(teamKey));
+        return raw ? JSON.parse(raw) : null;
+      } catch(e) {
+        return null;
+      }
+    }
+
+    function clearCurrentDraft() {
+      if (!activeTeamKey) return;
+      try {
+        localStorage.removeItem(getDraftKey(activeTeamKey));
+      } catch(e) {}
+
+      applyDraftData({});
+      updateTeamPreview();
     }
 
     function buildMapsLink() {
@@ -1296,23 +1411,25 @@
     }
 
     function updateTeamPreview() {
-      const preview = document.getElementById('messagePreview');
-      preview.textContent = buildTeamMessage();
+      document.getElementById('messagePreview').textContent = buildTeamMessage();
+    }
+
+    function handleDraftInputChange() {
+      saveCurrentDraft();
+      updateTeamPreview();
     }
 
     function openTeamModal(teamKey) {
       activeTeamKey = teamKey;
       document.getElementById('modalTeamTitle').textContent = TEAM_LABELS[teamKey] || 'Team';
+
+      const freeWrap = document.getElementById('freeNumberWrap');
+      freeWrap.style.display = teamKey === 'frei' ? 'flex' : 'none';
+
       document.getElementById('teamModal').classList.add('show');
 
-      document.getElementById('baustellenname').value = '';
-      document.getElementById('strasse').value = '';
-      document.getElementById('ort').value = '';
-      document.getElementById('baustelleWas').value = '';
-      document.getElementById('baustelleBeachten').value = '';
-      document.getElementById('dranDenken').value = '';
-
-      document.querySelectorAll('#toolGrid select').forEach(sel => sel.value = '');
+      const draft = loadDraft(teamKey);
+      applyDraftData(draft || {});
       updateTeamPreview();
     }
 
@@ -1320,10 +1437,19 @@
       document.getElementById('teamModal').classList.remove('show');
     }
 
+    function getTargetNumber() {
+      if (activeTeamKey === 'frei') {
+        return normalizePhone(document.getElementById('freieNummer').value);
+      }
+      return normalizePhone(TEAM_NUMBERS[activeTeamKey] || '');
+    }
+
     function openWhatsAppForTeam() {
-      if (!activeTeamKey) return;
-      const number = TEAM_NUMBERS[activeTeamKey];
-      if (!number) return;
+      const number = getTargetNumber();
+      if (!number) {
+        alert('Bitte eine gültige Telefonnummer eingeben.');
+        return;
+      }
 
       const msg = buildTeamMessage();
       const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg);
@@ -1335,7 +1461,6 @@
       try {
         await navigator.clipboard.writeText(msg);
       } catch(e) {
-        // fallback
         const ta = document.createElement('textarea');
         ta.value = msg;
         document.body.appendChild(ta);
@@ -1353,14 +1478,15 @@
       document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
       document.getElementById('openWhatsAppBtn').addEventListener('click', openWhatsAppForTeam);
       document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
+      document.getElementById('clearDraftBtn').addEventListener('click', clearCurrentDraft);
 
       document.getElementById('teamModal').addEventListener('click', (e) => {
         if (e.target.id === 'teamModal') closeTeamModal();
       });
 
-      ['baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
+      ['freieNummer','baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
         .forEach(id => {
-          document.getElementById(id).addEventListener('input', updateTeamPreview);
+          document.getElementById(id).addEventListener('input', handleDraftInputChange);
         });
     }
 
