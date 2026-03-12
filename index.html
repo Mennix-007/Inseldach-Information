@@ -108,6 +108,8 @@
       flex-direction:column;
       justify-content:flex-end;
       min-height:155px;
+      flex:1;
+      min-width:0;
     }
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
@@ -248,14 +250,12 @@
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
 
-    /* Text-Karten links als echte Flex-Spalten */
     .cardFit{
       display:flex;
       flex-direction:column;
       min-height:0;
     }
 
-    /* Diese Box ist die echte verfügbare Textfläche */
     .scrollBox{
       flex:1;
       min-height:0;
@@ -299,6 +299,178 @@
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
 
+    /* Team Buttons neben QR */
+    .teamButtonGrid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:8px;
+      align-content:start;
+      width:100%;
+    }
+    .teamBtn{
+      border:1px solid rgba(255,255,255,.25);
+      background:#0b0f14;
+      color:#e9eef5;
+      border-radius:10px;
+      padding:10px 8px;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.2;
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease, border-color .12s ease;
+      min-height:52px;
+    }
+    .teamBtn:hover{
+      transform:translateY(-1px);
+      background:#102033;
+      border-color:rgba(255,255,255,.4);
+    }
+
+    /* Modal */
+    .modalOverlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:24px;
+      box-sizing:border-box;
+    }
+    .modalOverlay.show{display:flex;}
+
+    .modalCard{
+      width:min(1100px, 96vw);
+      max-height:92vh;
+      overflow:auto;
+      background:#163d7a;
+      border:1px solid #2f63c6;
+      border-radius:18px;
+      box-shadow:0 20px 70px rgba(0,0,0,.45);
+      padding:20px;
+      box-sizing:border-box;
+    }
+
+    .modalHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    .modalTitle{
+      font-size:28px;
+      font-weight:800;
+      margin:0;
+    }
+    .modalClose{
+      background:#0b0f14;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.28);
+      border-radius:10px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .modalGrid{
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      gap:18px;
+    }
+
+    .editorPanel,
+    .previewPanel{
+      background:#0b0f14;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:16px;
+      box-sizing:border-box;
+    }
+
+    .formGrid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .fullCol{grid-column:1 / -1;}
+
+    .fieldWrap{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .fieldWrap label{
+      font-size:14px;
+      font-weight:700;
+      opacity:.95;
+    }
+    .fieldWrap input,
+    .fieldWrap textarea,
+    .fieldWrap select{
+      width:100%;
+      box-sizing:border-box;
+      background:#101720;
+      color:#e9eef5;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:10px;
+      padding:10px 12px;
+      font:inherit;
+    }
+    .fieldWrap textarea{
+      resize:vertical;
+      min-height:86px;
+    }
+
+    .toolGrid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .previewTitle{
+      margin:0 0 12px;
+      font-size:20px;
+      font-weight:800;
+    }
+    .previewBox{
+      white-space:pre-wrap;
+      line-height:1.45;
+      background:#0f1722;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:12px;
+      padding:14px;
+      min-height:280px;
+      font-size:16px;
+    }
+
+    .modalActions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+    .actionBtn{
+      border:none;
+      border-radius:10px;
+      padding:12px 16px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .btnGhost{
+      background:#223246;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .btnWhatsApp{
+      background:#25D366;
+      color:#111;
+    }
+
     @media (max-width: 900px) {
       .wrap{
         grid-template-columns:1fr;
@@ -325,6 +497,10 @@
       #qrcodeImg{width:160px;height:160px;}
       .qrText{min-height:auto;}
 
+      .teamButtonGrid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
       .wxGrid{grid-template-columns:1fr;}
       :root{
         --wxH: 260px;
@@ -342,6 +518,16 @@
       h2{font-size:24px;}
 
       .ticker{height:72px;}
+
+      .modalGrid{
+        grid-template-columns:1fr;
+      }
+      .toolGrid{
+        grid-template-columns:1fr;
+      }
+      .formGrid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -410,8 +596,17 @@
                 src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https%3A%2F%2Fmennix-007.github.io%2FInseldach-Information%2F"
               />
             </div>
+
             <div class="qrText">
-              <div id="qrLabel">Scannen für Handy-Ansicht</div>
+              <div class="teamButtonGrid">
+                <button class="teamBtn" data-team="steildach">Team Steildach</button>
+                <button class="teamBtn" data-team="flachdach">Team Flachdach</button>
+                <button class="teamBtn" data-team="klempner">Team Klempner</button>
+                <button class="teamBtn" data-team="reparatur">Team Reparatur</button>
+                <button class="teamBtn" data-team="zimmermann">Team Zimmermann</button>
+              </div>
+
+              <div style="margin-top:10px;" id="qrLabel">Scannen für Handy-Ansicht</div>
               <div class="mono" id="qrSub"></div>
               <div class="error" id="qrErr" style="display:none;"></div>
             </div>
@@ -490,6 +685,67 @@
     </div>
   </div>
 
+  <!-- Modal Team WhatsApp -->
+  <div class="modalOverlay" id="teamModal">
+    <div class="modalCard">
+      <div class="modalHead">
+        <h3 class="modalTitle" id="modalTeamTitle">Team</h3>
+        <button class="modalClose" id="modalCloseBtn" type="button">Schließen</button>
+      </div>
+
+      <div class="modalGrid">
+        <div class="editorPanel">
+          <div class="formGrid">
+            <div class="fieldWrap fullCol">
+              <label for="baustellenname">Baustellenname</label>
+              <input id="baustellenname" type="text" placeholder="z. B. Haus Alter Leuchtturm">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="strasse">Straße</label>
+              <input id="strasse" type="text" placeholder="Straße">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="ort">Ort</label>
+              <input id="ort" type="text" placeholder="Ort">
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="baustelleWas">Um was geht es hier an dieser Baustelle</label>
+              <textarea id="baustelleWas" placeholder="Beschreibung"></textarea>
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="baustelleBeachten">Was muss hier beachtet werden</label>
+              <textarea id="baustelleBeachten" placeholder="Hinweise / Besonderheiten"></textarea>
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label>Werkzeugauswahl</label>
+              <div class="toolGrid" id="toolGrid"></div>
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="dranDenken">Bitte dran denken an</label>
+              <textarea id="dranDenken" placeholder="Zusätzliche Erinnerung"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="previewPanel">
+          <h4 class="previewTitle">Vorschau</h4>
+          <div class="previewBox" id="messagePreview"></div>
+
+          <div class="modalActions">
+            <button class="actionBtn btnGhost" type="button" id="copyPreviewBtn">Text kopieren</button>
+            <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtn">In WhatsApp öffnen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
@@ -510,6 +766,42 @@
     let wxTimer   = null;
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
+
+    /* Einstellbare Teamnummern */
+    const TEAM_NUMBERS = {
+      steildach:   "48505743447",
+      flachdach:   "4917643377953",
+      klempner:    "48798667768",
+      reparatur:   "4917671743368",
+      zimmermann:  "4917697849068"
+    };
+
+    const TEAM_LABELS = {
+      steildach: "Team Steildach",
+      flachdach: "Team Flachdach",
+      klempner: "Team Klempner",
+      reparatur: "Team Reparatur",
+      zimmermann: "Team Zimmermann"
+    };
+
+    /* Werkzeugliste später hier einfach erweitern */
+    const TOOL_OPTIONS = [
+      "Brenner",
+      "Akkuschrauben",
+      "große Flex",
+      "Dachschneider",
+      "Motor Schiebkarre",
+      "Kran",
+      "Lötkolben",
+      "Kernborhrmaschiene",
+      "Schiebkarre",
+      "Krangabel",
+      "Kranbottich",
+      "Lange Leiter",
+      "5 m Leiter"
+    ];
+
+    let activeTeamKey = null;
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -607,8 +899,6 @@
         li.style.marginBottom = baseMargin + 'px';
       });
 
-      // Flughafen-/Bahnhof-Effekt:
-      // verfügbare Resthöhe zuerst für Zeilenabstand, dann für Luft zwischen Punkten nutzen
       for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
         list.style.lineHeight = lh.toFixed(2);
         if (list.scrollHeight <= box.clientHeight) {
@@ -635,7 +925,6 @@
         }
       }
 
-      // Bei nur einem Punkt etwas angenehmer im Feld platzieren
       if (items.length === 1) {
         const spare = box.clientHeight - list.scrollHeight;
         if (spare > 0) {
@@ -896,6 +1185,185 @@
       }
     }
 
+    /* Team Modal */
+    function createToolSelect(index) {
+      const wrap = document.createElement('div');
+      wrap.className = 'fieldWrap';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', 'tool_' + index);
+      label.textContent = 'Werkzeug ' + (index + 1);
+
+      const select = document.createElement('select');
+      select.id = 'tool_' + index;
+      select.dataset.toolIndex = String(index);
+
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = '-- Werkzeug auswählen --';
+      select.appendChild(placeholder);
+
+      TOOL_OPTIONS.forEach(tool => {
+        const opt = document.createElement('option');
+        opt.value = tool;
+        opt.textContent = tool;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener('change', updateTeamPreview);
+
+      wrap.appendChild(label);
+      wrap.appendChild(select);
+      return wrap;
+    }
+
+    function initToolGrid() {
+      const toolGrid = document.getElementById('toolGrid');
+      toolGrid.innerHTML = '';
+      for (let i = 0; i < 12; i++) {
+        toolGrid.appendChild(createToolSelect(i));
+      }
+    }
+
+    function getSelectedTools() {
+      return Array.from(document.querySelectorAll('#toolGrid select'))
+        .map(sel => sel.value.trim())
+        .filter(Boolean);
+    }
+
+    function buildMapsLink() {
+      const baustelle = document.getElementById('baustellenname').value.trim();
+      const strasse = document.getElementById('strasse').value.trim();
+      const ort = document.getElementById('ort').value.trim();
+      const query = [baustelle, strasse, ort].filter(Boolean).join(', ');
+      if (!query) return '';
+      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+    }
+
+    function buildTeamMessage() {
+      const team = TEAM_LABELS[activeTeamKey] || 'Team';
+      const baustelle = document.getElementById('baustellenname').value.trim();
+      const strasse = document.getElementById('strasse').value.trim();
+      const ort = document.getElementById('ort').value.trim();
+      const was = document.getElementById('baustelleWas').value.trim();
+      const beachten = document.getElementById('baustelleBeachten').value.trim();
+      const dranDenken = document.getElementById('dranDenken').value.trim();
+      const tools = getSelectedTools();
+      const mapsLink = buildMapsLink();
+
+      const lines = [];
+      lines.push(team);
+      lines.push('');
+
+      if (baustelle) lines.push('Baustelle: ' + baustelle);
+      if (strasse) lines.push('Straße: ' + strasse);
+      if (ort) lines.push('Ort: ' + ort);
+
+      if (was) {
+        lines.push('');
+        lines.push('Um was geht es hier an dieser Baustelle:');
+        lines.push(was);
+      }
+
+      if (beachten) {
+        lines.push('');
+        lines.push('Was muss hier beachtet werden:');
+        lines.push(beachten);
+      }
+
+      if (tools.length) {
+        lines.push('');
+        lines.push('Werkzeug:');
+        tools.forEach(tool => lines.push('- ' + tool));
+      }
+
+      if (dranDenken) {
+        lines.push('');
+        lines.push('Bitte dran denken an:');
+        lines.push(dranDenken);
+      }
+
+      lines.push('');
+      lines.push('Wir wünschen viel Erfolg heute.');
+
+      if (mapsLink) {
+        lines.push('');
+        lines.push('Google Maps:');
+        lines.push(mapsLink);
+      }
+
+      return lines.join('\n');
+    }
+
+    function updateTeamPreview() {
+      const preview = document.getElementById('messagePreview');
+      preview.textContent = buildTeamMessage();
+    }
+
+    function openTeamModal(teamKey) {
+      activeTeamKey = teamKey;
+      document.getElementById('modalTeamTitle').textContent = TEAM_LABELS[teamKey] || 'Team';
+      document.getElementById('teamModal').classList.add('show');
+
+      document.getElementById('baustellenname').value = '';
+      document.getElementById('strasse').value = '';
+      document.getElementById('ort').value = '';
+      document.getElementById('baustelleWas').value = '';
+      document.getElementById('baustelleBeachten').value = '';
+      document.getElementById('dranDenken').value = '';
+
+      document.querySelectorAll('#toolGrid select').forEach(sel => sel.value = '');
+      updateTeamPreview();
+    }
+
+    function closeTeamModal() {
+      document.getElementById('teamModal').classList.remove('show');
+    }
+
+    function openWhatsAppForTeam() {
+      if (!activeTeamKey) return;
+      const number = TEAM_NUMBERS[activeTeamKey];
+      if (!number) return;
+
+      const msg = buildTeamMessage();
+      const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg);
+      window.open(url, '_blank');
+    }
+
+    async function copyPreviewText() {
+      const msg = buildTeamMessage();
+      try {
+        await navigator.clipboard.writeText(msg);
+      } catch(e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+    }
+
+    function bindModalEvents() {
+      document.querySelectorAll('.teamBtn').forEach(btn => {
+        btn.addEventListener('click', () => openTeamModal(btn.dataset.team));
+      });
+
+      document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
+      document.getElementById('openWhatsAppBtn').addEventListener('click', openWhatsAppForTeam);
+      document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
+
+      document.getElementById('teamModal').addEventListener('click', (e) => {
+        if (e.target.id === 'teamModal') closeTeamModal();
+      });
+
+      ['baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
+        .forEach(id => {
+          document.getElementById(id).addEventListener('input', updateTeamPreview);
+        });
+    }
+
     function startIntervals() {
       if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
       if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
@@ -925,6 +1393,8 @@
     tickTime();
     setInterval(tickTime, 1000);
 
+    initToolGrid();
+    bindModalEvents();
     startIntervals();
     startTicker();
 
