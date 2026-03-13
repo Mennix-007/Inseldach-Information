@@ -806,8 +806,8 @@
           <div class="modalActions">
             <button class="actionBtn btnGhost" type="button" id="copyPreviewBtnPl">Text kopieren</button>
             <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtnPl">WhatsApp Polnisch</button>
+          </div>
         </div>
-       </div>
       </div>
     </div>
   </div>
@@ -1604,6 +1604,25 @@
       }
     }
 
+    async function copyPreviewTextPl() {
+      const msg = lastPolishMessage || '';
+      if (!msg) {
+        alert('Es ist noch keine polnische Übersetzung vorhanden.');
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(msg);
+      } catch(e) {
+        const ta = document.createElement('textarea');
+        ta.value = msg;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+    }
+
     function bindModalEvents() {
       document.querySelectorAll('.teamBtn').forEach(btn => {
         btn.addEventListener('click', () => openTeamModal(btn.dataset.team));
@@ -1611,6 +1630,7 @@
 
       document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
       document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
+      document.getElementById('copyPreviewBtnPl').addEventListener('click', copyPreviewTextPl);
       document.getElementById('clearDraftBtn').addEventListener('click', clearCurrentDraft);
       document.getElementById('openWhatsAppBtnDe').addEventListener('click', () => {
         openWhatsAppWithText(buildGermanMessage());
