@@ -110,7 +110,7 @@
       min-height:155px;
       flex:1;
       min-width:0;
-      padding-right:155px; /* Platz fürs Logo oben rechts */
+      padding-right:215px;
       box-sizing:border-box;
     }
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
@@ -124,7 +124,7 @@
       display:flex;
       align-items:flex-start;
       justify-content:flex-end;
-      max-width:360px;
+      max-width:420px;
       z-index:2;
     }
     .logoTopRight{
@@ -302,7 +302,6 @@
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
 
-    /* Team Buttons */
     .teamButtonShell{
       display:grid;
       grid-template-columns:120px 120px;
@@ -317,7 +316,7 @@
       gap:8px;
     }
     .teamButtonCol.rightOffset{
-      margin-top:28px; /* rechte 2 Buttons tiefer */
+      margin-top:28px;
     }
     .teamButtonBottom{
       grid-column:1 / -1;
@@ -348,7 +347,6 @@
       width:250px;
     }
 
-    /* Modal */
     .modalOverlay{
       position:fixed;
       inset:0;
@@ -363,7 +361,7 @@
     .modalOverlay.show{display:flex;}
 
     .modalCard{
-      width:min(1100px, 96vw);
+      width:min(1180px, 96vw);
       max-height:92vh;
       overflow:auto;
       background:#163d7a;
@@ -398,7 +396,7 @@
 
     .modalGrid{
       display:grid;
-      grid-template-columns:1.1fr 1fr;
+      grid-template-columns:1.05fr 1fr 1fr;
       gap:18px;
     }
 
@@ -466,6 +464,13 @@
       padding:14px;
       min-height:280px;
       font-size:16px;
+    }
+
+    .translateStatus{
+      font-size:13px;
+      color:#d7e7ff;
+      margin-top:8px;
+      min-height:18px;
     }
 
     .modalActions{
@@ -549,7 +554,7 @@
       .windyWrap{min-height:var(--windyMinH);}
       #camImg{height:var(--camH);}
 
-      .logoTopRight{height:90px;}
+      .logoTopRight{height:120px;}
 
       .brand{font-size:26px}
       ul{font-size:20px;}
@@ -730,7 +735,6 @@
     </div>
   </div>
 
-  <!-- Modal Team WhatsApp -->
   <div class="modalOverlay" id="teamModal">
     <div class="modalCard">
       <div class="modalHead">
@@ -784,13 +788,23 @@
         </div>
 
         <div class="previewPanel">
-          <h4 class="previewTitle">Vorschau</h4>
-          <div class="previewBox" id="messagePreview"></div>
+          <h4 class="previewTitle">Vorschau Deutsch</h4>
+          <div class="previewBox" id="messagePreviewDe"></div>
+          <div class="translateStatus" id="translateStatus"></div>
 
           <div class="modalActions">
-            <button class="actionBtn btnDanger" type="button" id="clearDraftBtn">Inhalt löschen und Neu</button>
             <button class="actionBtn btnGhost" type="button" id="copyPreviewBtn">Text kopieren</button>
-            <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtn">In WhatsApp öffnen</button>
+            <button class="actionBtn btnDanger" type="button" id="clearDraftBtn">Inhalt löschen und Neu</button>
+            <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtnDe">WhatsApp Deutsch</button>
+          </div>
+        </div>
+
+        <div class="previewPanel">
+          <h4 class="previewTitle">Vorschau Polnisch</h4>
+          <div class="previewBox" id="messagePreviewPl"></div>
+
+          <div class="modalActions">
+            <button class="actionBtn btnWhatsApp" type="button" id="openWhatsAppBtnPl">WhatsApp Polnisch</button>
           </div>
         </div>
       </div>
@@ -818,7 +832,6 @@
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
 
-    /* WhatsApp-Zielnummern hier ändern, falls sich später eine Nummer ändert */
     const TEAM_NUMBERS = {
       steildach:   "48505743447",
       flachdach:   "4917643377953",
@@ -836,13 +849,11 @@
       frei: "Mitarbeiter wählen"
     };
 
-    /* Werkzeugliste hier später einfach erweitern */
     const TOOL_OPTIONS = [
       "Brenner",
       "Akkuschrauben",
       "große Flex",
       "Dachschneider",
-      "Bezinkanister voll",
       "Motor Schiebkarre",
       "Kran",
       "Lötkolben",
@@ -855,6 +866,7 @@
     ];
 
     let activeTeamKey = null;
+    let lastPolishMessage = '';
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -1238,8 +1250,6 @@
       }
     }
 
-    /* ========== Team Modal / WhatsApp ========== */
-
     function getDraftKey(teamKey) {
       return 'teamDraft_' + teamKey;
     }
@@ -1344,6 +1354,7 @@
       } catch(e) {}
 
       applyDraftData({});
+      lastPolishMessage = '';
       updateTeamPreview();
     }
 
@@ -1356,7 +1367,7 @@
       return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
     }
 
-    function buildTeamMessage() {
+    function buildGermanMessage() {
       const team = TEAM_LABELS[activeTeamKey] || 'Team';
       const baustelle = document.getElementById('baustellenname').value.trim();
       const strasse = document.getElementById('strasse').value.trim();
@@ -1411,8 +1422,130 @@
       return lines.join('\n');
     }
 
-    function updateTeamPreview() {
-      document.getElementById('messagePreview').textContent = buildTeamMessage();
+    async function translateTextArray(texts) {
+      const res = await fetch('/.netlify/functions/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'de',
+          target: 'pl',
+          texts
+        })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || 'Übersetzung fehlgeschlagen.');
+      }
+      return data.translations || [];
+    }
+
+    async function buildPolishMessage() {
+      const team = TEAM_LABELS[activeTeamKey] || 'Team';
+      const baustelle = document.getElementById('baustellenname').value.trim();
+      const strasse = document.getElementById('strasse').value.trim();
+      const ort = document.getElementById('ort').value.trim();
+      const was = document.getElementById('baustelleWas').value.trim();
+      const beachten = document.getElementById('baustelleBeachten').value.trim();
+      const dranDenken = document.getElementById('dranDenken').value.trim();
+      const tools = getSelectedTools();
+      const mapsLink = buildMapsLink();
+
+      const translateParts = [
+        team,
+        'Um was geht es hier an dieser Baustelle:',
+        was,
+        'Was muss hier beachtet werden:',
+        beachten,
+        'Werkzeug:',
+        ...tools,
+        'Bitte dran denken an:',
+        dranDenken,
+        'Wir wünschen viel Erfolg heute.'
+      ];
+
+      const translated = await translateTextArray(translateParts);
+
+      let i = 0;
+      const teamPl = translated[i++] || team;
+      const titleWasPl = translated[i++] || 'Um was geht es hier an dieser Baustelle:';
+      const wasPl = translated[i++] || was;
+      const titleBeachtenPl = translated[i++] || 'Was muss hier beachtet werden:';
+      const beachtenPl = translated[i++] || beachten;
+      const titleWerkzeugPl = translated[i++] || 'Werkzeug:';
+
+      const toolsPl = [];
+      for (let x = 0; x < tools.length; x++) {
+        toolsPl.push(translated[i++] || tools[x]);
+      }
+
+      const titleDranPl = translated[i++] || 'Bitte dran denken an:';
+      const dranPl = translated[i++] || dranDenken;
+      const closingPl = translated[i++] || 'Wir wünschen viel Erfolg heute.';
+
+      const lines = [];
+      lines.push(teamPl);
+      lines.push('');
+
+      if (baustelle) lines.push('Baustelle: ' + baustelle);
+      if (strasse) lines.push('Straße: ' + strasse);
+      if (ort) lines.push('Ort: ' + ort);
+
+      if (wasPl) {
+        lines.push('');
+        lines.push(titleWasPl);
+        lines.push(wasPl);
+      }
+
+      if (beachtenPl) {
+        lines.push('');
+        lines.push(titleBeachtenPl);
+        lines.push(beachtenPl);
+      }
+
+      if (toolsPl.length) {
+        lines.push('');
+        lines.push(titleWerkzeugPl);
+        toolsPl.forEach(tool => lines.push('- ' + tool));
+      }
+
+      if (dranPl) {
+        lines.push('');
+        lines.push(titleDranPl);
+        lines.push(dranPl);
+      }
+
+      lines.push('');
+      lines.push(closingPl);
+
+      if (mapsLink) {
+        lines.push('');
+        lines.push('Google Maps:');
+        lines.push(mapsLink);
+      }
+
+      return lines.join('\n');
+    }
+
+    async function updateTeamPreview() {
+      const german = buildGermanMessage();
+      document.getElementById('messagePreviewDe').textContent = german;
+
+      const status = document.getElementById('translateStatus');
+      const previewPl = document.getElementById('messagePreviewPl');
+
+      status.textContent = 'Übersetze ins Polnische …';
+      previewPl.textContent = 'Übersetze …';
+
+      try {
+        lastPolishMessage = await buildPolishMessage();
+        previewPl.textContent = lastPolishMessage;
+        status.textContent = 'Polnische Übersetzung bereit.';
+      } catch (err) {
+        lastPolishMessage = '';
+        previewPl.textContent = 'Übersetzung konnte nicht geladen werden.';
+        status.textContent = 'Fehler: ' + err.message;
+      }
     }
 
     function handleDraftInputChange() {
@@ -1431,6 +1564,7 @@
 
       const draft = loadDraft(teamKey);
       applyDraftData(draft || {});
+      lastPolishMessage = '';
       updateTeamPreview();
     }
 
@@ -1445,20 +1579,18 @@
       return normalizePhone(TEAM_NUMBERS[activeTeamKey] || '');
     }
 
-    function openWhatsAppForTeam() {
+    function openWhatsAppWithText(text) {
       const number = getTargetNumber();
       if (!number) {
         alert('Bitte eine gültige Telefonnummer eingeben.');
         return;
       }
-
-      const msg = buildTeamMessage();
-      const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(msg);
+      const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
       window.open(url, '_blank');
     }
 
     async function copyPreviewText() {
-      const msg = buildTeamMessage();
+      const msg = buildGermanMessage();
       try {
         await navigator.clipboard.writeText(msg);
       } catch(e) {
@@ -1477,9 +1609,18 @@
       });
 
       document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
-      document.getElementById('openWhatsAppBtn').addEventListener('click', openWhatsAppForTeam);
       document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
       document.getElementById('clearDraftBtn').addEventListener('click', clearCurrentDraft);
+      document.getElementById('openWhatsAppBtnDe').addEventListener('click', () => {
+        openWhatsAppWithText(buildGermanMessage());
+      });
+      document.getElementById('openWhatsAppBtnPl').addEventListener('click', () => {
+        if (!lastPolishMessage) {
+          alert('Die polnische Übersetzung ist noch nicht bereit.');
+          return;
+        }
+        openWhatsAppWithText(lastPolishMessage);
+      });
 
       document.getElementById('teamModal').addEventListener('click', (e) => {
         if (e.target.id === 'teamModal') closeTeamModal();
