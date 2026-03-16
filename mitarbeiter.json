@@ -1,1 +1,43 @@
-
+{
+  "teams": [
+    {
+      "key": "steildach",
+      "label": "Team Steildach",
+      "phone": "48505743447"
+    },
+    {
+      "key": "flachdach",
+      "label": "Team Flachdach",
+      "phone": "4917643377953"
+    },
+    {
+      "key": "klempner",
+      "label": "Team Klempner",
+      "phone": "48798667768"
+    },
+    {
+      "key": "reparatur",
+      "label": "Team Reparatur",
+      "phone": "4917671743368"
+    },
+    {
+      "key": "zimmermann",
+      "label": "Team Zimmermann",
+      "phone": "4917697849068"
+    }
+  ],
+  "employees": [
+    {
+      "name": "Mitarbeiter 1",
+      "phone": "491700000001"
+    },
+    {
+      "name": "Mitarbeiter 2",
+      "phone": "491700000002"
+    },
+    {
+      "name": "Mitarbeiter 3",
+      "phone": "491700000003"
+    }
+  ]
+}
