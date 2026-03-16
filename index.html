@@ -70,7 +70,8 @@
       height:52px;
       display:flex;
       align-items:center;
-      overflow:hidden
+      overflow:hidden;
+      z-index:100;
     }
     .ticker .inner{
       white-space:nowrap;
@@ -653,17 +654,17 @@
               />
             </div>
 
-           <div class="rightControlWrap">
-  <div>
-    <button class="adminMainBtn" id="openAdminAreaBtn" type="button">
-      ADMIN<br>BEREICH
-    </button>
+            <div class="rightControlWrap">
+              <div>
+                <button class="adminMainBtn" id="openAdminAreaBtn" type="button">
+                  ADMIN<br>BEREICH
+                </button>
 
-    <div id="qrLabel" style="display:none;">Scannen für Handy-Ansicht</div>
-    <div class="mono" id="qrSub" style="display:none;"></div>
-    <div class="error" id="qrErr" style="display:none;"></div>
-  </div>
-</div>
+                <div id="qrLabel" style="display:none;">Scannen für Handy-Ansicht</div>
+                <div class="mono" id="qrSub" style="display:none;"></div>
+                <div class="error" id="qrErr" style="display:none;"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -739,7 +740,6 @@
     </div>
   </div>
 
-  <!-- Auswahlfenster Admin -->
   <div class="modalOverlay" id="adminChoiceModal">
     <div class="modalCard" style="width:min(900px, 96vw);">
       <div class="modalHead">
@@ -758,7 +758,6 @@
     </div>
   </div>
 
-  <!-- Auswahl mehrere Mitarbeiter -->
   <div class="modalOverlay" id="employeeSelectModal">
     <div class="modalCard" style="width:min(980px, 96vw);">
       <div class="modalHead">
@@ -778,7 +777,6 @@
     </div>
   </div>
 
-  <!-- Hauptformular -->
   <div class="modalOverlay" id="teamModal">
     <div class="modalCard">
       <div class="modalHead">
@@ -894,35 +892,39 @@
 
     function tickTime() {
       const now = new Date();
-      document.getElementById('clock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-      document.getElementById('weekday').textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
-      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
+      const clock = document.getElementById('clock');
+      const weekday = document.getElementById('weekday');
+      const date = document.getElementById('date');
+
+      if (clock) clock.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      if (weekday) weekday.textContent = now.toLocaleDateString('de-DE', { weekday:'long' });
+      if (date) date.textContent = now.toLocaleDateString('de-DE', { year:'numeric', month:'2-digit', day:'2-digit' });
     }
 
     function setQr(url){
-  const img = document.getElementById('qrcodeImg');
-  const err = document.getElementById('qrErr');
+      const img = document.getElementById('qrcodeImg');
+      const err = document.getElementById('qrErr');
 
-  if (!img) return;
+      if (!img) return;
 
-  if (err) {
-    err.style.display = 'none';
-    err.textContent = '';
-  }
+      if (err) {
+        err.style.display = 'none';
+        err.textContent = '';
+      }
 
-  img.onerror = () => {
-    if (err) {
-      err.style.display = 'block';
-      err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
+      img.onerror = () => {
+        if (err) {
+          err.style.display = 'block';
+          err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
+        }
+      };
+
+      const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
+                + encodeURIComponent(url)
+                + "&nocache=" + Date.now();
+
+      img.src = src;
     }
-  };
-
-  const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
-            + encodeURIComponent(url)
-            + "&nocache=" + Date.now();
-
-  img.src = src;
-}
 
     function escapeHtml(str){
       return String(str)
@@ -1385,6 +1387,22 @@
       placeholder.value = '';
       placeholder.textContent = '-- Werkzeug auswählen --';
       select.appendChild(placeholder);
+
+      const TOOL_OPTIONS = [
+        "Brenner",
+        "Akkuschrauben",
+        "große Flex",
+        "Dachschneider",
+        "Motor Schiebkarre",
+        "Kran",
+        "Lötkolben",
+        "Kernborhrmaschiene",
+        "Schiebkarre",
+        "Krangabel",
+        "Kranbottich",
+        "Lange Leiter",
+        "5 m Leiter"
+      ];
 
       TOOL_OPTIONS.forEach(tool => {
         const opt = document.createElement('option');
@@ -1887,7 +1905,8 @@
 
       ['baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
         .forEach(id => {
-          document.getElementById(id).addEventListener('input', handleDraftInputChange);
+          const el = document.getElementById(id);
+          if (el) el.addEventListener('input', handleDraftInputChange);
         });
     }
 
@@ -1917,19 +1936,19 @@
       }
     });
 
-   document.addEventListener('DOMContentLoaded', async () => {
-  tickTime();
-  setInterval(tickTime, 1000);
+    document.addEventListener('DOMContentLoaded', async () => {
+      tickTime();
+      setInterval(tickTime, 1000);
 
-  initToolGrid();
-  bindModalEvents();
-  await loadContacts();
-  startIntervals();
-  startTicker();
+      initToolGrid();
+      bindModalEvents();
+      await loadContacts();
+      startIntervals();
+      startTicker();
 
-  fitAllLeftLists();
-  setTimeout(fitAllLeftLists, 220);
-});
+      fitAllLeftLists();
+      setTimeout(fitAllLeftLists, 220);
+    });
   </script>
 </body>
 </html>
