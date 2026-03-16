@@ -1917,19 +1917,19 @@
       }
     });
 
-    tickTime();
-    setInterval(tickTime, 1000);
+   window.addEventListener('load', async () => {
+  tickTime();
+  setInterval(tickTime, 1000);
 
-    initToolGrid();
-    bindModalEvents();
-    loadContacts();
-    startIntervals();
-    startTicker();
+  initToolGrid();
+  bindModalEvents();
+  await loadContacts();
+  startIntervals();
+  startTicker();
 
-    window.addEventListener('load', () => {
-      fitAllLeftLists();
-      setTimeout(fitAllLeftLists, 220);
-    });
+  fitAllLeftLists();
+  setTimeout(fitAllLeftLists, 220);
+});
   </script>
 </body>
 </html>
