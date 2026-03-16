@@ -101,18 +101,43 @@
       width:140px;height:140px;
       object-fit:contain;
     }
-    .qrText{
-      font-size:18px;
-      opacity:.95;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      min-height:155px;
+
+    .rightControlWrap{
       flex:1;
       min-width:0;
+      min-height:155px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
       padding-right:215px;
       box-sizing:border-box;
     }
+
+    .adminMainBtn{
+      width:155px;
+      height:155px;
+      border:2px solid #c9a800;
+      background:#ffd400;
+      color:#000;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      cursor:pointer;
+      font-size:24px;
+      font-weight:900;
+      line-height:1.15;
+      letter-spacing:.5px;
+      box-sizing:border-box;
+      transition:transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .adminMainBtn:hover{
+      transform:translateY(-1px);
+      background:#ffe14a;
+      border-color:#e0b800;
+    }
+
     .mono{font-family:Consolas, Monaco, monospace; font-size:12px; opacity:.8; word-break:break-all}
     .error{color:#ffe2e2; font-size:16px; margin-top:8px}
 
@@ -248,7 +273,6 @@
     }
 
     .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
-
     .leftHeute{flex:4.55; min-height:0;}
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
@@ -301,51 +325,6 @@
     }
     .hintImgBox.hidden{display:none;}
     .hintTextCard{ min-height:0; }
-
-    .teamButtonShell{
-      display:grid;
-      grid-template-columns:120px 120px;
-      gap:8px 10px;
-      align-items:start;
-      width:max-content;
-      max-width:100%;
-    }
-    .teamButtonCol{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .teamButtonCol.rightOffset{
-      margin-top:28px;
-    }
-    .teamButtonBottom{
-      grid-column:1 / -1;
-      margin-top:2px;
-    }
-    .teamBtn{
-      border:1px solid #c9a800;
-      background:#ffd400;
-      color:#000;
-      border-radius:10px;
-      padding:9px 8px;
-      font-size:13px;
-      font-weight:800;
-      line-height:1.15;
-      cursor:pointer;
-      transition:transform .12s ease, background .12s ease, border-color .12s ease;
-      min-height:48px;
-      box-sizing:border-box;
-      width:120px;
-      text-align:center;
-    }
-    .teamBtn:hover{
-      transform:translateY(-1px);
-      background:#ffe14a;
-      border-color:#e0b800;
-    }
-    .teamBtn.wide{
-      width:250px;
-    }
 
     .modalOverlay{
       position:fixed;
@@ -401,7 +380,8 @@
     }
 
     .editorPanel,
-    .previewPanel{
+    .previewPanel,
+    .selectPanel{
       background:#0b0f14;
       border:1px solid rgba(255,255,255,.18);
       border-radius:14px;
@@ -502,6 +482,49 @@
       background:#25D366;
       color:#111;
     }
+    .btnYellow{
+      background:#ffd400;
+      color:#000;
+      border:1px solid #c9a800;
+    }
+
+    .teamChoiceGrid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:10px;
+    }
+    .teamChoiceBtn{
+      border:1px solid #c9a800;
+      background:#ffd400;
+      color:#000;
+      border-radius:12px;
+      padding:16px 12px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+      min-height:64px;
+      text-align:center;
+    }
+
+    .employeeList{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    .employeeCheck{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:10px;
+      background:#101720;
+    }
+    .employeeCheck input{
+      transform:scale(1.2);
+    }
 
     @media (max-width: 900px) {
       .wrap{
@@ -513,7 +536,6 @@
 
       .leftStack{height:auto;}
       .leftHeute,.leftDauerRow,.leftLang{flex:initial;min-height:unset;}
-
       .leftHeute{ min-height: 46vh; }
 
       .hintSplitRow{
@@ -527,21 +549,13 @@
       .qrBox{flex-direction:column;align-items:stretch;}
       .qrWrap{width:180px;height:180px;}
       #qrcodeImg{width:160px;height:160px;}
-      .qrText{
+      .rightControlWrap{
         min-height:auto;
         padding-right:0;
       }
-
-      .teamButtonShell{
-        grid-template-columns:1fr 1fr;
-        width:100%;
-      }
-      .teamButtonCol.rightOffset{
-        margin-top:0;
-      }
-      .teamBtn,
-      .teamBtn.wide{
-        width:100%;
+      .adminMainBtn{
+        width:180px;
+        height:180px;
       }
 
       .wxGrid{grid-template-columns:1fr;}
@@ -559,15 +573,14 @@
       .brand{font-size:26px}
       ul{font-size:20px;}
       h2{font-size:24px;}
-
       .ticker{height:72px;}
 
       .modalGrid{
         grid-template-columns:1fr;
       }
-      .toolGrid{
-        grid-template-columns:1fr;
-      }
+      .toolGrid,
+      .employeeList,
+      .teamChoiceGrid,
       .formGrid{
         grid-template-columns:1fr;
       }
@@ -640,25 +653,10 @@
               />
             </div>
 
-            <div class="qrText">
-              <div class="teamButtonShell">
-                <div class="teamButtonCol">
-                  <button class="teamBtn" data-team="steildach">Team Steildach</button>
-                  <button class="teamBtn" data-team="flachdach">Team Flachdach</button>
-                  <button class="teamBtn" data-team="klempner">Team Klempner</button>
-                </div>
-                <div class="teamButtonCol rightOffset">
-                  <button class="teamBtn" data-team="reparatur">Team Reparatur</button>
-                  <button class="teamBtn" data-team="zimmermann">Team Zimmermann</button>
-                </div>
-                <div class="teamButtonBottom">
-                  <button class="teamBtn wide" data-team="frei">Mitarbeiter wählen</button>
-                </div>
-              </div>
-
-              <div style="margin-top:10px;" id="qrLabel">Scannen für Handy-Ansicht</div>
-              <div class="mono" id="qrSub"></div>
-              <div class="error" id="qrErr" style="display:none;"></div>
+            <div class="rightControlWrap">
+              <button class="adminMainBtn" id="openAdminAreaBtn" type="button">
+                ADMIN<br>BEREICH
+              </button>
             </div>
           </div>
         </div>
@@ -735,6 +733,46 @@
     </div>
   </div>
 
+  <!-- Auswahlfenster Admin -->
+  <div class="modalOverlay" id="adminChoiceModal">
+    <div class="modalCard" style="width:min(900px, 96vw);">
+      <div class="modalHead">
+        <h3 class="modalTitle">BENACHRICHTIGUNG AN MITARBEITER</h3>
+        <button class="modalClose" id="closeAdminChoiceBtn" type="button">Schließen</button>
+      </div>
+
+      <div class="selectPanel">
+        <div class="previewTitle">Team auswählen</div>
+        <div class="teamChoiceGrid" id="teamChoiceGrid"></div>
+
+        <div class="modalActions" style="justify-content:flex-start;">
+          <button class="actionBtn btnYellow" id="openAllEmployeesBtn" type="button">Alle Mitarbeiter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auswahl mehrere Mitarbeiter -->
+  <div class="modalOverlay" id="employeeSelectModal">
+    <div class="modalCard" style="width:min(980px, 96vw);">
+      <div class="modalHead">
+        <h3 class="modalTitle">Mitarbeiter auswählen</h3>
+        <button class="modalClose" id="closeEmployeeSelectBtn" type="button">Schließen</button>
+      </div>
+
+      <div class="selectPanel">
+        <div class="employeeList" id="employeeList"></div>
+
+        <div class="modalActions" style="justify-content:flex-start;">
+          <button class="actionBtn btnGhost" id="selectAllEmployeesBtn" type="button">Alle markieren</button>
+          <button class="actionBtn btnDanger" id="clearEmployeeSelectionBtn" type="button">Auswahl löschen</button>
+          <button class="actionBtn btnWhatsApp" id="confirmEmployeeSelectionBtn" type="button">Weiter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hauptformular -->
   <div class="modalOverlay" id="teamModal">
     <div class="modalCard">
       <div class="modalHead">
@@ -748,6 +786,11 @@
             <div class="fieldWrap fullCol" id="freeNumberWrap" style="display:none;">
               <label for="freieNummer">Telefonnummer frei eingeben</label>
               <input id="freieNummer" type="text" placeholder="z. B. 491721234567">
+            </div>
+
+            <div class="fieldWrap fullCol" id="multiEmployeeInfoWrap" style="display:none;">
+              <label>Ausgewählte Mitarbeiter</label>
+              <div id="selectedEmployeeInfo" style="background:#101720;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:10px 12px;min-height:42px;"></div>
             </div>
 
             <div class="fieldWrap fullCol">
@@ -833,40 +876,12 @@
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
 
-    const TEAM_NUMBERS = {
-      steildach:   "48505743447",
-      flachdach:   "4917643377953",
-      klempner:    "48798667768",
-      reparatur:   "4917671743368",
-      zimmermann:  "4917697849068"
-    };
-
-    const TEAM_LABELS = {
-      steildach: "Team Steildach",
-      flachdach: "Team Flachdach",
-      klempner: "Team Klempner",
-      reparatur: "Team Reparatur",
-      zimmermann: "Team Zimmermann",
-      frei: "Mitarbeiter wählen"
-    };
-
-    const TOOL_OPTIONS = [
-      "Brenner",
-      "Akkuschrauben",
-      "große Flex",
-      "Dachschneider",
-      "Motor Schiebkarre",
-      "Kran",
-      "Lötkolben",
-      "Kernborhrmaschiene",
-      "Schiebkarre",
-      "Krangabel",
-      "Kranbottich",
-      "Lange Leiter",
-      "5 m Leiter"
-    ];
+    let contactData = { teams: [], employees: [] };
 
     let activeTeamKey = null;
+    let activeTeamLabel = '';
+    let activeTeamNumber = '';
+    let selectedEmployees = [];
     let lastPolishMessage = '';
 
     function pad(n){ return String(n).padStart(2,'0'); }
@@ -881,6 +896,8 @@
     function setQr(url){
       const img = document.getElementById('qrcodeImg');
       const err = document.getElementById('qrErr');
+      if (!img || !err) return;
+
       err.style.display = 'none';
       err.textContent = '';
 
@@ -905,6 +922,7 @@
 
     function setTickerText(text){
       const inner = document.getElementById('tickerInner');
+      if (!inner) return;
       const safe = (text && String(text).trim()) ? String(text).trim() : 'Keine Hinweise im Laufband.';
       lastGoodTickerText = safe;
       inner.innerHTML = `<span class="chunk">${escapeHtml(safe)}</span><span class="chunk">${escapeHtml(safe)}</span>`;
@@ -1030,6 +1048,64 @@
       });
     }
 
+    async function loadContacts() {
+      try {
+        const res = await fetch('mitarbeiter.json?ts=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        contactData = await res.json();
+        buildTeamChoiceButtons();
+        buildEmployeeCheckboxes();
+      } catch (e) {
+        console.error('mitarbeiter.json konnte nicht geladen werden:', e);
+        contactData = { teams: [], employees: [] };
+      }
+    }
+
+    function buildTeamChoiceButtons() {
+      const box = document.getElementById('teamChoiceGrid');
+      if (!box) return;
+      box.innerHTML = '';
+
+      (contactData.teams || []).forEach(team => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'teamChoiceBtn';
+        btn.textContent = team.label || team.key || 'Team';
+        btn.addEventListener('click', () => {
+          selectedEmployees = [];
+          openTeamForm({
+            key: team.key || '',
+            label: team.label || 'Team',
+            phone: team.phone || '',
+            isMulti: false
+          });
+        });
+        box.appendChild(btn);
+      });
+    }
+
+    function buildEmployeeCheckboxes() {
+      const box = document.getElementById('employeeList');
+      if (!box) return;
+      box.innerHTML = '';
+
+      (contactData.employees || []).forEach((emp, idx) => {
+        const label = document.createElement('label');
+        label.className = 'employeeCheck';
+
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = String(idx);
+
+        const span = document.createElement('span');
+        span.textContent = `${emp.name || 'Mitarbeiter'} (${emp.phone || 'ohne Nummer'})`;
+
+        label.appendChild(cb);
+        label.appendChild(span);
+        box.appendChild(label);
+      });
+    }
+
     async function loadNews() {
       const status = document.getElementById('newsStatus');
 
@@ -1040,31 +1116,37 @@
         const data = await res.json();
 
         consecutiveNewsErrors = 0;
-        status.style.display = 'none';
-        status.textContent = '';
+        if (status) {
+          status.style.display = 'none';
+          status.textContent = '';
+        }
 
         const ul = document.getElementById('heuteWichtig');
-        ul.innerHTML = '';
-        normalizeList(data.heuteWichtig).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ul.appendChild(li);
-        });
+        if (ul) {
+          ul.innerHTML = '';
+          normalizeList(data.heuteWichtig).forEach(t => {
+            const li = document.createElement('li');
+            li.textContent = t;
+            ul.appendChild(li);
+          });
+        }
 
         const ulDur = document.getElementById('daueranzeige');
-        ulDur.innerHTML = '';
-        normalizeList(data.daueranzeige).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ulDur.appendChild(li);
-        });
+        if (ulDur) {
+          ulDur.innerHTML = '';
+          normalizeList(data.daueranzeige).forEach(t => {
+            const li = document.createElement('li');
+            li.textContent = t;
+            ulDur.appendChild(li);
+          });
+        }
 
         const splitRow = document.getElementById('hintSplitRow');
         const imgBox = document.getElementById('hintImgBox');
         const img = document.getElementById('hintImg');
         const raw = (data.daueranzeigeBild || '').trim();
 
-        if (raw) {
+        if (raw && imgBox && img) {
           const base = location.origin + location.pathname.replace(/index\.html$/i, '');
           const resolved = raw.startsWith('http')
             ? raw
@@ -1080,18 +1162,21 @@
         }
 
         const ulLong = document.getElementById('langzeitInfo');
-        ulLong.innerHTML = '';
-        normalizeList(data.langzeitInfo).forEach(t => {
-          const li = document.createElement('li');
-          li.textContent = t;
-          ulLong.appendChild(li);
-        });
+        if (ulLong) {
+          ulLong.innerHTML = '';
+          normalizeList(data.langzeitInfo).forEach(t => {
+            const li = document.createElement('li');
+            li.textContent = t;
+            ulLong.appendChild(li);
+          });
+        }
 
         const tickerText = Array.isArray(data.ticker) ? data.ticker.join('  •  ') : '';
         setTickerText(tickerText);
 
         const url = location.origin + location.pathname;
-        document.getElementById('qrSub').textContent = url;
+        const qrSub = document.getElementById('qrSub');
+        if (qrSub) qrSub.textContent = url;
         setQr(url);
 
         requestAnimationFrame(() => {
@@ -1102,13 +1187,16 @@
       } catch (e) {
         consecutiveNewsErrors += 1;
 
-        if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
-          status.style.display = 'none';
-          status.textContent = '';
-        } else {
-          status.style.display = 'block';
-          status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+        if (status) {
+          if (consecutiveNewsErrors >= MAX_CONSECUTIVE_ERRORS_TO_HIDE) {
+            status.style.display = 'none';
+            status.textContent = '';
+          } else {
+            status.style.display = 'block';
+            status.textContent = 'Update-Fehler (news.json): ' + (e && e.message ? e.message : e);
+          }
         }
+
         setTickerText(lastGoodTickerText);
 
         requestAnimationFrame(() => {
@@ -1145,6 +1233,8 @@
 
     function startTicker() {
       const el = document.getElementById('tickerInner');
+      if (!el) return;
+
       let x = 0;
 
       function anim() {
@@ -1219,9 +1309,13 @@
         const curT = data?.current?.temperature_2m;
         const curC = data?.current?.weather_code;
 
-        document.getElementById("wxNowTemp").textContent = (curT ?? "—") + " °C";
-        document.getElementById("wxNowIcon").textContent = wxIconForCode(curC);
-        document.getElementById("wxNowDesc").textContent = wxTextForCode(curC);
+        const nowTemp = document.getElementById("wxNowTemp");
+        const nowIcon = document.getElementById("wxNowIcon");
+        const nowDesc = document.getElementById("wxNowDesc");
+
+        if (nowTemp) nowTemp.textContent = (curT ?? "—") + " °C";
+        if (nowIcon) nowIcon.textContent = wxIconForCode(curC);
+        if (nowDesc) nowDesc.textContent = wxTextForCode(curC);
 
         const times = data?.hourly?.time || [];
         const temps = data?.hourly?.temperature_2m || [];
@@ -1237,9 +1331,13 @@
           const p = pops[idx];
           const c = codes[idx];
 
-          document.getElementById(prefix+"Temp").textContent = (t ?? "—") + " °C";
-          document.getElementById(prefix+"Icon").textContent = wxIconForCode(c);
-          document.getElementById(prefix+"Pop").textContent  = "Regen: " + (p ?? "—") + "%";
+          const tempEl = document.getElementById(prefix+"Temp");
+          const iconEl = document.getElementById(prefix+"Icon");
+          const popEl  = document.getElementById(prefix+"Pop");
+
+          if (tempEl) tempEl.textContent = (t ?? "—") + " °C";
+          if (iconEl) iconEl.textContent = wxIconForCode(c);
+          if (popEl) popEl.textContent  = "Regen: " + (p ?? "—") + "%";
         }
 
         setSlot("wx8", i8);
@@ -1247,12 +1345,13 @@
         setSlot("wx17", i17);
 
       } catch(e){
-        document.getElementById("wxNowDesc").textContent = "Wetter konnte nicht geladen werden.";
+        const nowDesc = document.getElementById("wxNowDesc");
+        if (nowDesc) nowDesc.textContent = "Wetter konnte nicht geladen werden.";
       }
     }
 
-    function getDraftKey(teamKey) {
-      return 'teamDraft_' + teamKey;
+    function getDraftKey(modeKey) {
+      return 'teamDraft_' + modeKey;
     }
 
     function normalizePhone(input) {
@@ -1292,6 +1391,7 @@
 
     function initToolGrid() {
       const toolGrid = document.getElementById('toolGrid');
+      if (!toolGrid) return;
       toolGrid.innerHTML = '';
       for (let i = 0; i < 12; i++) {
         toolGrid.appendChild(createToolSelect(i));
@@ -1332,16 +1432,23 @@
       });
     }
 
+    function getCurrentDraftStorageKey() {
+      if (activeTeamKey === 'all_selected') return getDraftKey('all_selected');
+      if (activeTeamKey) return getDraftKey(activeTeamKey);
+      return null;
+    }
+
     function saveCurrentDraft() {
-      if (!activeTeamKey) return;
+      const key = getCurrentDraftStorageKey();
+      if (!key) return;
       try {
-        localStorage.setItem(getDraftKey(activeTeamKey), JSON.stringify(collectDraftData()));
+        localStorage.setItem(key, JSON.stringify(collectDraftData()));
       } catch(e) {}
     }
 
-    function loadDraft(teamKey) {
+    function loadDraft(modeKey) {
       try {
-        const raw = localStorage.getItem(getDraftKey(teamKey));
+        const raw = localStorage.getItem(getDraftKey(modeKey));
         return raw ? JSON.parse(raw) : null;
       } catch(e) {
         return null;
@@ -1349,10 +1456,12 @@
     }
 
     function clearCurrentDraft() {
-      if (!activeTeamKey) return;
-      try {
-        localStorage.removeItem(getDraftKey(activeTeamKey));
-      } catch(e) {}
+      const key = getCurrentDraftStorageKey();
+      if (key) {
+        try {
+          localStorage.removeItem(key);
+        } catch(e) {}
+      }
 
       applyDraftData({});
       lastPolishMessage = '';
@@ -1369,7 +1478,7 @@
     }
 
     function buildGermanMessage() {
-      const team = TEAM_LABELS[activeTeamKey] || 'Team';
+      const title = activeTeamLabel || 'Team';
       const baustelle = document.getElementById('baustellenname').value.trim();
       const strasse = document.getElementById('strasse').value.trim();
       const ort = document.getElementById('ort').value.trim();
@@ -1380,8 +1489,14 @@
       const mapsLink = buildMapsLink();
 
       const lines = [];
-      lines.push(team);
+      lines.push(title);
       lines.push('');
+
+      if (activeTeamKey === 'all_selected' && selectedEmployees.length) {
+        lines.push('Empfänger:');
+        selectedEmployees.forEach(emp => lines.push('- ' + emp.name));
+        lines.push('');
+      }
 
       if (baustelle) lines.push('Baustelle: ' + baustelle);
       if (strasse) lines.push('Straße: ' + strasse);
@@ -1442,7 +1557,7 @@
     }
 
     async function buildPolishMessage() {
-      const team = TEAM_LABELS[activeTeamKey] || 'Team';
+      const title = activeTeamLabel || 'Team';
       const baustelle = document.getElementById('baustellenname').value.trim();
       const strasse = document.getElementById('strasse').value.trim();
       const ort = document.getElementById('ort').value.trim();
@@ -1453,7 +1568,9 @@
       const mapsLink = buildMapsLink();
 
       const translateParts = [
-        team,
+        title,
+        'Empfänger:',
+        ...selectedEmployees.map(x => x.name),
         'Um was geht es hier an dieser Baustelle:',
         was,
         'Was muss hier beachtet werden:',
@@ -1468,7 +1585,14 @@
       const translated = await translateTextArray(translateParts);
 
       let i = 0;
-      const teamPl = translated[i++] || team;
+      const titlePl = translated[i++] || title;
+      const recipientTitlePl = translated[i++] || 'Empfänger:';
+
+      const selectedNamesPl = [];
+      for (let x = 0; x < selectedEmployees.length; x++) {
+        selectedNamesPl.push(translated[i++] || selectedEmployees[x].name);
+      }
+
       const titleWasPl = translated[i++] || 'Um was geht es hier an dieser Baustelle:';
       const wasPl = translated[i++] || was;
       const titleBeachtenPl = translated[i++] || 'Was muss hier beachtet werden:';
@@ -1485,8 +1609,14 @@
       const closingPl = translated[i++] || 'Wir wünschen viel Erfolg heute.';
 
       const lines = [];
-      lines.push(teamPl);
+      lines.push(titlePl);
       lines.push('');
+
+      if (activeTeamKey === 'all_selected' && selectedNamesPl.length) {
+        lines.push(recipientTitlePl);
+        selectedNamesPl.forEach(name => lines.push('- ' + name));
+        lines.push('');
+      }
 
       if (baustelle) lines.push('Baustelle: ' + baustelle);
       if (strasse) lines.push('Straße: ' + strasse);
@@ -1529,23 +1659,23 @@
     }
 
     async function updateTeamPreview() {
-      const german = buildGermanMessage();
-      document.getElementById('messagePreviewDe').textContent = german;
-
-      const status = document.getElementById('translateStatus');
+      const previewDe = document.getElementById('messagePreviewDe');
       const previewPl = document.getElementById('messagePreviewPl');
+      const status = document.getElementById('translateStatus');
 
-      status.textContent = 'Übersetze ins Polnische …';
-      previewPl.textContent = 'Übersetze …';
+      const german = buildGermanMessage();
+      if (previewDe) previewDe.textContent = german;
+      if (status) status.textContent = 'Übersetze ins Polnische …';
+      if (previewPl) previewPl.textContent = 'Übersetze …';
 
       try {
         lastPolishMessage = await buildPolishMessage();
-        previewPl.textContent = lastPolishMessage;
-        status.textContent = 'Polnische Übersetzung bereit.';
+        if (previewPl) previewPl.textContent = lastPolishMessage;
+        if (status) status.textContent = 'Polnische Übersetzung bereit.';
       } catch (err) {
         lastPolishMessage = '';
-        previewPl.textContent = 'Übersetzung konnte nicht geladen werden.';
-        status.textContent = 'Fehler: ' + err.message;
+        if (previewPl) previewPl.textContent = 'Übersetzung konnte nicht geladen werden.';
+        if (status) status.textContent = 'Fehler: ' + err.message;
       }
     }
 
@@ -1554,18 +1684,42 @@
       updateTeamPreview();
     }
 
-    function openTeamModal(teamKey) {
-      activeTeamKey = teamKey;
-      document.getElementById('modalTeamTitle').textContent = TEAM_LABELS[teamKey] || 'Team';
+    function showSelectedEmployeesInfo() {
+      const wrap = document.getElementById('multiEmployeeInfoWrap');
+      const box = document.getElementById('selectedEmployeeInfo');
+      if (!wrap || !box) return;
+
+      if (activeTeamKey === 'all_selected' && selectedEmployees.length) {
+        wrap.style.display = 'flex';
+        box.textContent = selectedEmployees.map(x => `${x.name} (${x.phone})`).join(', ');
+      } else {
+        wrap.style.display = 'none';
+        box.textContent = '';
+      }
+    }
+
+    function openTeamForm(config) {
+      activeTeamKey = config.key || '';
+      activeTeamLabel = config.label || 'Team';
+      activeTeamNumber = config.phone || '';
+
+      const title = document.getElementById('modalTeamTitle');
+      if (title) title.textContent = activeTeamLabel;
 
       const freeWrap = document.getElementById('freeNumberWrap');
-      freeWrap.style.display = teamKey === 'frei' ? 'flex' : 'none';
+      if (freeWrap) freeWrap.style.display = 'none';
 
-      document.getElementById('teamModal').classList.add('show');
+      showSelectedEmployeesInfo();
 
-      const draft = loadDraft(teamKey);
+      const modeKey = activeTeamKey === 'all_selected' ? 'all_selected' : activeTeamKey;
+      const draft = loadDraft(modeKey);
       applyDraftData(draft || {});
       lastPolishMessage = '';
+
+      closeAdminChoiceModal();
+      closeEmployeeSelectModal();
+
+      document.getElementById('teamModal').classList.add('show');
       updateTeamPreview();
     }
 
@@ -1573,19 +1727,50 @@
       document.getElementById('teamModal').classList.remove('show');
     }
 
-    function getTargetNumber() {
-      if (activeTeamKey === 'frei') {
-        return normalizePhone(document.getElementById('freieNummer').value);
-      }
-      return normalizePhone(TEAM_NUMBERS[activeTeamKey] || '');
+    function openAdminChoiceModal() {
+      document.getElementById('adminChoiceModal').classList.add('show');
+    }
+
+    function closeAdminChoiceModal() {
+      document.getElementById('adminChoiceModal').classList.remove('show');
+    }
+
+    function openEmployeeSelectModal() {
+      closeAdminChoiceModal();
+      document.getElementById('employeeSelectModal').classList.add('show');
+    }
+
+    function closeEmployeeSelectModal() {
+      document.getElementById('employeeSelectModal').classList.remove('show');
+    }
+
+    function getSelectedEmployeePhones() {
+      return selectedEmployees
+        .map(emp => normalizePhone(emp.phone))
+        .filter(Boolean);
     }
 
     function openWhatsAppWithText(text) {
-      const number = getTargetNumber();
+      if (activeTeamKey === 'all_selected') {
+        const phones = getSelectedEmployeePhones();
+        if (!phones.length) {
+          alert('Bitte mindestens einen Mitarbeiter mit gültiger Telefonnummer auswählen.');
+          return;
+        }
+
+        phones.forEach(phone => {
+          const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+          window.open(url, '_blank');
+        });
+        return;
+      }
+
+      const number = normalizePhone(activeTeamNumber);
       if (!number) {
         alert('Bitte eine gültige Telefonnummer eingeben.');
         return;
       }
+
       const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
       window.open(url, '_blank');
     }
@@ -1623,18 +1808,52 @@
       }
     }
 
+    function collectSelectedEmployeesFromChecks() {
+      const checks = Array.from(document.querySelectorAll('#employeeList input[type="checkbox"]:checked'));
+      selectedEmployees = checks
+        .map(cb => contactData.employees[Number(cb.value)])
+        .filter(Boolean);
+    }
+
     function bindModalEvents() {
-      document.querySelectorAll('.teamBtn').forEach(btn => {
-        btn.addEventListener('click', () => openTeamModal(btn.dataset.team));
+      document.getElementById('openAdminAreaBtn').addEventListener('click', openAdminChoiceModal);
+      document.getElementById('closeAdminChoiceBtn').addEventListener('click', closeAdminChoiceModal);
+      document.getElementById('closeEmployeeSelectBtn').addEventListener('click', closeEmployeeSelectModal);
+
+      document.getElementById('openAllEmployeesBtn').addEventListener('click', openEmployeeSelectModal);
+
+      document.getElementById('selectAllEmployeesBtn').addEventListener('click', () => {
+        document.querySelectorAll('#employeeList input[type="checkbox"]').forEach(cb => cb.checked = true);
+      });
+
+      document.getElementById('clearEmployeeSelectionBtn').addEventListener('click', () => {
+        document.querySelectorAll('#employeeList input[type="checkbox"]').forEach(cb => cb.checked = false);
+      });
+
+      document.getElementById('confirmEmployeeSelectionBtn').addEventListener('click', () => {
+        collectSelectedEmployeesFromChecks();
+        if (!selectedEmployees.length) {
+          alert('Bitte mindestens einen Mitarbeiter auswählen.');
+          return;
+        }
+
+        openTeamForm({
+          key: 'all_selected',
+          label: 'Alle Mitarbeiter',
+          phone: '',
+          isMulti: true
+        });
       });
 
       document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
       document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
       document.getElementById('copyPreviewBtnPl').addEventListener('click', copyPreviewTextPl);
       document.getElementById('clearDraftBtn').addEventListener('click', clearCurrentDraft);
+
       document.getElementById('openWhatsAppBtnDe').addEventListener('click', () => {
         openWhatsAppWithText(buildGermanMessage());
       });
+
       document.getElementById('openWhatsAppBtnPl').addEventListener('click', () => {
         if (!lastPolishMessage) {
           alert('Die polnische Übersetzung ist noch nicht bereit.');
@@ -1647,7 +1866,15 @@
         if (e.target.id === 'teamModal') closeTeamModal();
       });
 
-      ['freieNummer','baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
+      document.getElementById('adminChoiceModal').addEventListener('click', (e) => {
+        if (e.target.id === 'adminChoiceModal') closeAdminChoiceModal();
+      });
+
+      document.getElementById('employeeSelectModal').addEventListener('click', (e) => {
+        if (e.target.id === 'employeeSelectModal') closeEmployeeSelectModal();
+      });
+
+      ['baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
         .forEach(id => {
           document.getElementById(id).addEventListener('input', handleDraftInputChange);
         });
@@ -1684,6 +1911,7 @@
 
     initToolGrid();
     bindModalEvents();
+    loadContacts();
     startIntervals();
     startTicker();
 
