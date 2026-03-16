@@ -653,11 +653,17 @@
               />
             </div>
 
-            <div class="rightControlWrap">
-              <button class="adminMainBtn" id="openAdminAreaBtn" type="button">
-                ADMIN<br>BEREICH
-              </button>
-            </div>
+           <div class="rightControlWrap">
+  <div>
+    <button class="adminMainBtn" id="openAdminAreaBtn" type="button">
+      ADMIN<br>BEREICH
+    </button>
+
+    <div id="qrLabel" style="display:none;">Scannen für Handy-Ansicht</div>
+    <div class="mono" id="qrSub" style="display:none;"></div>
+    <div class="error" id="qrErr" style="display:none;"></div>
+  </div>
+</div>
           </div>
         </div>
 
@@ -894,24 +900,29 @@
     }
 
     function setQr(url){
-      const img = document.getElementById('qrcodeImg');
-      const err = document.getElementById('qrErr');
-      if (!img || !err) return;
+  const img = document.getElementById('qrcodeImg');
+  const err = document.getElementById('qrErr');
 
-      err.style.display = 'none';
-      err.textContent = '';
+  if (!img) return;
 
-      img.onerror = () => {
-        err.style.display = 'block';
-        err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
-      };
+  if (err) {
+    err.style.display = 'none';
+    err.textContent = '';
+  }
 
-      const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
-                + encodeURIComponent(url)
-                + "&nocache=" + Date.now();
-
-      img.src = src;
+  img.onerror = () => {
+    if (err) {
+      err.style.display = 'block';
+      err.textContent = 'QR-Code konnte nicht geladen werden (Netzwerk/Filter).';
     }
+  };
+
+  const src = "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data="
+            + encodeURIComponent(url)
+            + "&nocache=" + Date.now();
+
+  img.src = src;
+}
 
     function escapeHtml(str){
       return String(str)
