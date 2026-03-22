@@ -1,1 +1,10 @@
-
+{
+  "active": false,
+  "title": "🎉 Herzlichen Glückwunsch 🎉",
+  "text": "Alles Gute zum Geburtstag!\n\nWir wünschen dir Gesundheit, Erfolg und einen schönen Tag.\n\nDein Team Inseldachdecker",
+  "image": "",
+  "dateFrom": "2026-03-22",
+  "dateTo": "2026-03-22",
+  "showDuration": 20,
+  "hideDuration": 40
+}
