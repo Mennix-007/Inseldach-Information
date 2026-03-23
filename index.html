@@ -527,6 +527,88 @@
       transform:scale(1.2);
     }
 
+    /* ===== SONDERSEITE ===== */
+    .specialOverlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,.34);
+      z-index:6000;
+      padding:24px;
+      box-sizing:border-box;
+    }
+    .specialOverlay.show{
+      display:flex;
+    }
+
+    .specialCard{
+      width:min(66vw, 1240px);
+      min-height:min(66vh, 760px);
+      background:#8b1e1e;
+      border:3px solid #2f63c6;
+      border-radius:22px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      display:grid;
+      grid-template-columns:1.55fr 1fr;
+      gap:18px;
+      padding:24px;
+      box-sizing:border-box;
+    }
+    .specialCard.noImage{
+      grid-template-columns:1fr;
+    }
+
+    .specialText{
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      min-height:0;
+    }
+    .specialTitle{
+      margin:0 0 18px;
+      font-size:44px;
+      font-weight:900;
+      line-height:1.08;
+      color:#fff;
+      flex:0 0 auto;
+    }
+    .specialBodyWrap{
+      flex:1;
+      min-height:0;
+      overflow:hidden;
+    }
+    .specialBody{
+      white-space:pre-wrap;
+      font-size:28px;
+      line-height:1.42;
+      color:#fff;
+      visibility:hidden;
+    }
+
+    .specialImageCard{
+      background:#8b1e1e;
+      border:2px solid #2f63c6;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      min-width:0;
+      min-height:320px;
+    }
+    .specialImageCard.hidden{
+      display:none;
+    }
+    .specialImage{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      background:#8b1e1e;
+    }
+
     @media (max-width: 900px) {
       .wrap{
         grid-template-columns:1fr;
@@ -584,6 +666,22 @@
       .teamChoiceGrid,
       .formGrid{
         grid-template-columns:1fr;
+      }
+
+      .specialCard{
+        width:min(94vw, 94vw);
+        min-height:auto;
+        grid-template-columns:1fr;
+        padding:18px;
+      }
+      .specialTitle{
+        font-size:32px;
+      }
+      .specialBody{
+        font-size:22px;
+      }
+      .specialImageCard{
+        min-height:240px;
       }
     }
   </style>
@@ -859,6 +957,22 @@
     </div>
   </div>
 
+  <!-- SONDERSEITE -->
+  <div class="specialOverlay" id="specialOverlay">
+    <div class="specialCard" id="specialCard">
+      <div class="specialText">
+        <h1 class="specialTitle" id="specialTitle"></h1>
+        <div class="specialBodyWrap" id="specialBodyWrap">
+          <div class="specialBody" id="specialText"></div>
+        </div>
+      </div>
+
+      <div class="specialImageCard hidden" id="specialImageCard">
+        <img class="specialImage" id="specialImage" alt="Sonderanzeige Bild">
+      </div>
+    </div>
+  </div>
+
   <script>
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
@@ -877,6 +991,7 @@
     let newsTimer = null;
     let camTimer  = null;
     let wxTimer   = null;
+    let specialTimer = null;
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
 
@@ -887,6 +1002,9 @@
     let activeTeamNumber = '';
     let selectedEmployees = [];
     let lastPolishMessage = '';
+
+    let specialData = null;
+    let specialVisible = false;
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -1061,6 +1179,55 @@
       });
     }
 
+    function fitSpecialText() {
+      const textEl = document.getElementById('specialText');
+      const wrapEl = document.getElementById('specialBodyWrap');
+      if (!textEl || !wrapEl) return;
+
+      const maxSize = 36;
+      const minSize = 18;
+      const baseLineHeight = 1.42;
+      const maxLineHeight = 1.56;
+
+      textEl.style.visibility = 'hidden';
+      textEl.style.paddingTop = '0px';
+      textEl.style.paddingBottom = '0px';
+
+      let fittedSize = minSize;
+      let fittedLineHeight = baseLineHeight;
+
+      for (let size = maxSize; size >= minSize; size -= 1) {
+        textEl.style.fontSize = size + 'px';
+        textEl.style.lineHeight = baseLineHeight;
+
+        if (textEl.scrollHeight <= wrapEl.clientHeight) {
+          fittedSize = size;
+          break;
+        }
+      }
+
+      textEl.style.fontSize = fittedSize + 'px';
+      textEl.style.lineHeight = baseLineHeight;
+
+      for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
+        textEl.style.lineHeight = lh.toFixed(2);
+        if (textEl.scrollHeight <= wrapEl.clientHeight) {
+          fittedLineHeight = lh;
+        } else {
+          break;
+        }
+      }
+
+      textEl.style.lineHeight = fittedLineHeight.toFixed(2);
+
+      const spare = wrapEl.clientHeight - textEl.scrollHeight;
+      if (spare > 0) {
+        textEl.style.paddingTop = Math.min(18, Math.floor(spare * 0.10)) + 'px';
+      }
+
+      textEl.style.visibility = 'visible';
+    }
+
     async function loadContacts() {
       try {
         const res = await fetch('mitarbeiter.json?ts=' + Date.now(), { cache: 'no-store' });
@@ -1074,49 +1241,110 @@
       }
     }
 
-    function buildTeamChoiceButtons() {
-      const box = document.getElementById('teamChoiceGrid');
-      if (!box) return;
-      box.innerHTML = '';
+    async function loadSpecial() {
+      try {
+        const res = await fetch('special.json?ts=' + Date.now(), { cache:'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        specialData = await res.json();
+      } catch (e) {
+        specialData = null;
+      }
+    }
 
-      (contactData.teams || []).forEach(team => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'teamChoiceBtn';
-        btn.textContent = team.label || team.key || 'Team';
-        btn.addEventListener('click', () => {
-          selectedEmployees = [];
-          openTeamForm({
-            key: team.key || '',
-            label: team.label || 'Team',
-            phone: team.phone || '',
-            isMulti: false
-          });
-        });
-        box.appendChild(btn);
+    function isSpecialCurrentlyActive() {
+      if (!specialData || !specialData.active) return false;
+
+      const today = new Date();
+      const current = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      const from = specialData.dateFrom ? new Date(specialData.dateFrom + 'T00:00:00') : null;
+      const to   = specialData.dateTo ? new Date(specialData.dateTo + 'T00:00:00') : null;
+
+      if (from && current < from) return false;
+      if (to && current > to) return false;
+
+      return true;
+    }
+
+    function renderSpecial() {
+      const overlay = document.getElementById('specialOverlay');
+      const card = document.getElementById('specialCard');
+      const title = document.getElementById('specialTitle');
+      const text = document.getElementById('specialText');
+      const imgCard = document.getElementById('specialImageCard');
+      const img = document.getElementById('specialImage');
+
+      if (!overlay || !card || !title || !text || !imgCard || !img) return;
+
+      title.textContent = specialData?.title || '';
+      text.textContent = specialData?.text || '';
+
+      const raw = String(specialData?.image || '').trim();
+
+      if (raw) {
+        const base = location.origin + location.pathname.replace(/index\.html$/i, '');
+        const resolved = raw.startsWith('http')
+          ? raw
+          : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
+
+        img.src = resolved;
+        imgCard.classList.remove('hidden');
+        card.classList.remove('noImage');
+      } else {
+        img.removeAttribute('src');
+        imgCard.classList.add('hidden');
+        card.classList.add('noImage');
+      }
+
+      requestAnimationFrame(() => {
+        fitSpecialText();
+        setTimeout(fitSpecialText, 120);
       });
     }
 
-    function buildEmployeeCheckboxes() {
-      const box = document.getElementById('employeeList');
-      if (!box) return;
-      box.innerHTML = '';
+    function showSpecial() {
+      if (!isSpecialCurrentlyActive()) return;
+      renderSpecial();
+      document.getElementById('specialOverlay').classList.add('show');
+      specialVisible = true;
+    }
 
-      (contactData.employees || []).forEach((emp, idx) => {
-        const label = document.createElement('label');
-        label.className = 'employeeCheck';
+    function hideSpecial() {
+      document.getElementById('specialOverlay').classList.remove('show');
+      specialVisible = false;
+    }
 
-        const cb = document.createElement('input');
-        cb.type = 'checkbox';
-        cb.value = String(idx);
+    function startSpecialRotation() {
+      if (specialTimer) {
+        clearTimeout(specialTimer);
+        specialTimer = null;
+      }
 
-        const span = document.createElement('span');
-        span.textContent = `${emp.name || 'Mitarbeiter'} (${emp.phone || 'ohne Nummer'})`;
+      if (!isSpecialCurrentlyActive()) {
+        hideSpecial();
+        return;
+      }
 
-        label.appendChild(cb);
-        label.appendChild(span);
-        box.appendChild(label);
-      });
+      const showMs = Math.max(1, Number(specialData?.showDuration || 20)) * 1000;
+      const hideMs = Math.max(1, Number(specialData?.hideDuration || 40)) * 1000;
+
+      hideSpecial();
+
+      function phaseMain() {
+        hideSpecial();
+        specialTimer = setTimeout(phaseSpecial, hideMs);
+      }
+
+      function phaseSpecial() {
+        if (!isSpecialCurrentlyActive()) {
+          hideSpecial();
+          return;
+        }
+        showSpecial();
+        specialTimer = setTimeout(phaseMain, showMs);
+      }
+
+      specialTimer = setTimeout(phaseSpecial, hideMs);
     }
 
     async function loadNews() {
@@ -1920,16 +2148,22 @@
       if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
       if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
       if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
+      if (specialTimer) { clearTimeout(specialTimer); specialTimer = null; }
     }
 
     window.addEventListener('resize', () => {
       clearTimeout(window.__fitTimer);
-      window.__fitTimer = setTimeout(fitAllLeftLists, 160);
+      window.__fitTimer = setTimeout(() => {
+        fitAllLeftLists();
+        if (specialVisible) fitSpecialText();
+      }, 160);
     });
 
-    document.addEventListener("visibilitychange", () => {
+    document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
         startIntervals();
+        await loadSpecial();
+        startSpecialRotation();
         setTimeout(fitAllLeftLists, 180);
       } else {
         stopIntervals();
@@ -1943,8 +2177,11 @@
       initToolGrid();
       bindModalEvents();
       await loadContacts();
+      await loadSpecial();
+
       startIntervals();
       startTicker();
+      startSpecialRotation();
 
       fitAllLeftLists();
       setTimeout(fitAllLeftLists, 220);
