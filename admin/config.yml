@@ -17,12 +17,16 @@ collections:
   - name: "content"
     label: "Inhalte"
     files:
+
+      # =========================
+      # HAUPTINHALT (bestehend)
+      # =========================
       - name: "news"
         label: "Kacheln & Laufband"
         file: "news.json"
         format: "json"
         fields:
-          # Heute wichtig: exakt 4 Felder (fest), klappbar, bleiben immer da
+
           - label: "Heute wichtig"
             name: "heuteWichtig"
             widget: "list"
@@ -71,3 +75,48 @@ collections:
               label: "Eintrag"
               name: "item"
               widget: "string"
+
+      # =========================
+      # NEU: SONDERSEITE
+      # =========================
+      - name: "special"
+        label: "Sonderseite / Anzeige"
+        file: "special.json"
+        format: "json"
+        fields:
+          - label: "Aktiv"
+            name: "active"
+            widget: "boolean"
+
+          - label: "Überschrift"
+            name: "title"
+            widget: "string"
+
+          - label: "Text"
+            name: "text"
+            widget: "text"
+
+          - label: "Bild"
+            name: "image"
+            widget: "image"
+            required: false
+
+          - label: "Anzeigen von (Datum)"
+            name: "dateFrom"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+
+          - label: "Anzeigen bis (Datum)"
+            name: "dateTo"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+
+          - label: "Anzeige Dauer (Sekunden)"
+            name: "showDuration"
+            widget: "number"
+
+          - label: "Hauptseite Dauer (Sekunden)"
+            name: "hideDuration"
+            widget: "number"
