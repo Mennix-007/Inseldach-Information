@@ -17,16 +17,11 @@ collections:
   - name: "content"
     label: "Inhalte"
     files:
-
-      # =========================
-      # HAUPTINHALT (bestehend)
-      # =========================
       - name: "news"
         label: "Kacheln & Laufband"
         file: "news.json"
         format: "json"
         fields:
-
           - label: "Heute wichtig"
             name: "heuteWichtig"
             widget: "list"
@@ -76,9 +71,6 @@ collections:
               name: "item"
               widget: "string"
 
-      # =========================
-      # NEU: SONDERSEITE
-      # =========================
       - name: "special"
         label: "Sonderseite / Anzeige"
         file: "special.json"
@@ -87,36 +79,43 @@ collections:
           - label: "Aktiv"
             name: "active"
             widget: "boolean"
+            default: false
 
           - label: "Überschrift"
             name: "title"
             widget: "string"
+            required: false
 
           - label: "Text"
             name: "text"
             widget: "text"
+            required: false
 
           - label: "Bild"
             name: "image"
             widget: "image"
             required: false
 
-          - label: "Anzeigen von (Datum)"
+          - label: "Datum von"
             name: "dateFrom"
-            widget: "datetime"
-            date_format: "YYYY-MM-DD"
-            time_format: false
+            widget: "string"
+            required: false
 
-          - label: "Anzeigen bis (Datum)"
+          - label: "Datum bis"
             name: "dateTo"
-            widget: "datetime"
-            date_format: "YYYY-MM-DD"
-            time_format: false
+            widget: "string"
+            required: false
 
           - label: "Anzeige Dauer (Sekunden)"
             name: "showDuration"
             widget: "number"
+            value_type: "int"
+            min: 1
+            default: 20
 
           - label: "Hauptseite Dauer (Sekunden)"
             name: "hideDuration"
             widget: "number"
+            value_type: "int"
+            min: 1
+            default: 40
