@@ -977,6 +977,7 @@
     const NEWS_INTERVAL_MS = 60000;
     const CAM_INTERVAL_MS  = 180000;
     const WX_INTERVAL_MS   = 15 * 60 * 1000;
+    const SPECIAL_REFRESH_MS = 60000;
 
     const TICKER_SPEED_PX_PER_FRAME = 3;
     const TICKER_GAP_PX = 48;
@@ -991,6 +992,7 @@
     let newsTimer = null;
     let camTimer  = null;
     let wxTimer   = null;
+    let specialRefreshTimer = null;
     let specialTimer = null;
 
     const BORKUM = { lat: 53.58, lon: 6.67 };
@@ -1251,14 +1253,31 @@
       }
     }
 
+    async function refreshSpecialState() {
+      await loadSpecial();
+      startSpecialRotation();
+    }
+
+    function parseDateOnly(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return null;
+
+      const m = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+
+      const parsed = new Date(raw);
+      if (isNaN(parsed.getTime())) return null;
+      return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+    }
+
     function isSpecialCurrentlyActive() {
       if (!specialData || !specialData.active) return false;
 
       const today = new Date();
       const current = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-      const from = specialData.dateFrom ? new Date(specialData.dateFrom + 'T00:00:00') : null;
-      const to   = specialData.dateTo ? new Date(specialData.dateTo + 'T00:00:00') : null;
+      const from = parseDateOnly(specialData.dateFrom);
+      const to   = parseDateOnly(specialData.dateTo);
 
       if (from && current < from) return false;
       if (to && current > to) return false;
@@ -2142,12 +2161,14 @@
       if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
       if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
       if (!wxTimer)   { loadWeather(); wxTimer = setInterval(loadWeather, WX_INTERVAL_MS); }
+      if (!specialRefreshTimer) { refreshSpecialState(); specialRefreshTimer = setInterval(refreshSpecialState, SPECIAL_REFRESH_MS); }
     }
 
     function stopIntervals() {
       if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
       if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
       if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
+      if (specialRefreshTimer) { clearInterval(specialRefreshTimer); specialRefreshTimer = null; }
       if (specialTimer) { clearTimeout(specialTimer); specialTimer = null; }
     }
 
@@ -2162,8 +2183,6 @@
     document.addEventListener("visibilitychange", async () => {
       if (document.visibilityState === "visible") {
         startIntervals();
-        await loadSpecial();
-        startSpecialRotation();
         setTimeout(fitAllLeftLists, 180);
       } else {
         stopIntervals();
@@ -2177,11 +2196,9 @@
       initToolGrid();
       bindModalEvents();
       await loadContacts();
-      await loadSpecial();
 
       startIntervals();
       startTicker();
-      startSpecialRotation();
 
       fitAllLeftLists();
       setTimeout(fitAllLeftLists, 220);
