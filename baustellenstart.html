@@ -1,254 +1,476 @@
-backend:
-  name: git-gateway
-  branch: main
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Neustart Baustelle</title>
 
-site_url: https://mennix-007.github.io/Inseldach-Information/
-display_url: https://mennix-007.github.io/Inseldach-Information/
+  <style>
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:#f3f5f7;
+      color:#111;
+    }
 
-publish_mode: simple
+    .topBar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:#163d7a;
+      color:#fff;
+      padding:12px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      box-shadow:0 2px 10px rgba(0,0,0,.12);
+    }
 
-media_folder: "uploads"
-public_folder: "/uploads"
+    .topBarTitle{
+      font-size:22px;
+      font-weight:800;
+    }
 
-media_library:
-  name: uploadcare
+    .topBarActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-collections:
-  - name: "content"
-    label: "Inhalte"
-    files:
-      - name: "news"
-        label: "Kacheln & Laufband"
-        file: "news.json"
-        format: "json"
-        fields:
-          - label: "Heute wichtig"
-            name: "heuteWichtig"
-            widget: "list"
-            allow_add: false
-            allow_delete: false
-            min: 4
-            max: 4
-            default:
-              - ""
-              - ""
-              - ""
-              - ""
-            field:
-              label: "Eintrag"
-              name: "item"
-              widget: "string"
+    .btn{
+      border:none;
+      border-radius:10px;
+      padding:10px 14px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+    }
 
-          - label: "Hinweise"
-            name: "daueranzeige"
-            widget: "list"
-            allow_add: true
-            field:
-              label: "Eintrag"
-              name: "item"
-              widget: "string"
+    .btnBlue{
+      background:#fff;
+      color:#163d7a;
+    }
 
-          - label: "Bild für Hinweise"
-            name: "daueranzeigeBild"
-            widget: "image"
-            required: false
+    .btnYellow{
+      background:#ffd400;
+      color:#000;
+    }
 
-          - label: "Info für längeren Zeitraum"
-            name: "langzeitInfo"
-            widget: "list"
-            allow_add: true
-            field:
-              label: "Eintrag"
-              name: "item"
-              widget: "string"
+    .page{
+      max-width:1180px;
+      margin:22px auto;
+      background:#fff;
+      box-shadow:0 8px 28px rgba(0,0,0,.12);
+      border-radius:18px;
+      padding:26px;
+      box-sizing:border-box;
+    }
 
-          - label: "Laufband (Ticker)"
-            name: "ticker"
-            widget: "list"
-            allow_add: true
-            field:
-              label: "Eintrag"
-              name: "item"
-              widget: "string"
+    .docHeader{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      margin-bottom:22px;
+      border-bottom:3px solid #163d7a;
+      padding-bottom:16px;
+    }
 
-      - name: "special"
-        label: "Sonderseite / Anzeige"
-        file: "special.json"
-        format: "json"
-        fields:
-          - label: "Aktiv"
-            name: "active"
-            widget: "boolean"
-            default: false
+    .docTitleWrap{
+      flex:1;
+      min-width:0;
+    }
 
-          - label: "Überschrift"
-            name: "title"
-            widget: "string"
-            required: false
+    .docTitle{
+      font-size:34px;
+      font-weight:900;
+      margin:0 0 8px;
+      color:#8b1e1e;
+    }
 
-          - label: "Text"
-            name: "text"
-            widget: "text"
-            required: false
+    .docSub{
+      font-size:15px;
+      color:#444;
+      margin:0;
+    }
 
-          - label: "Bild"
-            name: "image"
-            widget: "image"
-            required: false
+    .docLogo{
+      width:220px;
+      max-width:36%;
+      height:auto;
+      object-fit:contain;
+    }
 
-          - label: "Datum von"
-            name: "dateFrom"
-            widget: "string"
-            required: false
+    .section{
+      margin-bottom:18px;
+    }
 
-          - label: "Datum bis"
-            name: "dateTo"
-            widget: "string"
-            required: false
+    .sectionTitle{
+      margin:0 0 8px;
+      font-size:20px;
+      font-weight:800;
+      color:#163d7a;
+    }
 
-          - label: "Anzeige Dauer (Sekunden)"
-            name: "showDuration"
-            widget: "number"
-            value_type: "int"
-            min: 1
-            default: 20
+    .box{
+      border:1px solid #cfd6df;
+      border-radius:12px;
+      padding:12px 14px;
+      background:#fbfcfd;
+      min-height:22px;
+      white-space:pre-wrap;
+      line-height:1.45;
+    }
 
-          - label: "Hauptseite Dauer (Sekunden)"
-            name: "hideDuration"
-            widget: "number"
-            value_type: "int"
-            min: 1
-            default: 40
+    .checkGrid4{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
 
-      - name: "baustellenstart"
-        label: "Start neue Baustelle"
-        file: "baustellenstart.json"
-        format: "json"
-        fields:
-          - label: "Feste Überschrift"
-            name: "title"
-            widget: "string"
-            default: "Neustart Baustelle"
+    .checkGrid2{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      align-items:start;
+    }
 
-          - label: "Baustellenadresse"
-            name: "baustellenadresse"
-            widget: "text"
-            required: false
+    .checkItem{
+      border:1px solid #cfd6df;
+      border-radius:12px;
+      padding:12px 14px;
+      background:#fbfcfd;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:24px;
+    }
 
-          - label: "Gesamte Baustelle Stundenlohn"
-            name: "gesamteBaustelleStundenlohn"
-            widget: "boolean"
-            default: false
-            required: false
+    .mark{
+      width:18px;
+      height:18px;
+      border:2px solid #555;
+      border-radius:4px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:14px;
+      font-weight:900;
+      flex:0 0 18px;
+    }
 
-          - label: "Teilweise Stundenlohn"
-            name: "teilweiseStundenlohn"
-            widget: "boolean"
-            default: false
-            required: false
+    .mark.active{
+      background:#163d7a;
+      color:#fff;
+      border-color:#163d7a;
+    }
 
-          - label: "Eventuell teilweise Stundenlohn"
-            name: "eventuellTeilweiseStundenlohn"
-            widget: "boolean"
-            default: false
-            required: false
+    .heightBox{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border:1px solid #cfd6df;
+      border-radius:12px;
+      padding:12px 14px;
+      background:#fbfcfd;
+      min-height:24px;
+    }
 
-          - label: "Festpreisangebot"
-            name: "festpreisangebot"
-            widget: "boolean"
-            default: false
-            required: false
+    .tripleGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
 
-          - label: "Zugang"
-            name: "zugang"
-            widget: "select"
-            options:
-              - { label: "Gerüst erforderlich", value: "geruest" }
-              - { label: "Leiter reicht", value: "leiter" }
+    .tripleColTitle{
+      font-size:15px;
+      font-weight:800;
+      margin:0 0 8px;
+      color:#8b1e1e;
+    }
 
-          - label: "Baustellenhöhe"
-            name: "baustellenhoehe"
-            widget: "select"
-            options:
-              - "2,00 m"
-              - "2,50 m"
-              - "3,00 m"
-              - "3,50 m"
-              - "4,00 m"
-              - "4,50 m"
-              - "5,00 m"
-              - "5,50 m"
-              - "6,00 m"
-              - "6,50 m"
-              - "7,00 m"
-              - "7,50 m"
-              - "8,00 m"
-              - "8,50 m"
-              - "9,00 m"
-              - "9,50 m"
-              - "10,00 m"
-              - "10,50 m"
-              - "11,00 m"
-              - "11,50 m"
-              - "12,00 m"
-              - "12,50 m"
-              - "13,00 m"
-              - "13,50 m"
-              - "14,00 m"
-              - "14,50 m"
-              - "15,00 m"
+    .imageGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
 
-          - label: "Worum geht es hier / Was muss gemacht werden"
-            name: "worumGehtEs"
-            widget: "text"
-            required: false
+    .imageCard{
+      border:1px solid #cfd6df;
+      border-radius:12px;
+      background:#fbfcfd;
+      overflow:hidden;
+      min-height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-          - label: "Was wird zur Baustelle geliefert - Feld 1"
-            name: "lieferung1"
-            widget: "text"
-            required: false
+    .imageCard.empty{
+      color:#666;
+      font-weight:700;
+      background:repeating-linear-gradient(
+        45deg,
+        #f4f6f8,
+        #f4f6f8 12px,
+        #eef2f5 12px,
+        #eef2f5 24px
+      );
+    }
 
-          - label: "Was wird zur Baustelle geliefert - Feld 2"
-            name: "lieferung2"
-            widget: "text"
-            required: false
+    .imageCard img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      background:#fff;
+    }
 
-          - label: "Was wird zur Baustelle geliefert - Feld 3"
-            name: "lieferung3"
-            widget: "text"
-            required: false
+    .footerNote{
+      margin-top:24px;
+      padding-top:14px;
+      border-top:2px solid #e6ebf0;
+      font-size:13px;
+      color:#555;
+    }
 
-          - label: "Was muss mitgenommen werden vom Lager - Feld 1"
-            name: "lager1"
-            widget: "text"
-            required: false
+    @media (max-width: 900px){
+      .page{
+        margin:12px;
+        padding:18px;
+      }
 
-          - label: "Was muss mitgenommen werden vom Lager - Feld 2"
-            name: "lager2"
-            widget: "text"
-            required: false
+      .docHeader{
+        flex-direction:column;
+      }
 
-          - label: "Was muss mitgenommen werden vom Lager - Feld 3"
-            name: "lager3"
-            widget: "text"
-            required: false
+      .docLogo{
+        max-width:220px;
+        width:220px;
+      }
 
-          - label: "Bild 1"
-            name: "bild1"
-            widget: "image"
-            required: false
+      .checkGrid4,
+      .checkGrid2,
+      .tripleGrid,
+      .imageGrid{
+        grid-template-columns:1fr;
+      }
 
-          - label: "Bild 2"
-            name: "bild2"
-            widget: "image"
-            required: false
+      .topBar{
+        position:static;
+      }
+    }
 
-          - label: "Bild 3"
-            name: "bild3"
-            widget: "image"
-            required: false
+    @media print{
+      body{
+        background:#fff;
+      }
 
-          - label: "Sonstiges bitte nicht vergessen"
-            name: "sonstiges"
-            widget: "text"
-            required: false
+      .topBar{
+        display:none !important;
+      }
+
+      .page{
+        max-width:none;
+        margin:0;
+        box-shadow:none;
+        border-radius:0;
+        padding:0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topBar">
+    <div class="topBarTitle">Start neue Baustelle – Druckansicht</div>
+    <div class="topBarActions">
+      <button class="btn btnBlue" type="button" onclick="location.reload()">Neu laden</button>
+      <button class="btn btnYellow" type="button" onclick="window.print()">Drucken / PDF</button>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="docHeader">
+      <div class="docTitleWrap">
+        <h1 class="docTitle" id="docTitle">Neustart Baustelle</h1>
+        <p class="docSub" id="docDate"></p>
+      </div>
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Baustellenadresse</h2>
+      <div class="box" id="baustellenadresse">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Abrechnungsart</h2>
+      <div class="checkGrid4">
+        <div class="checkItem"><span class="mark" id="m_gesamt"></span><span>Gesamte Baustelle Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_teilweise"></span><span>Teilweise Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_eventuell"></span><span>Eventuell teilweise Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_festpreis"></span><span>Festpreisangebot</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Zugang / Baustellenhöhe</h2>
+      <div class="checkGrid2">
+        <div>
+          <div class="checkItem"><span class="mark" id="m_geruest"></span><span>Gerüst erforderlich</span></div>
+          <div style="height:10px"></div>
+          <div class="checkItem"><span class="mark" id="m_leiter"></span><span>Leiter reicht</span></div>
+        </div>
+        <div class="heightBox">
+          <strong>Baustellenhöhe:</strong>
+          <span id="baustellenhoehe">2,00 m</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Worum geht es hier / Was muss gemacht werden</h2>
+      <div class="box" id="worumGehtEs">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Was wird zur Baustelle geliefert</h2>
+      <div class="tripleGrid">
+        <div>
+          <div class="tripleColTitle">Feld 1</div>
+          <div class="box" id="lieferung1">—</div>
+        </div>
+        <div>
+          <div class="tripleColTitle">Feld 2</div>
+          <div class="box" id="lieferung2">—</div>
+        </div>
+        <div>
+          <div class="tripleColTitle">Feld 3</div>
+          <div class="box" id="lieferung3">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Was muss mitgenommen werden vom Lager</h2>
+      <div class="tripleGrid">
+        <div>
+          <div class="tripleColTitle">Feld 1</div>
+          <div class="box" id="lager1">—</div>
+        </div>
+        <div>
+          <div class="tripleColTitle">Feld 2</div>
+          <div class="box" id="lager2">—</div>
+        </div>
+        <div>
+          <div class="tripleColTitle">Feld 3</div>
+          <div class="box" id="lager3">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Fotos vor Arbeitsbeginn</h2>
+      <div class="imageGrid">
+        <div class="imageCard empty" id="bildBox1">Kein Bild</div>
+        <div class="imageCard empty" id="bildBox2">Kein Bild</div>
+        <div class="imageCard empty" id="bildBox3">Kein Bild</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Sonstiges bitte nicht vergessen</h2>
+      <div class="box" id="sonstiges">—</div>
+    </div>
+
+    <div class="footerNote">
+      Inseldachdecker – automatisch erzeugte Baustellen-Startunterlage
+    </div>
+  </div>
+
+  <script>
+    function setText(id, value){
+      const el = document.getElementById(id);
+      if (!el) return;
+      const txt = String(value || '').trim();
+      el.textContent = txt || '—';
+    }
+
+    function setMark(id, active){
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (active) {
+        el.classList.add('active');
+        el.textContent = '✓';
+      } else {
+        el.classList.remove('active');
+        el.textContent = '';
+      }
+    }
+
+    function setImage(boxId, value){
+      const box = document.getElementById(boxId);
+      if (!box) return;
+
+      const raw = String(value || '').trim();
+      if (!raw) {
+        box.className = 'imageCard empty';
+        box.textContent = 'Kein Bild';
+        return;
+      }
+
+      const base = location.origin + location.pathname.replace(/baustellenstart\.html$/i, '');
+      const resolved = raw.startsWith('http')
+        ? raw
+        : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
+
+      box.className = 'imageCard';
+      box.innerHTML = `<img src="${resolved}" alt="Baustellenbild">`;
+    }
+
+    async function loadBaustellenstart() {
+      try {
+        const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        document.getElementById('docTitle').textContent = data.title || 'Neustart Baustelle';
+        document.getElementById('docDate').textContent =
+          'Erstellt am: ' + new Date().toLocaleDateString('de-DE');
+
+        setText('baustellenadresse', data.baustellenadresse);
+        setText('baustellenhoehe', data.baustellenhoehe);
+        setText('worumGehtEs', data.worumGehtEs);
+
+        setText('lieferung1', data.lieferung1);
+        setText('lieferung2', data.lieferung2);
+        setText('lieferung3', data.lieferung3);
+
+        setText('lager1', data.lager1);
+        setText('lager2', data.lager2);
+        setText('lager3', data.lager3);
+
+        setText('sonstiges', data.sonstiges);
+
+        setMark('m_gesamt', !!data.gesamteBaustelleStundenlohn);
+        setMark('m_teilweise', !!data.teilweiseStundenlohn);
+        setMark('m_eventuell', !!data.eventuellTeilweiseStundenlohn);
+        setMark('m_festpreis', !!data.festpreisangebot);
+
+        setMark('m_geruest', data.zugang === 'geruest');
+        setMark('m_leiter', data.zugang === 'leiter');
+
+        setImage('bildBox1', data.bild1);
+        setImage('bildBox2', data.bild2);
+        setImage('bildBox3', data.bild3);
+      } catch (err) {
+        alert('baustellenstart.json konnte nicht geladen werden.');
+      }
+    }
+
+    loadBaustellenstart();
+  </script>
+</body>
+</html>
