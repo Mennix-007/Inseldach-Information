@@ -119,3 +119,136 @@ collections:
             value_type: "int"
             min: 1
             default: 40
+
+      - name: "baustellenstart"
+        label: "Start neue Baustelle"
+        file: "baustellenstart.json"
+        format: "json"
+        fields:
+          - label: "Feste Überschrift"
+            name: "title"
+            widget: "string"
+            default: "Neustart Baustelle"
+
+          - label: "Baustellenadresse"
+            name: "baustellenadresse"
+            widget: "text"
+            required: false
+
+          - label: "Gesamte Baustelle Stundenlohn"
+            name: "gesamteBaustelleStundenlohn"
+            widget: "boolean"
+            default: false
+            required: false
+
+          - label: "Teilweise Stundenlohn"
+            name: "teilweiseStundenlohn"
+            widget: "boolean"
+            default: false
+            required: false
+
+          - label: "Eventuell teilweise Stundenlohn"
+            name: "eventuellTeilweiseStundenlohn"
+            widget: "boolean"
+            default: false
+            required: false
+
+          - label: "Festpreisangebot"
+            name: "festpreisangebot"
+            widget: "boolean"
+            default: false
+            required: false
+
+          - label: "Zugang"
+            name: "zugang"
+            widget: "select"
+            options:
+              - { label: "Gerüst erforderlich", value: "geruest" }
+              - { label: "Leiter reicht", value: "leiter" }
+
+          - label: "Baustellenhöhe"
+            name: "baustellenhoehe"
+            widget: "select"
+            options:
+              - "2,00 m"
+              - "2,50 m"
+              - "3,00 m"
+              - "3,50 m"
+              - "4,00 m"
+              - "4,50 m"
+              - "5,00 m"
+              - "5,50 m"
+              - "6,00 m"
+              - "6,50 m"
+              - "7,00 m"
+              - "7,50 m"
+              - "8,00 m"
+              - "8,50 m"
+              - "9,00 m"
+              - "9,50 m"
+              - "10,00 m"
+              - "10,50 m"
+              - "11,00 m"
+              - "11,50 m"
+              - "12,00 m"
+              - "12,50 m"
+              - "13,00 m"
+              - "13,50 m"
+              - "14,00 m"
+              - "14,50 m"
+              - "15,00 m"
+
+          - label: "Worum geht es hier / Was muss gemacht werden"
+            name: "worumGehtEs"
+            widget: "text"
+            required: false
+
+          - label: "Was wird zur Baustelle geliefert - Feld 1"
+            name: "lieferung1"
+            widget: "text"
+            required: false
+
+          - label: "Was wird zur Baustelle geliefert - Feld 2"
+            name: "lieferung2"
+            widget: "text"
+            required: false
+
+          - label: "Was wird zur Baustelle geliefert - Feld 3"
+            name: "lieferung3"
+            widget: "text"
+            required: false
+
+          - label: "Was muss mitgenommen werden vom Lager - Feld 1"
+            name: "lager1"
+            widget: "text"
+            required: false
+
+          - label: "Was muss mitgenommen werden vom Lager - Feld 2"
+            name: "lager2"
+            widget: "text"
+            required: false
+
+          - label: "Was muss mitgenommen werden vom Lager - Feld 3"
+            name: "lager3"
+            widget: "text"
+            required: false
+
+          - label: "Bild 1"
+            name: "bild1"
+            widget: "image"
+            required: false
+
+          - label: "Bild 2"
+            name: "bild2"
+            widget: "image"
+            required: false
+
+          - label: "Bild 3"
+            name: "bild3"
+            widget: "image"
+            required: false
+
+          - label: "Sonstiges bitte nicht vergessen"
+            name: "sonstiges"
+            widget: "text"
+            required: false
