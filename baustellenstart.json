@@ -1,1 +1,21 @@
-
+{
+  "title": "Neustart Baustelle",
+  "baustellenadresse": "",
+  "gesamteBaustelleStundenlohn": false,
+  "teilweiseStundenlohn": false,
+  "eventuellTeilweiseStundenlohn": false,
+  "festpreisangebot": false,
+  "zugang": "leiter",
+  "baustellenhoehe": "2,00 m",
+  "worumGehtEs": "",
+  "lieferung1": "",
+  "lieferung2": "",
+  "lieferung3": "",
+  "lager1": "",
+  "lager2": "",
+  "lager3": "",
+  "bild1": "",
+  "bild2": "",
+  "bild3": "",
+  "sonstiges": ""
+}
