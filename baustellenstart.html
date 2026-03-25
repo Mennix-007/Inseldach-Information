@@ -37,6 +37,31 @@ h1{
   margin:0;
 }
 
+.buttonBar{
+  margin-bottom:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  padding:10px 20px;
+  border:none;
+  cursor:pointer;
+  font-weight:bold;
+  border-radius:8px;
+}
+
+.btnBlue{
+  background:#163d7a;
+  color:#fff;
+}
+
+.btnYellow{
+  background:#ffd400;
+  color:#000;
+}
+
 .section{
   margin-bottom:20px;
 }
@@ -71,17 +96,12 @@ textarea{
   border:1px solid #ccc;
 }
 
-.print-btn{
-  padding:10px 20px;
-  background:#ffd400;
-  border:none;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* ===== DRUCK OPTIMIERUNG ===== */
+/* ===== DRUCK CHECKBOX FIX ===== */
 @media print{
-  .print-btn{display:none;}
+
+  .buttonBar{
+    display:none;
+  }
 
   input[type="checkbox"]{
     display:none;
@@ -118,7 +138,11 @@ textarea{
   <img src="Logo_Menne_min.png" class="logo">
 </div>
 
-<button class="print-btn" onclick="window.print()">Drucken / PDF</button>
+<div class="buttonBar">
+  <button class="btn btnBlue" onclick="location.reload()">Neu laden</button>
+  <button class="btn btnBlue" onclick="openPolishVersion()">Polnisch erzeugen</button>
+  <button class="btn btnYellow" onclick="window.print()">Drucken / PDF</button>
+</div>
 
 <div class="section">
   <label>Baustellenadresse</label>
@@ -126,31 +150,16 @@ textarea{
 </div>
 
 <div class="section">
-  <label>
-    <span class="print-checkbox" id="pcb1"></span>
-    <input type="checkbox" id="cb1"> Gesamte Baustelle Stundenlohn
-  </label><br>
-
-  <label>
-    <span class="print-checkbox" id="pcb2"></span>
-    <input type="checkbox" id="cb2"> Teilweise Stundenlohn
-  </label><br>
-
-  <label>
-    <span class="print-checkbox" id="pcb3"></span>
-    <input type="checkbox" id="cb3"> Eventuell teilweise Stundenlohn
-  </label><br>
-
-  <label>
-    <span class="print-checkbox" id="pcb4"></span>
-    <input type="checkbox" id="cb4"> Festpreisangebot
-  </label>
+  <label><span class="print-checkbox" id="pcb1"></span><input type="checkbox" id="cb1"> Gesamte Baustelle Stundenlohn</label><br>
+  <label><span class="print-checkbox" id="pcb2"></span><input type="checkbox" id="cb2"> Teilweise Stundenlohn</label><br>
+  <label><span class="print-checkbox" id="pcb3"></span><input type="checkbox" id="cb3"> Eventuell teilweise Stundenlohn</label><br>
+  <label><span class="print-checkbox" id="pcb4"></span><input type="checkbox" id="cb4"> Festpreisangebot</label>
 </div>
 
 <div class="section">
   <select id="zugang">
-    <option>Gerüst erforderlich</option>
-    <option>Leiter reicht</option>
+    <option value="geruest">Gerüst erforderlich</option>
+    <option value="leiter">Leiter reicht</option>
   </select>
 
   <select id="hoehe"></select>
@@ -187,9 +196,11 @@ textarea{
 </div>
 
 <script>
-// Höhen füllen
+
+// Höhe füllen
 for(let i=2;i<=15;i+=0.5){
   let opt=document.createElement("option");
+  opt.value=i.toFixed(2);
   opt.textContent=i.toFixed(2).replace(".",",")+" m";
   document.getElementById("hoehe").appendChild(opt);
 }
@@ -217,12 +228,15 @@ fetch("baustellenstart.json?"+Date.now())
   document.getElementById("lager2").innerText=d.lager2||"";
   document.getElementById("lager3").innerText=d.lager3||"";
 
+  document.getElementById("zugang").value=d.zugang||"";
+  document.getElementById("hoehe").value=d.baustellenhoehe||"";
+
   if(d.bild1) document.getElementById("img1").src=d.bild1;
   if(d.bild2) document.getElementById("img2").src=d.bild2;
   if(d.bild3) document.getElementById("img3").src=d.bild3;
 });
 
-// Druck Checkbox Sync
+// Checkbox Druck Sync
 function syncPrintCheckboxes(){
   const map=[
     ["cb1","pcb1"],
@@ -243,6 +257,13 @@ function syncPrintCheckboxes(){
 }
 
 window.addEventListener("beforeprint",syncPrintCheckboxes);
+
+// 👉 POLNISCHE SEITE ÖFFNEN
+function openPolishVersion(){
+  const url = location.origin + location.pathname.replace("baustellenstart.html","baustellenstart-pl.html");
+  window.open(url,"_blank");
+}
+
 </script>
 
 </body>
