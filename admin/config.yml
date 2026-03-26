@@ -17,11 +17,16 @@ collections:
   - name: "content"
     label: "Inhalte"
     files:
+
+      # =========================
+      # NEWS / HAUPTANZEIGE
+      # =========================
       - name: "news"
         label: "Kacheln & Laufband"
         file: "news.json"
         format: "json"
         fields:
+
           - label: "Heute wichtig"
             name: "heuteWichtig"
             widget: "list"
@@ -71,11 +76,15 @@ collections:
               name: "item"
               widget: "string"
 
+      # =========================
+      # SONDERSEITE
+      # =========================
       - name: "special"
         label: "Sonderseite / Anzeige"
         file: "special.json"
         format: "json"
         fields:
+
           - label: "Aktiv"
             name: "active"
             widget: "boolean"
@@ -120,44 +129,62 @@ collections:
             min: 1
             default: 40
 
+      # =========================
+      # BAUSTELLENSTART
+      # =========================
       - name: "baustellenstart"
         label: "Start neue Baustelle"
         file: "baustellenstart.json"
         format: "json"
         fields:
+
           - label: "Feste Überschrift"
             name: "title"
             widget: "string"
             default: "Neustart Baustelle"
+
+          - label: "Baustellenname"
+            name: "baustellenname"
+            widget: "string"
+            required: false
 
           - label: "Baustellenadresse"
             name: "baustellenadresse"
             widget: "text"
             required: false
 
+          - label: "Suchbegriff Craftnote"
+            name: "craftnoteSuchbegriff"
+            widget: "string"
+            required: false
+
+          - label: "Craftnote eingeladen?"
+            name: "craftnoteEingeladen"
+            widget: "select"
+            options:
+              - { label: "Ja", value: "ja" }
+              - { label: "Nein", value: "nein" }
+            default: "nein"
+
           - label: "Gesamte Baustelle Stundenlohn"
             name: "gesamteBaustelleStundenlohn"
             widget: "boolean"
             default: false
-            required: false
 
           - label: "Teilweise Stundenlohn"
             name: "teilweiseStundenlohn"
             widget: "boolean"
             default: false
-            required: false
 
           - label: "Eventuell teilweise Stundenlohn"
             name: "eventuellTeilweiseStundenlohn"
             widget: "boolean"
             default: false
-            required: false
 
           - label: "Festpreisangebot"
             name: "festpreisangebot"
             widget: "boolean"
             default: false
-            required: false
 
           - label: "Zugang"
             name: "zugang"
@@ -206,49 +233,39 @@ collections:
           - label: "Was wird zur Baustelle geliefert - Feld 1"
             name: "lieferung1"
             widget: "text"
-            required: false
 
           - label: "Was wird zur Baustelle geliefert - Feld 2"
             name: "lieferung2"
             widget: "text"
-            required: false
 
           - label: "Was wird zur Baustelle geliefert - Feld 3"
             name: "lieferung3"
             widget: "text"
-            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 1"
             name: "lager1"
             widget: "text"
-            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 2"
             name: "lager2"
             widget: "text"
-            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 3"
             name: "lager3"
             widget: "text"
-            required: false
 
           - label: "Bild 1"
             name: "bild1"
             widget: "image"
-            required: false
 
           - label: "Bild 2"
             name: "bild2"
             widget: "image"
-            required: false
 
           - label: "Bild 3"
             name: "bild3"
             widget: "image"
-            required: false
 
           - label: "Sonstiges bitte nicht vergessen"
             name: "sonstiges"
             widget: "text"
-            required: false
