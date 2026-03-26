@@ -57,6 +57,11 @@ body{
   color:#000;
 }
 
+.btnGreen{
+  background:#25D366;
+  color:#111;
+}
+
 .page{
   max-width:1180px;
   margin:22px auto;
@@ -298,6 +303,7 @@ body{
   <div class="topBarTitle">Start neue Baustelle – Druckansicht</div>
   <div class="topBarActions">
     <button class="btn btnBlue" type="button" onclick="location.reload()">Neu laden</button>
+    <button class="btn btnGreen" type="button" onclick="openWhatsAppGerman()">WhatsApp Deutsch</button>
     <button class="btn btnBlue" type="button" onclick="openPolishVersion()">Polnisch erzeugen</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drucken / PDF</button>
   </div>
@@ -404,6 +410,7 @@ body{
 
 <script>
   const NETLIFY_BASE = "https://imaginative-wisp-b0fe62.netlify.app";
+  let baustellenstartData = null;
 
   function setText(id, value){
     const el = document.getElementById(id);
@@ -448,11 +455,85 @@ body{
     window.open(`${NETLIFY_BASE}/baustellenstart-pl.html`, '_blank');
   }
 
+  function buildGermanWhatsAppText(data){
+    const abrechnung = [];
+    if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
+    if (data.teilweiseStundenlohn) abrechnung.push("Teilweise Stundenlohn");
+    if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
+    if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
+
+    const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3]
+      .map(x => String(x || "").trim())
+      .filter(Boolean)
+      .join("\n");
+
+    const lager = [data.lager1, data.lager2, data.lager3]
+      .map(x => String(x || "").trim())
+      .filter(Boolean)
+      .join("\n");
+
+    const lines = [];
+    lines.push("Neustart Baustelle");
+    lines.push("");
+
+    if (data.baustellenadresse) {
+      lines.push("Baustellenadresse:");
+      lines.push(data.baustellenadresse.trim());
+      lines.push("");
+    }
+
+    if (abrechnung.length) {
+      lines.push("Abrechnungsart:");
+      lines.push(abrechnung.join(", "));
+      lines.push("");
+    }
+
+    lines.push("Zugang / Höhe:");
+    lines.push((data.zugang === "geruest" ? "Gerüst erforderlich" : "Leiter reicht") + (data.baustellenhoehe ? " / " + data.baustellenhoehe : ""));
+    lines.push("");
+
+    if (data.worumGehtEs) {
+      lines.push("Was ist zu tun:");
+      lines.push(data.worumGehtEs.trim());
+      lines.push("");
+    }
+
+    if (lieferung) {
+      lines.push("Lieferung zur Baustelle:");
+      lines.push(lieferung);
+      lines.push("");
+    }
+
+    if (lager) {
+      lines.push("Mitnahme aus dem Lager:");
+      lines.push(lager);
+      lines.push("");
+    }
+
+    if (data.sonstiges) {
+      lines.push("Sonstiges:");
+      lines.push(data.sonstiges.trim());
+    }
+
+    return lines.join("\n").trim();
+  }
+
+  function openWhatsAppGerman(){
+    if (!baustellenstartData) {
+      alert("Baustellendaten sind noch nicht geladen.");
+      return;
+    }
+    const msg = buildGermanWhatsAppText(baustellenstartData);
+    const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank");
+  }
+
   async function loadBaustellenstart() {
     try {
       const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
+      baustellenstartData = data;
 
       document.getElementById('docTitle').textContent = data.title || 'Neustart Baustelle';
       document.getElementById('docDate').textContent =
