@@ -134,6 +134,35 @@ body{
   overflow:hidden;
 }
 
+.infoRow{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:12px;
+  margin-top:12px;
+}
+
+.smallInfoBox{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:22px;
+}
+
+.infoLabel{
+  font-size:13px;
+  font-weight:800;
+  color:#163d7a;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.2px;
+}
+
+.infoValue{
+  white-space:pre-wrap;
+  line-height:1.35;
+}
+
 .checkGrid4{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -261,6 +290,7 @@ body{
     width:220px;
   }
 
+  .infoRow,
   .checkGrid4,
   .checkGrid2,
   .tripleGrid,
@@ -318,8 +348,24 @@ body{
   </div>
 
   <div class="section">
+    <h2 class="sectionTitle">Nazwa budowy</h2>
+    <div class="box" id="baustellenname">—</div>
+  </div>
+
+  <div class="section">
     <h2 class="sectionTitle">Adres budowy</h2>
     <div class="box addressBox" id="baustellenadresse">—</div>
+
+    <div class="infoRow">
+      <div class="smallInfoBox">
+        <div class="infoLabel">Hasło wyszukiwania Craftnote</div>
+        <div class="infoValue" id="craftnoteSuchbegriff">—</div>
+      </div>
+      <div class="smallInfoBox">
+        <div class="infoLabel">Zaproszono do Craftnote</div>
+        <div class="infoValue" id="craftnoteEingeladen">—</div>
+      </div>
+    </div>
   </div>
 
   <div class="section">
@@ -450,9 +496,15 @@ body{
     box.innerHTML = `<img src="${resolved}" alt="Zdjęcie budowy" loading="eager">`;
   }
 
+  function craftnoteDisplayPl(value){
+    return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
+  }
+
   async function translateTexts(data) {
     const texts = [
+      data.baustellenname || '',
       data.baustellenadresse || '',
+      data.craftnoteSuchbegriff || '',
       data.worumGehtEs || '',
       data.lieferung1 || '',
       data.lieferung2 || '',
@@ -486,12 +538,12 @@ body{
     if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
     if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
 
-    const lieferung = [translated[2], translated[3], translated[4]]
+    const lieferung = [translated[4], translated[5], translated[6]]
       .map(x => String(x || "").trim())
       .filter(Boolean)
       .join("\n");
 
-    const lager = [translated[5], translated[6], translated[7]]
+    const lager = [translated[7], translated[8], translated[9]]
       .map(x => String(x || "").trim())
       .filter(Boolean)
       .join("\n");
@@ -501,10 +553,26 @@ body{
     lines.push("");
 
     if (translated[0]) {
-      lines.push("Adres budowy:");
+      lines.push("Nazwa budowy:");
       lines.push(translated[0].trim());
       lines.push("");
     }
+
+    if (translated[1]) {
+      lines.push("Adres budowy:");
+      lines.push(translated[1].trim());
+      lines.push("");
+    }
+
+    if (translated[2]) {
+      lines.push("Hasło wyszukiwania Craftnote:");
+      lines.push(translated[2].trim());
+      lines.push("");
+    }
+
+    lines.push("Zaproszono do Craftnote:");
+    lines.push(craftnoteDisplayPl(data.craftnoteEingeladen));
+    lines.push("");
 
     if (abrechnung.length) {
       lines.push("Rodzaj rozliczenia:");
@@ -516,9 +584,9 @@ body{
     lines.push((data.zugang === "geruest" ? "Wymagane rusztowanie" : "Wystarczy drabina") + (data.baustellenhoehe ? " / " + data.baustellenhoehe : ""));
     lines.push("");
 
-    if (translated[1]) {
+    if (translated[3]) {
       lines.push("Co należy wykonać:");
-      lines.push(translated[1].trim());
+      lines.push(translated[3].trim());
       lines.push("");
     }
 
@@ -534,9 +602,9 @@ body{
       lines.push("");
     }
 
-    if (translated[8]) {
+    if (translated[10]) {
       lines.push("Pozostałe informacje:");
-      lines.push(translated[8].trim());
+      lines.push(translated[10].trim());
     }
 
     return lines.join("\n").trim();
@@ -565,15 +633,19 @@ body{
 
       translatedTexts = await translateTexts(data);
 
-      setText('baustellenadresse', translatedTexts[0]);
-      setText('worumGehtEs', translatedTexts[1]);
-      setText('lieferung1', translatedTexts[2]);
-      setText('lieferung2', translatedTexts[3]);
-      setText('lieferung3', translatedTexts[4]);
-      setText('lager1', translatedTexts[5]);
-      setText('lager2', translatedTexts[6]);
-      setText('lager3', translatedTexts[7]);
-      setText('sonstiges', translatedTexts[8]);
+      setText('baustellenname', translatedTexts[0]);
+      setText('baustellenadresse', translatedTexts[1]);
+      setText('craftnoteSuchbegriff', translatedTexts[2]);
+      setText('craftnoteEingeladen', craftnoteDisplayPl(data.craftnoteEingeladen));
+
+      setText('worumGehtEs', translatedTexts[3]);
+      setText('lieferung1', translatedTexts[4]);
+      setText('lieferung2', translatedTexts[5]);
+      setText('lieferung3', translatedTexts[6]);
+      setText('lager1', translatedTexts[7]);
+      setText('lager2', translatedTexts[8]);
+      setText('lager3', translatedTexts[9]);
+      setText('sonstiges', translatedTexts[10]);
 
       setText('baustellenhoehe', data.baustellenhoehe);
 
