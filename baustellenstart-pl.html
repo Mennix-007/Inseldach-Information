@@ -57,6 +57,11 @@ body{
   color:#000;
 }
 
+.btnGreen{
+  background:#25D366;
+  color:#111;
+}
+
 .page{
   max-width:1180px;
   margin:22px auto;
@@ -298,6 +303,7 @@ body{
   <div class="topBarTitle">Nowa budowa – widok do druku</div>
   <div class="topBarActions">
     <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
+    <button class="btn btnGreen" type="button" onclick="openWhatsAppPolish()">WhatsApp Polski</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
   </div>
 </div>
@@ -402,6 +408,9 @@ body{
 </div>
 
 <script>
+  let sourceData = null;
+  let translatedTexts = null;
+
   function setText(id, value){
     const el = document.getElementById(id);
     if (!el) return;
@@ -470,27 +479,101 @@ body{
     return result.translations || texts;
   }
 
+  function buildPolishWhatsAppText(data, translated) {
+    const abrechnung = [];
+    if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
+    if (data.teilweiseStundenlohn) abrechnung.push("Częściowo robocizna godzinowa");
+    if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
+    if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
+
+    const lieferung = [translated[2], translated[3], translated[4]]
+      .map(x => String(x || "").trim())
+      .filter(Boolean)
+      .join("\n");
+
+    const lager = [translated[5], translated[6], translated[7]]
+      .map(x => String(x || "").trim())
+      .filter(Boolean)
+      .join("\n");
+
+    const lines = [];
+    lines.push("Nowy start budowy");
+    lines.push("");
+
+    if (translated[0]) {
+      lines.push("Adres budowy:");
+      lines.push(translated[0].trim());
+      lines.push("");
+    }
+
+    if (abrechnung.length) {
+      lines.push("Rodzaj rozliczenia:");
+      lines.push(abrechnung.join(", "));
+      lines.push("");
+    }
+
+    lines.push("Dostęp / wysokość:");
+    lines.push((data.zugang === "geruest" ? "Wymagane rusztowanie" : "Wystarczy drabina") + (data.baustellenhoehe ? " / " + data.baustellenhoehe : ""));
+    lines.push("");
+
+    if (translated[1]) {
+      lines.push("Co należy wykonać:");
+      lines.push(translated[1].trim());
+      lines.push("");
+    }
+
+    if (lieferung) {
+      lines.push("Dostawa na budowę:");
+      lines.push(lieferung);
+      lines.push("");
+    }
+
+    if (lager) {
+      lines.push("Zabrać z magazynu:");
+      lines.push(lager);
+      lines.push("");
+    }
+
+    if (translated[8]) {
+      lines.push("Pozostałe informacje:");
+      lines.push(translated[8].trim());
+    }
+
+    return lines.join("\n").trim();
+  }
+
+  function openWhatsAppPolish(){
+    if (!sourceData || !translatedTexts) {
+      alert("Dane nie zostały jeszcze załadowane.");
+      return;
+    }
+    const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
+    const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+    window.open(url, "_blank");
+  }
+
   async function loadBaustellenstart() {
     try {
       const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
+      sourceData = data;
 
       document.getElementById('docTitle').textContent = 'Nowy start budowy';
       document.getElementById('docDate').textContent =
         'Utworzono dnia: ' + new Date().toLocaleDateString('pl-PL');
 
-      const translated = await translateTexts(data);
+      translatedTexts = await translateTexts(data);
 
-      setText('baustellenadresse', translated[0]);
-      setText('worumGehtEs', translated[1]);
-      setText('lieferung1', translated[2]);
-      setText('lieferung2', translated[3]);
-      setText('lieferung3', translated[4]);
-      setText('lager1', translated[5]);
-      setText('lager2', translated[6]);
-      setText('lager3', translated[7]);
-      setText('sonstiges', translated[8]);
+      setText('baustellenadresse', translatedTexts[0]);
+      setText('worumGehtEs', translatedTexts[1]);
+      setText('lieferung1', translatedTexts[2]);
+      setText('lieferung2', translatedTexts[3]);
+      setText('lieferung3', translatedTexts[4]);
+      setText('lager1', translatedTexts[5]);
+      setText('lager2', translatedTexts[6]);
+      setText('lager3', translatedTexts[7]);
+      setText('sonstiges', translatedTexts[8]);
 
       setText('baustellenhoehe', data.baustellenhoehe);
 
