@@ -668,53 +668,50 @@
         grid-template-columns:1fr;
       }
 
-.specialOverlay{
-  padding:4px;
-  align-items:center;
-  justify-content:center;
-}
+      .specialOverlay{
+        padding:4px;
+        align-items:center;
+        justify-content:center;
+      }
 
-.specialCard{
-  width:99vw;
-  max-width:99vw;
-  max-height:96vh;        /* fast volle Höhe */
-  grid-template-columns:1fr;
-  gap:10px;
-  padding:14px;
-  border-radius:14px;
-}
+      .specialCard{
+        width:99vw;
+        max-width:99vw;
+        max-height:96vh;
+        grid-template-columns:1fr;
+        gap:10px;
+        padding:14px;
+        border-radius:14px;
+      }
 
-.specialTitle{
-  font-size:26px;
-  line-height:1.08;
-  margin:0 0 8px;
-}
+      .specialTitle{
+        font-size:26px;
+        line-height:1.08;
+        margin:0 0 8px;
+      }
 
-/* TEXT bekommt jetzt maximal Platz */
-.specialBodyWrap{
-  flex:1;
-  max-height:none;        /* wichtig → keine Begrenzung mehr */
-  overflow:hidden;
-}
+      .specialBodyWrap{
+        flex:1;
+        max-height:none;
+        overflow:hidden;
+      }
 
-.specialBody{
-  font-size:18px;         /* größer für Lesbarkeit */
-  line-height:1.35;
-}
+      .specialBody{
+        font-size:18px;
+        line-height:1.35;
+      }
 
-/* BILD bewusst kleiner */
-.specialImageCard{
-  min-height:120px;
-  max-height:20vh;        /* stark reduziert */
-  border-radius:10px;
-}
+      .specialImageCard{
+        min-height:120px;
+        max-height:20vh;
+        border-radius:10px;
+      }
 
-.specialImage{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-}
+      .specialImage{
+        width:100%;
+        height:100%;
+        object-fit:contain;
+      }
     }
   </style>
 </head>
@@ -1213,59 +1210,56 @@
       });
     }
 
-   function fitSpecialText() {
-  const textEl = document.getElementById('specialText');
-  const wrapEl = document.getElementById('specialBodyWrap');
+    function fitSpecialText() {
+      const textEl = document.getElementById('specialText');
+      const wrapEl = document.getElementById('specialBodyWrap');
 
-  if (!textEl || !wrapEl) return;
+      if (!textEl || !wrapEl) return;
 
-  const maxSize = 32;
-  const minSize = 10;          // kleinerer Mindestwert, damit nichts abgeschnitten wird
-  const baseLineHeight = 1.22; // kompakter
-  const maxLineHeight = 1.40;
+      const maxSize = 32;
+      const minSize = 10;
+      const baseLineHeight = 1.22;
+      const maxLineHeight = 1.40;
 
-  textEl.style.visibility = 'hidden';
-  textEl.style.paddingTop = '0px';
-  textEl.style.paddingBottom = '0px';
-  textEl.style.margin = '0';
+      textEl.style.visibility = 'hidden';
+      textEl.style.paddingTop = '0px';
+      textEl.style.paddingBottom = '0px';
+      textEl.style.margin = '0';
 
-  let fittedSize = minSize;
-  let fittedLineHeight = baseLineHeight;
+      let fittedSize = minSize;
+      let fittedLineHeight = baseLineHeight;
 
-  for (let size = maxSize; size >= minSize; size -= 1) {
-    textEl.style.fontSize = size + 'px';
-    textEl.style.lineHeight = baseLineHeight;
+      for (let size = maxSize; size >= minSize; size -= 1) {
+        textEl.style.fontSize = size + 'px';
+        textEl.style.lineHeight = baseLineHeight;
 
-    if (textEl.scrollHeight <= wrapEl.clientHeight) {
-      fittedSize = size;
-      break;
-    }
-  }
+        if (textEl.scrollHeight <= wrapEl.clientHeight) {
+          fittedSize = size;
+          break;
+        }
+      }
 
-  textEl.style.fontSize = fittedSize + 'px';
-  textEl.style.lineHeight = baseLineHeight;
+      textEl.style.fontSize = fittedSize + 'px';
+      textEl.style.lineHeight = baseLineHeight;
 
-  for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
-    textEl.style.lineHeight = lh.toFixed(2);
-    if (textEl.scrollHeight <= wrapEl.clientHeight) {
-      fittedLineHeight = lh;
-    } else {
-      break;
-    }
-  }
+      for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
+        textEl.style.lineHeight = lh.toFixed(2);
+        if (textEl.scrollHeight <= wrapEl.clientHeight) {
+          fittedLineHeight = lh;
+        } else {
+          break;
+        }
+      }
 
-  textEl.style.lineHeight = fittedLineHeight.toFixed(2);
+      textEl.style.lineHeight = fittedLineHeight.toFixed(2);
 
-  // Nur dann leicht nach unten schieben, wenn wirklich Platz übrig ist
-  const spare = wrapEl.clientHeight - textEl.scrollHeight;
-  if (spare > 20) {
-    textEl.style.paddingTop = Math.min(12, Math.floor(spare * 0.08)) + 'px';
-  } else {
-    textEl.style.paddingTop = '0px';
-  }
+      const spare = wrapEl.clientHeight - textEl.scrollHeight;
+      if (spare > 20) {
+        textEl.style.paddingTop = Math.min(12, Math.floor(spare * 0.08)) + 'px';
+      } else {
+        textEl.style.paddingTop = '0px';
+      }
 
-  textEl.style.visibility = 'visible';
-}
       textEl.style.visibility = 'visible';
     }
 
@@ -1636,612 +1630,4 @@
 
           if (tempEl) tempEl.textContent = (t ?? "—") + " °C";
           if (iconEl) iconEl.textContent = wxIconForCode(c);
-          if (popEl) popEl.textContent  = "Regen: " + (p ?? "—") + "%";
-        }
-
-        setSlot("wx8", i8);
-        setSlot("wx13", i13);
-        setSlot("wx17", i17);
-
-      } catch(e){
-        const nowDesc = document.getElementById("wxNowDesc");
-        if (nowDesc) nowDesc.textContent = "Wetter konnte nicht geladen werden.";
-      }
-    }
-
-    function getDraftKey(modeKey) {
-      return 'teamDraft_' + modeKey;
-    }
-
-    function normalizePhone(input) {
-      return String(input || '').replace(/\D+/g, '');
-    }
-
-    function createToolSelect(index) {
-      const wrap = document.createElement('div');
-      wrap.className = 'fieldWrap';
-
-      const label = document.createElement('label');
-      label.setAttribute('for', 'tool_' + index);
-      label.textContent = 'Werkzeug ' + (index + 1);
-
-      const select = document.createElement('select');
-      select.id = 'tool_' + index;
-      select.dataset.toolIndex = String(index);
-
-      const placeholder = document.createElement('option');
-      placeholder.value = '';
-      placeholder.textContent = '-- Werkzeug auswählen --';
-      select.appendChild(placeholder);
-
-      const TOOL_OPTIONS = [
-        "Brenner",
-        "Akkuschrauben",
-        "große Flex",
-        "Dachschneider",
-        "Motor Schiebkarre",
-        "Kran",
-        "Lötkolben",
-        "Kernborhrmaschiene",
-        "Schiebkarre",
-        "Krangabel",
-        "Kranbottich",
-        "Lange Leiter",
-        "5 m Leiter"
-      ];
-
-      TOOL_OPTIONS.forEach(tool => {
-        const opt = document.createElement('option');
-        opt.value = tool;
-        opt.textContent = tool;
-        select.appendChild(opt);
-      });
-
-      select.addEventListener('change', handleDraftInputChange);
-
-      wrap.appendChild(label);
-      wrap.appendChild(select);
-      return wrap;
-    }
-
-    function initToolGrid() {
-      const toolGrid = document.getElementById('toolGrid');
-      if (!toolGrid) return;
-      toolGrid.innerHTML = '';
-      for (let i = 0; i < 12; i++) {
-        toolGrid.appendChild(createToolSelect(i));
-      }
-    }
-
-    function getSelectedTools() {
-      return Array.from(document.querySelectorAll('#toolGrid select'))
-        .map(sel => sel.value.trim())
-        .filter(Boolean);
-    }
-
-    function collectDraftData() {
-      return {
-        freieNummer: document.getElementById('freieNummer').value.trim(),
-        baustellenname: document.getElementById('baustellenname').value.trim(),
-        strasse: document.getElementById('strasse').value.trim(),
-        ort: document.getElementById('ort').value.trim(),
-        baustelleWas: document.getElementById('baustelleWas').value.trim(),
-        baustelleBeachten: document.getElementById('baustelleBeachten').value.trim(),
-        dranDenken: document.getElementById('dranDenken').value.trim(),
-        tools: Array.from(document.querySelectorAll('#toolGrid select')).map(sel => sel.value || '')
-      };
-    }
-
-    function applyDraftData(data = {}) {
-      document.getElementById('freieNummer').value = data.freieNummer || '';
-      document.getElementById('baustellenname').value = data.baustellenname || '';
-      document.getElementById('strasse').value = data.strasse || '';
-      document.getElementById('ort').value = data.ort || '';
-      document.getElementById('baustelleWas').value = data.baustelleWas || '';
-      document.getElementById('baustelleBeachten').value = data.baustelleBeachten || '';
-      document.getElementById('dranDenken').value = data.dranDenken || '';
-
-      const toolValues = Array.isArray(data.tools) ? data.tools : [];
-      document.querySelectorAll('#toolGrid select').forEach((sel, idx) => {
-        sel.value = toolValues[idx] || '';
-      });
-    }
-
-    function getCurrentDraftStorageKey() {
-      if (activeTeamKey === 'all_selected') return getDraftKey('all_selected');
-      if (activeTeamKey) return getDraftKey(activeTeamKey);
-      return null;
-    }
-
-    function saveCurrentDraft() {
-      const key = getCurrentDraftStorageKey();
-      if (!key) return;
-      try {
-        localStorage.setItem(key, JSON.stringify(collectDraftData()));
-      } catch(e) {}
-    }
-
-    function loadDraft(modeKey) {
-      try {
-        const raw = localStorage.getItem(getDraftKey(modeKey));
-        return raw ? JSON.parse(raw) : null;
-      } catch(e) {
-        return null;
-      }
-    }
-
-    function clearCurrentDraft() {
-      const key = getCurrentDraftStorageKey();
-      if (key) {
-        try {
-          localStorage.removeItem(key);
-        } catch(e) {}
-      }
-
-      applyDraftData({});
-      lastPolishMessage = '';
-      updateTeamPreview();
-    }
-
-    function buildMapsLink() {
-      const baustelle = document.getElementById('baustellenname').value.trim();
-      const strasse = document.getElementById('strasse').value.trim();
-      const ort = document.getElementById('ort').value.trim();
-      const query = [baustelle, strasse, ort].filter(Boolean).join(', ');
-      if (!query) return '';
-      return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
-    }
-
-    function buildGermanMessage() {
-      const title = activeTeamLabel || 'Team';
-      const baustelle = document.getElementById('baustellenname').value.trim();
-      const strasse = document.getElementById('strasse').value.trim();
-      const ort = document.getElementById('ort').value.trim();
-      const was = document.getElementById('baustelleWas').value.trim();
-      const beachten = document.getElementById('baustelleBeachten').value.trim();
-      const dranDenken = document.getElementById('dranDenken').value.trim();
-      const tools = getSelectedTools();
-      const mapsLink = buildMapsLink();
-
-      const lines = [];
-      lines.push(title);
-      lines.push('');
-
-      if (activeTeamKey === 'all_selected' && selectedEmployees.length) {
-        lines.push('Empfänger:');
-        selectedEmployees.forEach(emp => lines.push('- ' + emp.name));
-        lines.push('');
-      }
-
-      if (baustelle) lines.push('Baustelle: ' + baustelle);
-      if (strasse) lines.push('Straße: ' + strasse);
-      if (ort) lines.push('Ort: ' + ort);
-
-      if (was) {
-        lines.push('');
-        lines.push('Um was geht es hier an dieser Baustelle:');
-        lines.push(was);
-      }
-
-      if (beachten) {
-        lines.push('');
-        lines.push('Was muss hier beachtet werden:');
-        lines.push(beachten);
-      }
-
-      if (tools.length) {
-        lines.push('');
-        lines.push('Werkzeug:');
-        tools.forEach(tool => lines.push('- ' + tool));
-      }
-
-      if (dranDenken) {
-        lines.push('');
-        lines.push('Bitte dran denken an:');
-        lines.push(dranDenken);
-      }
-
-      lines.push('');
-      lines.push('Wir wünschen viel Erfolg heute.');
-
-      if (mapsLink) {
-        lines.push('');
-        lines.push('Google Maps:');
-        lines.push(mapsLink);
-      }
-
-      return lines.join('\n');
-    }
-
-    async function translateTextArray(texts) {
-      const res = await fetch('/.netlify/functions/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          source: 'de',
-          target: 'pl',
-          texts
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data?.error || 'Übersetzung fehlgeschlagen.');
-      }
-      return data.translations || [];
-    }
-
-    async function buildPolishMessage() {
-      const title = activeTeamLabel || 'Team';
-      const baustelle = document.getElementById('baustellenname').value.trim();
-      const strasse = document.getElementById('strasse').value.trim();
-      const ort = document.getElementById('ort').value.trim();
-      const was = document.getElementById('baustelleWas').value.trim();
-      const beachten = document.getElementById('baustelleBeachten').value.trim();
-      const dranDenken = document.getElementById('dranDenken').value.trim();
-      const tools = getSelectedTools();
-      const mapsLink = buildMapsLink();
-
-      const translateParts = [
-        title,
-        'Empfänger:',
-        ...selectedEmployees.map(x => x.name),
-        'Um was geht es hier an dieser Baustelle:',
-        was,
-        'Was muss hier beachtet werden:',
-        beachten,
-        'Werkzeug:',
-        ...tools,
-        'Bitte dran denken an:',
-        dranDenken,
-        'Wir wünschen viel Erfolg heute.'
-      ];
-
-      const translated = await translateTextArray(translateParts);
-
-      let i = 0;
-      const titlePl = translated[i++] || title;
-      const recipientTitlePl = translated[i++] || 'Empfänger:';
-
-      const selectedNamesPl = [];
-      for (let x = 0; x < selectedEmployees.length; x++) {
-        selectedNamesPl.push(translated[i++] || selectedEmployees[x].name);
-      }
-
-      const titleWasPl = translated[i++] || 'Um was geht es hier an dieser Baustelle:';
-      const wasPl = translated[i++] || was;
-      const titleBeachtenPl = translated[i++] || 'Was muss hier beachtet werden:';
-      const beachtenPl = translated[i++] || beachten;
-      const titleWerkzeugPl = translated[i++] || 'Werkzeug:';
-
-      const toolsPl = [];
-      for (let x = 0; x < tools.length; x++) {
-        toolsPl.push(translated[i++] || tools[x]);
-      }
-
-      const titleDranPl = translated[i++] || 'Bitte dran denken an:';
-      const dranPl = translated[i++] || dranDenken;
-      const closingPl = translated[i++] || 'Wir wünschen viel Erfolg heute.';
-
-      const lines = [];
-      lines.push(titlePl);
-      lines.push('');
-
-      if (activeTeamKey === 'all_selected' && selectedNamesPl.length) {
-        lines.push(recipientTitlePl);
-        selectedNamesPl.forEach(name => lines.push('- ' + name));
-        lines.push('');
-      }
-
-      if (baustelle) lines.push('Baustelle: ' + baustelle);
-      if (strasse) lines.push('Straße: ' + strasse);
-      if (ort) lines.push('Ort: ' + ort);
-
-      if (wasPl) {
-        lines.push('');
-        lines.push(titleWasPl);
-        lines.push(wasPl);
-      }
-
-      if (beachtenPl) {
-        lines.push('');
-        lines.push(titleBeachtenPl);
-        lines.push(beachtenPl);
-      }
-
-      if (toolsPl.length) {
-        lines.push('');
-        lines.push(titleWerkzeugPl);
-        toolsPl.forEach(tool => lines.push('- ' + tool));
-      }
-
-      if (dranPl) {
-        lines.push('');
-        lines.push(titleDranPl);
-        lines.push(dranPl);
-      }
-
-      lines.push('');
-      lines.push(closingPl);
-
-      if (mapsLink) {
-        lines.push('');
-        lines.push('Google Maps:');
-        lines.push(mapsLink);
-      }
-
-      return lines.join('\n');
-    }
-
-    async function updateTeamPreview() {
-      const previewDe = document.getElementById('messagePreviewDe');
-      const previewPl = document.getElementById('messagePreviewPl');
-      const status = document.getElementById('translateStatus');
-
-      const german = buildGermanMessage();
-      if (previewDe) previewDe.textContent = german;
-      if (status) status.textContent = 'Übersetze ins Polnische …';
-      if (previewPl) previewPl.textContent = 'Übersetze …';
-
-      try {
-        lastPolishMessage = await buildPolishMessage();
-        if (previewPl) previewPl.textContent = lastPolishMessage;
-        if (status) status.textContent = 'Polnische Übersetzung bereit.';
-      } catch (err) {
-        lastPolishMessage = '';
-        if (previewPl) previewPl.textContent = 'Übersetzung konnte nicht geladen werden.';
-        if (status) status.textContent = 'Fehler: ' + err.message;
-      }
-    }
-
-    function handleDraftInputChange() {
-      saveCurrentDraft();
-      updateTeamPreview();
-    }
-
-    function showSelectedEmployeesInfo() {
-      const wrap = document.getElementById('multiEmployeeInfoWrap');
-      const box = document.getElementById('selectedEmployeeInfo');
-      if (!wrap || !box) return;
-
-      if (activeTeamKey === 'all_selected' && selectedEmployees.length) {
-        wrap.style.display = 'flex';
-        box.textContent = selectedEmployees.map(x => `${x.name} (${x.phone})`).join(', ');
-      } else {
-        wrap.style.display = 'none';
-        box.textContent = '';
-      }
-    }
-
-    function openTeamForm(config) {
-      activeTeamKey = config.key || '';
-      activeTeamLabel = config.label || 'Team';
-      activeTeamNumber = config.phone || '';
-
-      const title = document.getElementById('modalTeamTitle');
-      if (title) title.textContent = activeTeamLabel;
-
-      const freeWrap = document.getElementById('freeNumberWrap');
-      if (freeWrap) freeWrap.style.display = 'none';
-
-      showSelectedEmployeesInfo();
-
-      const modeKey = activeTeamKey === 'all_selected' ? 'all_selected' : activeTeamKey;
-      const draft = loadDraft(modeKey);
-      applyDraftData(draft || {});
-      lastPolishMessage = '';
-
-      closeAdminChoiceModal();
-      closeEmployeeSelectModal();
-
-      document.getElementById('teamModal').classList.add('show');
-      updateTeamPreview();
-    }
-
-    function closeTeamModal() {
-      document.getElementById('teamModal').classList.remove('show');
-    }
-
-    function openAdminChoiceModal() {
-      document.getElementById('adminChoiceModal').classList.add('show');
-    }
-
-    function closeAdminChoiceModal() {
-      document.getElementById('adminChoiceModal').classList.remove('show');
-    }
-
-    function openEmployeeSelectModal() {
-      closeAdminChoiceModal();
-      document.getElementById('employeeSelectModal').classList.add('show');
-    }
-
-    function closeEmployeeSelectModal() {
-      document.getElementById('employeeSelectModal').classList.remove('show');
-    }
-
-    function getSelectedEmployeePhones() {
-      return selectedEmployees
-        .map(emp => normalizePhone(emp.phone))
-        .filter(Boolean);
-    }
-
-    function openWhatsAppWithText(text) {
-      if (activeTeamKey === 'all_selected') {
-        const phones = getSelectedEmployeePhones();
-        if (!phones.length) {
-          alert('Bitte mindestens einen Mitarbeiter mit gültiger Telefonnummer auswählen.');
-          return;
-        }
-
-        phones.forEach(phone => {
-          const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
-          window.open(url, '_blank');
-        });
-        return;
-      }
-
-      const number = normalizePhone(activeTeamNumber);
-      if (!number) {
-        alert('Bitte eine gültige Telefonnummer eingeben.');
-        return;
-      }
-
-      const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
-      window.open(url, '_blank');
-    }
-
-    async function copyPreviewText() {
-      const msg = buildGermanMessage();
-      try {
-        await navigator.clipboard.writeText(msg);
-      } catch(e) {
-        const ta = document.createElement('textarea');
-        ta.value = msg;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-      }
-    }
-
-    async function copyPreviewTextPl() {
-      const msg = lastPolishMessage || '';
-      if (!msg) {
-        alert('Es ist noch keine polnische Übersetzung vorhanden.');
-        return;
-      }
-
-      try {
-        await navigator.clipboard.writeText(msg);
-      } catch(e) {
-        const ta = document.createElement('textarea');
-        ta.value = msg;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
-      }
-    }
-
-    function collectSelectedEmployeesFromChecks() {
-      const checks = Array.from(document.querySelectorAll('#employeeList input[type="checkbox"]:checked'));
-      selectedEmployees = checks
-        .map(cb => contactData.employees[Number(cb.value)])
-        .filter(Boolean);
-    }
-
-    function bindModalEvents() {
-      document.getElementById('openAdminAreaBtn').addEventListener('click', openAdminChoiceModal);
-      document.getElementById('closeAdminChoiceBtn').addEventListener('click', closeAdminChoiceModal);
-      document.getElementById('closeEmployeeSelectBtn').addEventListener('click', closeEmployeeSelectModal);
-
-      document.getElementById('openAllEmployeesBtn').addEventListener('click', openEmployeeSelectModal);
-
-      document.getElementById('selectAllEmployeesBtn').addEventListener('click', () => {
-        document.querySelectorAll('#employeeList input[type="checkbox"]').forEach(cb => cb.checked = true);
-      });
-
-      document.getElementById('clearEmployeeSelectionBtn').addEventListener('click', () => {
-        document.querySelectorAll('#employeeList input[type="checkbox"]').forEach(cb => cb.checked = false);
-      });
-
-      document.getElementById('confirmEmployeeSelectionBtn').addEventListener('click', () => {
-        collectSelectedEmployeesFromChecks();
-        if (!selectedEmployees.length) {
-          alert('Bitte mindestens einen Mitarbeiter auswählen.');
-          return;
-        }
-
-        openTeamForm({
-          key: 'all_selected',
-          label: 'Alle Mitarbeiter',
-          phone: '',
-          isMulti: true
-        });
-      });
-
-      document.getElementById('modalCloseBtn').addEventListener('click', closeTeamModal);
-      document.getElementById('copyPreviewBtn').addEventListener('click', copyPreviewText);
-      document.getElementById('copyPreviewBtnPl').addEventListener('click', copyPreviewTextPl);
-      document.getElementById('clearDraftBtn').addEventListener('click', clearCurrentDraft);
-
-      document.getElementById('openWhatsAppBtnDe').addEventListener('click', () => {
-        openWhatsAppWithText(buildGermanMessage());
-      });
-
-      document.getElementById('openWhatsAppBtnPl').addEventListener('click', () => {
-        if (!lastPolishMessage) {
-          alert('Die polnische Übersetzung ist noch nicht bereit.');
-          return;
-        }
-        openWhatsAppWithText(lastPolishMessage);
-      });
-
-      document.getElementById('teamModal').addEventListener('click', (e) => {
-        if (e.target.id === 'teamModal') closeTeamModal();
-      });
-
-      document.getElementById('adminChoiceModal').addEventListener('click', (e) => {
-        if (e.target.id === 'adminChoiceModal') closeAdminChoiceModal();
-      });
-
-      document.getElementById('employeeSelectModal').addEventListener('click', (e) => {
-        if (e.target.id === 'employeeSelectModal') closeEmployeeSelectModal();
-      });
-
-      ['baustellenname','strasse','ort','baustelleWas','baustelleBeachten','dranDenken']
-        .forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.addEventListener('input', handleDraftInputChange);
-        });
-    }
-
-    function startIntervals() {
-      if (!newsTimer) { loadNews(); newsTimer = setInterval(loadNews, NEWS_INTERVAL_MS); }
-      if (!camTimer)  { refreshWebcamOnce(); camTimer = setInterval(refreshWebcamOnce, CAM_INTERVAL_MS); }
-      if (!wxTimer)   { loadWeather(); wxTimer = setInterval(loadWeather, WX_INTERVAL_MS); }
-      if (!specialRefreshTimer) { refreshSpecialState(); specialRefreshTimer = setInterval(refreshSpecialState, SPECIAL_REFRESH_MS); }
-    }
-
-    function stopIntervals() {
-      if (newsTimer) { clearInterval(newsTimer); newsTimer = null; }
-      if (camTimer)  { clearInterval(camTimer);  camTimer  = null; }
-      if (wxTimer)   { clearInterval(wxTimer);   wxTimer   = null; }
-      if (specialRefreshTimer) { clearInterval(specialRefreshTimer); specialRefreshTimer = null; }
-      if (specialTimer) { clearTimeout(specialTimer); specialTimer = null; }
-    }
-
-    window.addEventListener('resize', () => {
-      clearTimeout(window.__fitTimer);
-      window.__fitTimer = setTimeout(() => {
-        fitAllLeftLists();
-        if (specialVisible) fitSpecialText();
-      }, 160);
-    });
-
-    document.addEventListener("visibilitychange", async () => {
-      if (document.visibilityState === "visible") {
-        startIntervals();
-        setTimeout(fitAllLeftLists, 180);
-      } else {
-        stopIntervals();
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      tickTime();
-      setInterval(tickTime, 1000);
-
-      initToolGrid();
-      bindModalEvents();
-      await loadContacts();
-
-      startIntervals();
-      startTicker();
-
-      fitAllLeftLists();
-      setTimeout(fitAllLeftLists, 220);
-    });
-  </script>
-</body>
-</html>
+          if (popEl) popEl.textContent  =
