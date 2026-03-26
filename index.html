@@ -1213,52 +1213,59 @@
       });
     }
 
-    function fitSpecialText() {
-      const textEl = document.getElementById('specialText');
-      const wrapEl = document.getElementById('specialBodyWrap');
-      if (!textEl || !wrapEl) return;
+   function fitSpecialText() {
+  const textEl = document.getElementById('specialText');
+  const wrapEl = document.getElementById('specialBodyWrap');
 
-      const maxSize = 36;
-      const minSize = 18;
-      const baseLineHeight = 1.42;
-      const maxLineHeight = 1.56;
+  if (!textEl || !wrapEl) return;
 
-      textEl.style.visibility = 'hidden';
-      textEl.style.paddingTop = '0px';
-      textEl.style.paddingBottom = '0px';
+  const maxSize = 32;
+  const minSize = 10;          // kleinerer Mindestwert, damit nichts abgeschnitten wird
+  const baseLineHeight = 1.22; // kompakter
+  const maxLineHeight = 1.40;
 
-      let fittedSize = minSize;
-      let fittedLineHeight = baseLineHeight;
+  textEl.style.visibility = 'hidden';
+  textEl.style.paddingTop = '0px';
+  textEl.style.paddingBottom = '0px';
+  textEl.style.margin = '0';
 
-      for (let size = maxSize; size >= minSize; size -= 1) {
-        textEl.style.fontSize = size + 'px';
-        textEl.style.lineHeight = baseLineHeight;
+  let fittedSize = minSize;
+  let fittedLineHeight = baseLineHeight;
 
-        if (textEl.scrollHeight <= wrapEl.clientHeight) {
-          fittedSize = size;
-          break;
-        }
-      }
+  for (let size = maxSize; size >= minSize; size -= 1) {
+    textEl.style.fontSize = size + 'px';
+    textEl.style.lineHeight = baseLineHeight;
 
-      textEl.style.fontSize = fittedSize + 'px';
-      textEl.style.lineHeight = baseLineHeight;
+    if (textEl.scrollHeight <= wrapEl.clientHeight) {
+      fittedSize = size;
+      break;
+    }
+  }
 
-      for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
-        textEl.style.lineHeight = lh.toFixed(2);
-        if (textEl.scrollHeight <= wrapEl.clientHeight) {
-          fittedLineHeight = lh;
-        } else {
-          break;
-        }
-      }
+  textEl.style.fontSize = fittedSize + 'px';
+  textEl.style.lineHeight = baseLineHeight;
 
-      textEl.style.lineHeight = fittedLineHeight.toFixed(2);
+  for (let lh = baseLineHeight; lh <= maxLineHeight; lh += 0.02) {
+    textEl.style.lineHeight = lh.toFixed(2);
+    if (textEl.scrollHeight <= wrapEl.clientHeight) {
+      fittedLineHeight = lh;
+    } else {
+      break;
+    }
+  }
 
-      const spare = wrapEl.clientHeight - textEl.scrollHeight;
-      if (spare > 0) {
-        textEl.style.paddingTop = Math.min(18, Math.floor(spare * 0.10)) + 'px';
-      }
+  textEl.style.lineHeight = fittedLineHeight.toFixed(2);
 
+  // Nur dann leicht nach unten schieben, wenn wirklich Platz übrig ist
+  const spare = wrapEl.clientHeight - textEl.scrollHeight;
+  if (spare > 20) {
+    textEl.style.paddingTop = Math.min(12, Math.floor(spare * 0.08)) + 'px';
+  } else {
+    textEl.style.paddingTop = '0px';
+  }
+
+  textEl.style.visibility = 'visible';
+}
       textEl.style.visibility = 'visible';
     }
 
