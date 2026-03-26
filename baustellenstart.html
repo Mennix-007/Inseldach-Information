@@ -134,6 +134,35 @@ body{
   overflow:hidden;
 }
 
+.infoRow{
+  display:grid;
+  grid-template-columns:1fr 260px;
+  gap:12px;
+  margin-top:12px;
+}
+
+.smallInfoBox{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:22px;
+}
+
+.infoLabel{
+  font-size:13px;
+  font-weight:800;
+  color:#163d7a;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.2px;
+}
+
+.infoValue{
+  white-space:pre-wrap;
+  line-height:1.35;
+}
+
 .checkGrid4{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -261,6 +290,7 @@ body{
     width:220px;
   }
 
+  .infoRow,
   .checkGrid4,
   .checkGrid2,
   .tripleGrid,
@@ -319,8 +349,24 @@ body{
   </div>
 
   <div class="section">
+    <h2 class="sectionTitle">Baustellenname</h2>
+    <div class="box" id="baustellenname">—</div>
+  </div>
+
+  <div class="section">
     <h2 class="sectionTitle">Baustellenadresse</h2>
     <div class="box addressBox" id="baustellenadresse">—</div>
+
+    <div class="infoRow">
+      <div class="smallInfoBox">
+        <div class="infoLabel">Suchbegriff Craftnote</div>
+        <div class="infoValue" id="craftnoteSuchbegriff">—</div>
+      </div>
+      <div class="smallInfoBox">
+        <div class="infoLabel">Craftnote eingeladen</div>
+        <div class="infoValue" id="craftnoteEingeladen">—</div>
+      </div>
+    </div>
   </div>
 
   <div class="section">
@@ -451,6 +497,10 @@ body{
     box.innerHTML = `<img src="${resolved}" alt="Baustellenbild" loading="eager">`;
   }
 
+  function craftnoteDisplay(value){
+    return String(value || '').trim().toLowerCase() === 'ja' ? 'Ja' : 'Nein';
+  }
+
   function openPolishVersion(){
     window.open(`${NETLIFY_BASE}/baustellenstart-pl.html`, '_blank');
   }
@@ -476,11 +526,27 @@ body{
     lines.push("Neustart Baustelle");
     lines.push("");
 
+    if (data.baustellenname) {
+      lines.push("Baustellenname:");
+      lines.push(data.baustellenname.trim());
+      lines.push("");
+    }
+
     if (data.baustellenadresse) {
       lines.push("Baustellenadresse:");
       lines.push(data.baustellenadresse.trim());
       lines.push("");
     }
+
+    if (data.craftnoteSuchbegriff) {
+      lines.push("Suchbegriff Craftnote:");
+      lines.push(data.craftnoteSuchbegriff.trim());
+      lines.push("");
+    }
+
+    lines.push("Craftnote eingeladen:");
+    lines.push(craftnoteDisplay(data.craftnoteEingeladen));
+    lines.push("");
 
     if (abrechnung.length) {
       lines.push("Abrechnungsart:");
@@ -539,7 +605,11 @@ body{
       document.getElementById('docDate').textContent =
         'Erstellt am: ' + new Date().toLocaleDateString('de-DE');
 
+      setText('baustellenname', data.baustellenname);
       setText('baustellenadresse', data.baustellenadresse);
+      setText('craftnoteSuchbegriff', data.craftnoteSuchbegriff);
+      setText('craftnoteEingeladen', craftnoteDisplay(data.craftnoteEingeladen));
+
       setText('baustellenhoehe', data.baustellenhoehe);
       setText('worumGehtEs', data.worumGehtEs);
 
