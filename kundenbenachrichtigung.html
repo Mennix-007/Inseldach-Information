@@ -1,1 +1,198 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundenbenachrichtigung</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f5f7;
+}
+
+.topBar{
+  background:#163d7a;
+  color:#fff;
+  padding:12px 18px;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btnGreen{background:#25D366;}
+.btnBlue{background:#fff;color:#163d7a;}
+.btnYellow{background:#ffd400;}
+
+.page{
+  max-width:1000px;
+  margin:20px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+}
+
+.logo{
+  width:200px;
+}
+
+.section{margin-bottom:20px;}
+
+.box{
+  border:1px solid #ccc;
+  padding:10px;
+  border-radius:8px;
+  background:#fafafa;
+}
+
+.imageGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.imageGrid img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#fff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topBar">
+  <div>Kundenbenachrichtigung</div>
+  <div>
+    <button class="btn btnGreen" onclick="sendWhatsApp()">WhatsApp</button>
+    <button class="btn btnYellow" onclick="window.print()">PDF</button>
+  </div>
+</div>
+
+<div class="page">
+
+<img src="Logo_Menne_min.png" class="logo">
+
+<div class="section">
+<strong>Inseldachdecker GmbH</strong><br>
+Alter Damenpfad 1<br>
+26757 Nordseebad Borkum<br>
+Tel: 04922 9238028<br>
+Mail: menne@email.de<br>
+WhatsApp: 0151 61513028
+</div>
+
+<div class="section">
+<strong>Moin,</strong><br><br>
+wir möchten Sie über den aktuellen Stand Ihrer Baustelle informieren.  
+Nachfolgend erhalten Sie einen kurzen Überblick über die ausgeführten Arbeiten sowie den aktuellen Fortschritt.
+</div>
+
+<div class="section">
+<h3>Baustelle</h3>
+<div class="box" id="name"></div>
+</div>
+
+<div class="section">
+<h3>Adresse</h3>
+<div class="box" id="adresse"></div>
+</div>
+
+<div class="section">
+<h3>Aktueller Stand</h3>
+<div class="box" id="text"></div>
+</div>
+
+<div class="section">
+<h3>Bilder</h3>
+<div class="imageGrid">
+<img id="img1">
+<img id="img2">
+<img id="img3">
+</div>
+</div>
+
+<div class="section">
+<h3>Unsere Leistungen</h3>
+<div class="box">
+Dachdeckerarbeiten<br>
+Zimmereiarbeiten<br>
+Abdichtungen<br>
+Dachfenster<br>
+Reparaturen<br>
+Gerüstbau<br>
+Klempnerarbeiten<br>
+Dachgaubenbau<br>
+Holzrahmenbau<br>
+Dachterrassen und Beläge<br>
+Balkonabdichtung mit Triflex
+</div>
+</div>
+
+<div class="section">
+<h3>Feedback</h3>
+<div class="box">
+Wie finden Sie diese Benachrichtigung?<br>
+Ja / Nein<br><br>
+
+Möchten Sie zukünftig weitere Informationen erhalten?<br>
+Ja / Nein<br><br>
+
+Anmerkung:
+</div>
+</div>
+
+</div>
+
+<script>
+
+let data=null;
+
+async function loadData(){
+  const res = await fetch('kundeninfo.json');
+  data = await res.json();
+
+  document.getElementById('name').textContent = data.baustellenname;
+  document.getElementById('adresse').textContent = data.baustellenadresse;
+  document.getElementById('text').textContent = data.text;
+
+  document.getElementById('img1').src = data.bild1;
+  document.getElementById('img2').src = data.bild2;
+  document.getElementById('img3').src = data.bild3;
+}
+
+function buildMapsLink(){
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse);
+}
+
+function sendWhatsApp(){
+  let msg = "Moin,\n\n";
+  msg += "Information zu Ihrer Baustelle:\n\n";
+  msg += "Baustelle:\n" + data.baustellenname + "\n\n";
+  msg += "Adresse:\n" + data.baustellenadresse + "\n\n";
+  msg += "Google Maps:\n" + buildMapsLink() + "\n\n";
+  msg += "Stand:\n" + data.text + "\n\n";
+
+  msg += "Wie finden Sie diese Benachrichtigung? (Ja/Nein)\n";
+  msg += "Möchten Sie weitere Infos erhalten? (Ja/Nein)\n";
+
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg));
+}
+
+loadData();
+
+</script>
+
+</body>
+</html>
