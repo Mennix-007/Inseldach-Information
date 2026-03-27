@@ -452,21 +452,31 @@ function setText(id, value){
   el.textContent = txt || '—';
 }
 
-function setImage(boxId, value, emptyText){
+function getImageUrl(uploadValue, pathValue){
+  const upload = String(uploadValue || '').trim();
+  const path = String(pathValue || '').trim();
+
+  if (upload) return upload;
+  if (!path) return '';
+
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('data:image')) return path;
+
+  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung\.html$/i, '');
+  return base.replace(/\/$/, '') + (path.startsWith('/') ? path : '/' + path);
+}
+
+function setImage(boxId, uploadValue, pathValue, emptyText){
   const box = document.getElementById(boxId);
   if (!box) return;
 
-  const raw = String(value || '').trim();
-  if (!raw) {
+  const resolved = getImageUrl(uploadValue, pathValue);
+
+  if (!resolved) {
     box.className = 'imageCard empty';
     box.textContent = emptyText;
     return;
   }
-
-  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung\.html$/i, '');
-  const resolved = raw.startsWith('http')
-    ? raw
-    : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
 
   box.className = 'imageCard';
   box.innerHTML = `<img src="${resolved}" alt="Kundenbild" loading="eager">`;
@@ -480,20 +490,11 @@ function buildGoogleMapsLink(data){
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
 
-function resolvePublicImageUrl(rawValue){
-  const raw = String(rawValue || '').trim();
-  if (!raw) return '';
-  if (raw.startsWith('http')) return raw;
-
-  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung\.html$/i, '');
-  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
-}
-
 function buildImageLinks(data){
   return [
-    resolvePublicImageUrl(data?.bild1),
-    resolvePublicImageUrl(data?.bild2),
-    resolvePublicImageUrl(data?.bild3)
+    getImageUrl(data?.uploadBild1, data?.bild1),
+    getImageUrl(data?.uploadBild2, data?.bild2),
+    getImageUrl(data?.uploadBild3, data?.bild3)
   ].filter(Boolean);
 }
 
@@ -738,11 +739,29 @@ async function loadKundeninfo() {
     setText('frage2', data.feedbackFrage2);
     setText('antwortvorlage', data.feedbackAntwortVorlage);
 
-    setImage('bildBox1', data.bild1, 'Kein Bild');
-    setImage('bildBox2', data.bild2, 'Kein Bild');
-    setImage('bildBox3', data.bild3, 'Kein Bild');
+    setImage('bildBox1', data.uploadBild1, data.bild1, 'Kein Bild');
+    setImage('bildBox2', data.uploadBild2, data.bild2, 'Kein Bild');
+    setImage('bildBox3', data.uploadBild3, data.bild3, 'Kein Bild');
 
     updateStatusBar(data);
+
+    const autoPrint = !!data.autoPrint;
+    const autoWhatsApp = !!data.autoWhatsApp;
+
+    if (autoPrint) {
+      data.autoPrint = false;
+      data.autoWhatsApp = false;
+      localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+
+      pendingWhatsAppAction = autoWhatsApp ? () => {
+        const msg = buildWhatsAppText(kundenData);
+        const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+        window.open(url, "_blank");
+      } : null;
+
+      setTimeout(() => window.print(), 400);
+    }
+
   } catch (err) {
     alert('kundeninfo.json konnte nicht geladen werden.');
   }
