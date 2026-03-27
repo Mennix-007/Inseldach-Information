@@ -6,7 +6,20 @@
   <title>Inseldachdecker – Info</title>
 
   <style>
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#0b0f14;color:#e9eef5}
+    html, body{
+      margin:0;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+      -webkit-text-size-adjust:100%;
+    }
+
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      background:#0b0f14;
+      color:#e9eef5;
+    }
+
     .wrap{
       display:grid;
       grid-template-columns:1.2fr 0.8fr;
@@ -15,6 +28,9 @@
       height:100vh;
       box-sizing:border-box;
       padding-bottom:64px;
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
     }
 
     .card{
@@ -43,7 +59,15 @@
     .cardDurYellow ul{ color:#000; }
 
     .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
-    .brand{font-size:32px;font-weight:800;line-height:1.1}
+    .brand{
+      font-size:32px;
+      font-weight:800;
+      line-height:1.1;
+      min-width:0;
+      max-width:100%;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
 
     .time{
       text-align:right;
@@ -52,6 +76,8 @@
       align-items:baseline;
       gap:10px;
       white-space:nowrap;
+      min-width:0;
+      flex-shrink:1;
     }
     .time .clock{font-size:44px;font-weight:700;line-height:1}
     .time .weekday{font-size:18px;opacity:.85}
@@ -167,6 +193,7 @@
       height:100%;
       min-height:0;
       flex:1;
+      min-width:0;
     }
     .panelTitle{margin:0 0 10px;font-size:24px;font-weight:700}
     .panel{
@@ -174,6 +201,7 @@
       border-radius:12px;
       overflow:hidden;
       background:#0b0f14;
+      min-width:0;
     }
 
     :root{
@@ -194,6 +222,7 @@
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
+      min-width:0;
     }
 
     .wxBox{
@@ -245,18 +274,21 @@
       flex-direction:column;
       min-height:0;
       flex:1;
+      min-width:0;
     }
     .windyPanel{
       display:flex;
       flex-direction:column;
       min-height:0;
       flex:1;
+      min-width:0;
     }
     .windyWrap{
       width:100%;
       flex:1;
       min-height:var(--windyMinH);
       background:#0b0f14;
+      min-width:0;
     }
     .windyFrame{
       width:100%;
@@ -273,7 +305,7 @@
       border-bottom:1px solid rgba(255,255,255,.15);
     }
 
-    .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;}
+    .leftStack{display:flex;flex-direction:column;gap:16px;height:100%;min-height:0;min-width:0;}
     .leftHeute{flex:4.55; min-height:0;}
     .leftDauerRow{flex:3.45; min-height:0;}
     .leftLang{flex:2; min-height:0;}
@@ -282,12 +314,14 @@
       display:flex;
       flex-direction:column;
       min-height:0;
+      min-width:0;
     }
 
     .scrollBox{
       flex:1;
       min-height:0;
       overflow:hidden;
+      min-width:0;
     }
 
     .hintSplitRow{
@@ -296,6 +330,7 @@
       gap:16px;
       height:100%;
       min-height:0;
+      min-width:0;
     }
     .hintSplitRow.noImage{ grid-template-columns:1fr; }
     .hintSplitRow.noImage .hintImgCard{ display:none; }
@@ -305,6 +340,7 @@
       display:flex;
       flex-direction:column;
       min-height:0;
+      min-width:0;
     }
     .hintImgBox{
       flex:1;
@@ -527,6 +563,8 @@
       transform:scale(1.2);
     }
 
+    .qrTitle{padding-right:200px;}
+
     /* ===== SONDERSEITE ===== */
     .specialOverlay{
       position:fixed;
@@ -610,11 +648,35 @@
     }
 
     @media (max-width: 900px) {
+      html, body{
+        overflow-x:hidden;
+        width:100%;
+        max-width:100%;
+      }
+
       .wrap{
         grid-template-columns:1fr;
         height:auto;
         min-height:100vh;
         padding-bottom:96px;
+        width:100%;
+        max-width:100%;
+        overflow-x:hidden;
+      }
+
+      .top{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+      }
+
+      .time{
+        width:100%;
+        justify-content:flex-start;
+        text-align:left;
+        white-space:normal;
+        flex-wrap:wrap;
+        gap:8px;
       }
 
       .leftStack{height:auto;}
@@ -635,10 +697,15 @@
       .rightControlWrap{
         min-height:auto;
         padding-right:0;
+        width:100%;
       }
       .adminMainBtn{
         width:180px;
         height:180px;
+      }
+
+      .qrTitle{
+        padding-right:0;
       }
 
       .wxGrid{grid-template-columns:1fr;}
@@ -653,7 +720,11 @@
 
       .logoTopRight{height:120px;}
 
-      .brand{font-size:26px}
+      .brand{
+        font-size:26px;
+        max-width:100%;
+        word-break:break-word;
+      }
       ul{font-size:20px;}
       h2{font-size:24px;}
       .ticker{height:72px;}
@@ -669,56 +740,54 @@
       }
 
       .specialOverlay{
-  padding:0;
-  align-items:center;
-  justify-content:center;
-}
+        padding:0;
+        align-items:center;
+        justify-content:center;
+      }
 
-.specialCard{
-  width:100vw;
-  max-width:100vw;
-  height:100vh;
-  max-height:100vh;
-  grid-template-columns:1fr;
-  gap:6px;
-  padding:10px;
-  border-radius:0;
-}
+      .specialCard{
+        width:100vw;
+        max-width:100vw;
+        height:100vh;
+        max-height:100vh;
+        grid-template-columns:1fr;
+        gap:6px;
+        padding:10px;
+        border-radius:0;
+      }
 
-.specialTitle{
-  font-size:22px;
-  line-height:1.02;
-  margin:0 0 4px;
-}
+      .specialTitle{
+        font-size:22px;
+        line-height:1.02;
+        margin:0 0 4px;
+      }
 
-/* Text bekommt fast den ganzen Platz */
-.specialBodyWrap{
-  flex:1;
-  min-height:0;
-  max-height:none;
-  overflow:hidden;
-}
+      .specialBodyWrap{
+        flex:1;
+        min-height:0;
+        max-height:none;
+        overflow:hidden;
+      }
 
-.specialBody{
-  font-size:15px;
-  line-height:1.18;
-  padding-top:0 !important;
-  padding-bottom:0 !important;
-  margin:0;
-}
+      .specialBody{
+        font-size:15px;
+        line-height:1.18;
+        padding-top:0 !important;
+        padding-bottom:0 !important;
+        margin:0;
+      }
 
-/* Bild deutlich kleiner */
-.specialImageCard{
-  min-height:70px;
-  max-height:12vh;
-  border-radius:8px;
-}
+      .specialImageCard{
+        min-height:70px;
+        max-height:12vh;
+        border-radius:8px;
+      }
 
-.specialImage{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
+      .specialImage{
+        width:100%;
+        height:100%;
+        object-fit:contain;
+      }
     }
   </style>
 </head>
@@ -778,7 +847,7 @@
 
       <div class="rightStack">
         <div>
-          <h2 style="padding-right:200px;">QR-Code</h2>
+          <h2 class="qrTitle">QR-Code</h2>
           <div class="qrBox">
             <div class="qrWrap">
               <img
