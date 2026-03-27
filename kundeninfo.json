@@ -1,10 +1,14 @@
 {
   "title": "Kundeninformation",
-  "baustellenname": "Beispiel Baustelle Musterstraße",
-  "baustellenadresse": "Musterstraße 12, 26757 Borkum",
-  "text": "Heute haben wir mit den Arbeiten an Ihrem Dach begonnen. Die ersten Vorbereitungen wurden durchgeführt und Material angeliefert.",
+  "kunde": "",
+  "baustellenname": "",
+  "baustellenadresse": "",
+  "text": "",
   "bild1": "",
   "bild2": "",
   "bild3": "",
-  "sonstiges": ""
+  "sonstiges": "",
+  "feedbackFrage1": "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?",
+  "feedbackFrage2": "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?",
+  "feedbackAntwortVorlage": "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
 }
