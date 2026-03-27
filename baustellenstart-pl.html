@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nowy start budowy</title>
+<title>Nowy start budowy – widok do druku</title>
 
 <style>
 body{
@@ -24,6 +24,7 @@ body{
   justify-content:space-between;
   align-items:center;
   gap:12px;
+  flex-wrap:wrap;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
@@ -47,21 +48,9 @@ body{
   cursor:pointer;
 }
 
-.btnBlue{
-  background:#fff;
-  color:#163d7a;
-}
-
-.btnYellow{
-  background:#ffd400;
-  color:#000;
-}
-
-.btnGreen{
-  background:#25D366;
-  color:#111;
-}
-
+.btnBlue{ background:#fff; color:#163d7a; }
+.btnYellow{ background:#ffd400; color:#000; }
+.btnGreen{ background:#25D366; color:#111; }
 .btnMain{
   background:#25D366;
   color:#111;
@@ -78,48 +67,6 @@ body{
   border-radius:18px;
   padding:26px;
   box-sizing:border-box;
-}
-
-.statusBar{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:16px;
-}
-
-.statusCard{
-  border:1px solid #d7e0ea;
-  border-radius:12px;
-  padding:10px 12px;
-  background:#f8fafc;
-}
-
-.statusLabel{
-  font-size:12px;
-  font-weight:800;
-  color:#163d7a;
-  text-transform:uppercase;
-  letter-spacing:.25px;
-  margin-bottom:4px;
-}
-
-.statusValue{
-  font-size:15px;
-  font-weight:700;
-}
-
-.statusOk{ color:#1c7c36; }
-.statusWarn{ color:#b06a00; }
-
-.alertBox{
-  display:none;
-  margin-bottom:16px;
-  border:1px solid #e4b200;
-  background:#fff4bf;
-  color:#5b4600;
-  border-radius:12px;
-  padding:12px 14px;
-  font-weight:700;
 }
 
 .docHeader{
@@ -325,7 +272,7 @@ body{
 
 .imageCard img{
   width:100%;
-  height:230px;
+  height:220px;
   object-fit:contain;
   display:block;
   background:#fff;
@@ -364,7 +311,6 @@ body{
     width:220px;
   }
 
-  .statusBar,
   .infoRow,
   .checkGrid4,
   .checkGrid2,
@@ -411,11 +357,11 @@ body{
 <body>
 
 <div class="topBar">
-  <div class="topBarTitle">Nowa budowa – widok do druku</div>
+  <div class="topBarTitle">Nowy start budowy – widok do druku</div>
   <div class="topBarActions">
-    <button class="btn btnGreen btnMain" type="button" onclick="printAndOpenWhatsAppPolish()">PDF + WhatsApp</button>
-    <button class="btn btnGreen" type="button" onclick="openWhatsAppPolish()">WhatsApp Polski</button>
-    <button class="btn btnBlue" type="button" onclick="copyPolishTextForCraftnote()">Kopiuj do Craftnote-Drag and Drop</button>
+    <button class="btn btnGreen btnMain" type="button" onclick="printAndOpenWhatsApp()">PDF + WhatsApp</button>
+    <button class="btn btnGreen" type="button" onclick="openWhatsApp()">WhatsApp Polski</button>
+    <button class="btn btnBlue" type="button" onclick="copySiteVersion()">Kopia budowy (Drag and Drop)</button>
     <button class="btn btnBlue" type="button" onclick="testGoogleMaps()">Sprawdź Google Maps</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
     <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
@@ -423,25 +369,6 @@ body{
 </div>
 
 <div class="page">
-  <div class="statusBar screenOnly">
-    <div class="statusCard">
-      <div class="statusLabel">Adres</div>
-      <div class="statusValue" id="statusAdresse">—</div>
-    </div>
-    <div class="statusCard">
-      <div class="statusLabel">Zdjęcia</div>
-      <div class="statusValue" id="statusBilder">—</div>
-    </div>
-    <div class="statusCard">
-      <div class="statusLabel">Craftnote</div>
-      <div class="statusValue" id="statusCraftnote">—</div>
-    </div>
-  </div>
-
-  <div class="alertBox screenOnly" id="addressWarning">
-    Brak adresu – nie można utworzyć linku Google Maps.
-  </div>
-
   <div class="docHeader">
     <div class="docTitleWrap">
       <h1 class="docTitle" id="docTitle">Nowy start budowy</h1>
@@ -451,7 +378,7 @@ body{
   </div>
 
   <div class="section">
-    <h2 class="sectionTitle">Nazwa budowy</h2>
+    <h2 class="sectionTitle">Zleceniodawca</h2>
     <div class="box" id="baustellenname">—</div>
   </div>
 
@@ -567,383 +494,316 @@ body{
 </div>
 
 <script>
-  let sourceData = null;
-  let translatedTexts = null;
-  let pendingWhatsAppAction = null;
+let sourceData = null;
+let pendingWhatsAppAction = null;
 
-  function setText(id, value){
-    const el = document.getElementById(id);
-    if (!el) return;
-    const txt = String(value || '').trim();
-    el.textContent = txt || '—';
+function setText(id, value){
+  const el = document.getElementById(id);
+  if (!el) return;
+  const txt = String(value || '').trim();
+  el.textContent = txt || '—';
+}
+
+function setMark(id, active){
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (active) {
+    el.classList.add('active');
+    el.textContent = '✓';
+  } else {
+    el.classList.remove('active');
+    el.textContent = '';
+  }
+}
+
+function getImageUrl(uploadValue, pathValue){
+  const upload = String(uploadValue || '').trim();
+  const path = String(pathValue || '').trim();
+
+  if (upload) return upload;
+  if (!path) return '';
+
+  if (path.startsWith('http')) return path;
+  if (path.startsWith('data:image')) return path;
+
+  const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
+  return base.replace(/\/$/, '') + (path.startsWith('/') ? path : '/' + path);
+}
+
+function setImage(boxId, uploadValue, pathValue, emptyText){
+  const box = document.getElementById(boxId);
+  if (!box) return;
+
+  const resolved = getImageUrl(uploadValue, pathValue);
+
+  if (!resolved) {
+    box.className = 'imageCard empty';
+    box.textContent = emptyText;
+    return;
   }
 
-  function setMark(id, active){
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (active) {
-      el.classList.add('active');
-      el.textContent = '✓';
-    } else {
-      el.classList.remove('active');
-      el.textContent = '';
-    }
+  box.className = 'imageCard';
+  box.innerHTML = `<img src="${resolved}" alt="Zdjęcie budowy" loading="eager">`;
+}
+
+function buildGoogleMapsLink(data){
+  const adresse = String(data?.baustellenadresse || '').trim();
+  const name = String(data?.baustellenname || '').trim();
+  const query = adresse || name;
+  if (!query) return '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+}
+
+function buildImageLinks(data){
+  return [
+    getImageUrl(data?.uploadBild1, data?.bild1),
+    getImageUrl(data?.uploadBild2, data?.bild2),
+    getImageUrl(data?.uploadBild3, data?.bild3)
+  ].filter(Boolean);
+}
+
+function updateImageInfo(data){
+  const imageInfo = document.getElementById('imageInfo');
+  if (!imageInfo) return;
+  const count = buildImageLinks(data).length;
+  imageInfo.textContent = count > 0 ? count + ' zdjęcie/zdjęcia dodane.' : 'Brak zdjęć.';
+}
+
+function craftnoteDisplayPl(value){
+  return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
+}
+
+function buildPolishWhatsAppText(data) {
+  const abrechnung = [];
+  if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
+  if (data.teilweiseStundenlohn) abrechnung.push("Częściowo robocizna godzinowa");
+  if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
+  if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
+
+  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3]
+    .map(x => String(x || "").trim())
+    .filter(Boolean);
+
+  const lager = [data.lager1, data.lager2, data.lager3]
+    .map(x => String(x || "").trim())
+    .filter(Boolean);
+
+  const mapsLink = buildGoogleMapsLink(data);
+  const imageLinks = buildImageLinks(data);
+
+  const lines = [];
+  lines.push("Nowy start budowy");
+  lines.push("");
+
+  if (data.baustellenname) {
+    lines.push("Zleceniodawca:");
+    lines.push(data.baustellenname);
+    lines.push("");
   }
 
-  function setImage(boxId, value, emptyText){
-    const box = document.getElementById(boxId);
-    if (!box) return;
-
-    const raw = String(value || '').trim();
-    if (!raw) {
-      box.className = 'imageCard empty';
-      box.textContent = emptyText;
-      return;
-    }
-
-    const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
-    const resolved = raw.startsWith('http')
-      ? raw
-      : (base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw));
-
-    box.className = 'imageCard';
-    box.innerHTML = `<img src="${resolved}" alt="Zdjęcie budowy" loading="eager">`;
+  if (data.baustellenadresse) {
+    lines.push("Adres budowy:");
+    lines.push(data.baustellenadresse);
+    lines.push("");
   }
 
-  function craftnoteDisplayPl(value){
-    return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
+  if (mapsLink) {
+    lines.push("Google Maps:");
+    lines.push(mapsLink);
+    lines.push("");
   }
 
-  function buildGoogleMapsLink(data){
-    const adresse = String(data?.baustellenadresse || '').trim();
-    const name = String(data?.baustellenname || '').trim();
-    const query = adresse || name;
-
-    if (!query) return '';
-    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
-  }
-
-  function resolvePublicImageUrl(rawValue){
-    const raw = String(rawValue || '').trim();
-    if (!raw) return '';
-
-    if (raw.startsWith('http')) return raw;
-
-    const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
-    return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
-  }
-
-  function buildImageLinks(data){
-    return [
-      resolvePublicImageUrl(data?.bild1),
-      resolvePublicImageUrl(data?.bild2),
-      resolvePublicImageUrl(data?.bild3)
-    ].filter(Boolean);
-  }
-
-  function countImages(data){
-    return buildImageLinks(data).length;
-  }
-
-  function updateStatusBar(data){
-    const hasAddress = !!String(data?.baustellenadresse || '').trim();
-    const imageCount = countImages(data);
-    const craftnote = craftnoteDisplayPl(data?.craftnoteEingeladen);
-
-    const statusAdresse = document.getElementById('statusAdresse');
-    const statusBilder = document.getElementById('statusBilder');
-    const statusCraftnote = document.getElementById('statusCraftnote');
-    const addressWarning = document.getElementById('addressWarning');
-    const imageInfo = document.getElementById('imageInfo');
-
-    if (statusAdresse) {
-      statusAdresse.textContent = hasAddress ? 'Jest' : 'Brak';
-      statusAdresse.className = 'statusValue ' + (hasAddress ? 'statusOk' : 'statusWarn');
-    }
-
-    if (statusBilder) {
-      statusBilder.textContent = imageCount + ' zdjęcie/zdjęcia';
-      statusBilder.className = 'statusValue ' + (imageCount > 0 ? 'statusOk' : 'statusWarn');
-    }
-
-    if (statusCraftnote) {
-      statusCraftnote.textContent = craftnote;
-      statusCraftnote.className = 'statusValue ' + (craftnote === 'Tak' ? 'statusOk' : 'statusWarn');
-    }
-
-    if (addressWarning) {
-      addressWarning.style.display = hasAddress ? 'none' : 'block';
-    }
-
-    if (imageInfo) {
-      imageInfo.textContent = imageCount > 0
-        ? imageCount + ' zdjęcie/zdjęcia dodane.'
-        : 'Brak zdjęć.';
-    }
-  }
-
-  async function translateTexts(data) {
-    const texts = [
-      data.baustellenname || '',
-      data.baustellenadresse || '',
-      data.craftnoteSuchbegriff || '',
-      data.worumGehtEs || '',
-      data.lieferung1 || '',
-      data.lieferung2 || '',
-      data.lieferung3 || '',
-      data.lager1 || '',
-      data.lager2 || '',
-      data.lager3 || '',
-      data.sonstiges || ''
-    ];
-
-    const res = await fetch('/.netlify/functions/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        source: 'de',
-        target: 'pl',
-        texts
-      })
+  if (imageLinks.length) {
+    lines.push("Zdjęcia z budowy:");
+    imageLinks.forEach((link, idx) => {
+      lines.push("Zdjęcie " + (idx + 1) + ":");
+      lines.push(link);
     });
-
-    const result = await res.json();
-    if (!res.ok) throw new Error(result?.error || 'Übersetzung fehlgeschlagen');
-
-    return result.translations || texts;
-  }
-
-  function buildPolishWhatsAppText(data, translated) {
-    const abrechnung = [];
-    if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
-    if (data.teilweiseStundenlohn) abrechnung.push("Częściowo robocizna godzinowa");
-    if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
-    if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
-
-    const lieferung = [translated[4], translated[5], translated[6]]
-      .map(x => String(x || "").trim())
-      .filter(Boolean)
-      .join("\n");
-
-    const lager = [translated[7], translated[8], translated[9]]
-      .map(x => String(x || "").trim())
-      .filter(Boolean)
-      .join("\n");
-
-    const mapsLink = buildGoogleMapsLink(data);
-    const imageLinks = buildImageLinks(data);
-
-    const lines = [];
-    lines.push("Nowy start budowy");
     lines.push("");
+  }
 
-    if (translated[0]) {
-      lines.push("Nazwa budowy:");
-      lines.push(translated[0].trim());
-      lines.push("");
-    }
-
-    if (translated[1]) {
-      lines.push("Adres budowy:");
-      lines.push(translated[1].trim());
-      lines.push("");
-    }
-
-    if (mapsLink) {
-      lines.push("Google Maps:");
-      lines.push(mapsLink);
-      lines.push("");
-    }
-
-    if (imageLinks.length) {
-      lines.push("Zdjęcia z budowy:");
-      imageLinks.forEach((link, idx) => {
-        lines.push("Zdjęcie " + (idx + 1) + ":");
-        lines.push(link);
-      });
-      lines.push("");
-    }
-
-    if (translated[2]) {
-      lines.push("Hasło wyszukiwania Craftnote:");
-      lines.push(translated[2].trim());
-      lines.push("");
-    }
-
-    lines.push("Zaproszono do Craftnote:");
-    lines.push(craftnoteDisplayPl(data.craftnoteEingeladen));
+  if (data.craftnoteSuchbegriff) {
+    lines.push("Hasło wyszukiwania Craftnote:");
+    lines.push(data.craftnoteSuchbegriff);
     lines.push("");
+  }
 
-    if (abrechnung.length) {
-      lines.push("Rodzaj rozliczenia:");
-      lines.push(abrechnung.join(", "));
-      lines.push("");
-    }
+  lines.push("Zaproszono do Craftnote:");
+  lines.push(craftnoteDisplayPl(data.craftnoteEingeladen));
+  lines.push("");
 
-    lines.push("Dostęp / wysokość:");
-    lines.push((data.zugang === "geruest" ? "Wymagane rusztowanie" : "Wystarczy drabina") + (data.baustellenhoehe ? " / " + data.baustellenhoehe : ""));
+  if (abrechnung.length) {
+    lines.push("Rodzaj rozliczenia:");
+    lines.push(abrechnung.join(", "));
     lines.push("");
-
-    if (translated[3]) {
-      lines.push("Co należy wykonać:");
-      lines.push(translated[3].trim());
-      lines.push("");
-    }
-
-    if (lieferung) {
-      lines.push("Dostawa na budowę:");
-      lines.push(lieferung);
-      lines.push("");
-    }
-
-    if (lager) {
-      lines.push("Zabrać z magazynu:");
-      lines.push(lager);
-      lines.push("");
-    }
-
-    if (translated[10]) {
-      lines.push("Pozostałe informacje:");
-      lines.push(translated[10].trim());
-    }
-
-    return lines.join("\n").trim();
   }
 
-  async function copyPolishTextForCraftnote(){
-    if (!sourceData || !translatedTexts) {
-      alert("Dane nie zostały jeszcze załadowane.");
-      return;
-    }
+  lines.push("Dostęp / wysokość:");
+  lines.push((data.zugang === "geruest" ? "Wymagane rusztowanie" : "Wystarczy drabina") + " / " + (data.baustellenhoehe || ""));
+  lines.push("");
 
-    const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
-
-    try {
-      await navigator.clipboard.writeText(msg);
-      alert("Tekst został skopiowany do Craftnote-Drag and Drop.");
-    } catch(e) {
-      const ta = document.createElement('textarea');
-      ta.value = msg;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-      alert("Tekst został skopiowany do Craftnote-Drag and Drop.");
-    }
+  if (data.worumGehtEs) {
+    lines.push("Co należy wykonać:");
+    lines.push(data.worumGehtEs);
+    lines.push("");
   }
 
-  function confirmChecked() {
-    return confirm("Czy budowa została całkowicie sprawdzona?");
+  if (lieferung.length) {
+    lines.push("Dostawa na budowę:");
+    lieferung.forEach(v => lines.push("- " + v));
+    lines.push("");
   }
 
-  function openWhatsAppPolish(){
-    if (!sourceData || !translatedTexts) {
-      alert("Dane nie zostały jeszcze załadowane.");
-      return;
-    }
+  if (lager.length) {
+    lines.push("Zabrać z magazynu:");
+    lager.forEach(v => lines.push("- " + v));
+    lines.push("");
+  }
 
-    if (!confirmChecked()) return;
+  if (data.sonstiges) {
+    lines.push("Pozostałe informacje:");
+    lines.push(data.sonstiges);
+  }
 
-    const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
+  return lines.join("\n").trim();
+}
+
+async function copySiteVersion(){
+  if (!sourceData) {
+    alert("Dane nie zostały jeszcze załadowane.");
+    return;
+  }
+
+  const msg = buildPolishWhatsAppText(sourceData);
+
+  try {
+    await navigator.clipboard.writeText(msg);
+    alert("Kopia budowy została skopiowana.");
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    alert("Kopia budowy została skopiowana.");
+  }
+}
+
+function confirmChecked() {
+  return confirm("Czy informacje o budowie zostały całkowicie sprawdzone?");
+}
+
+function openWhatsApp(){
+  if (!sourceData) {
+    alert("Dane nie zostały jeszcze załadowane.");
+    return;
+  }
+
+  if (!confirmChecked()) return;
+
+  const msg = buildPolishWhatsAppText(sourceData);
+  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+}
+
+function testGoogleMaps(){
+  if (!sourceData) {
+    alert("Dane nie zostały jeszcze załadowane.");
+    return;
+  }
+
+  const mapsLink = buildGoogleMapsLink(sourceData);
+  if (!mapsLink) {
+    alert("Brak adresu – nie można utworzyć linku Google Maps.");
+    return;
+  }
+
+  window.open(mapsLink, "_blank");
+}
+
+function printAndOpenWhatsApp(){
+  if (!sourceData) {
+    alert("Dane nie zostały jeszcze załadowane.");
+    return;
+  }
+
+  if (!confirmChecked()) return;
+
+  pendingWhatsAppAction = () => {
+    const msg = buildPolishWhatsAppText(sourceData);
     const url = "https://wa.me/?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
-  }
+  };
 
-  function testGoogleMaps() {
-    if (!sourceData) {
-      alert("Dane nie zostały jeszcze załadowane.");
-      return;
-    }
+  window.print();
 
-    const mapsLink = buildGoogleMapsLink(sourceData);
-    if (!mapsLink) {
-      alert("Brak adresu – nie można utworzyć linku Google Maps.");
-      return;
-    }
-
-    window.open(mapsLink, "_blank");
-  }
-
-  function printAndOpenWhatsAppPolish() {
-    if (!sourceData || !translatedTexts) {
-      alert("Dane nie zostały jeszcze załadowane.");
-      return;
-    }
-
-    if (!confirmChecked()) return;
-
-    pendingWhatsAppAction = () => {
-      const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
-      const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-      window.open(url, "_blank");
-    };
-
-    window.print();
-
-    setTimeout(() => {
-      if (pendingWhatsAppAction) {
-        pendingWhatsAppAction();
-        pendingWhatsAppAction = null;
-      }
-    }, 1200);
-  }
-
-  window.addEventListener('afterprint', () => {
+  setTimeout(() => {
     if (pendingWhatsAppAction) {
       const fn = pendingWhatsAppAction;
       pendingWhatsAppAction = null;
-      setTimeout(fn, 300);
+      fn();
     }
-  });
+  }, 1200);
+}
 
-  async function loadBaustellenstart() {
-    try {
+window.addEventListener('afterprint', () => {
+  if (pendingWhatsAppAction) {
+    const fn = pendingWhatsAppAction;
+    pendingWhatsAppAction = null;
+    setTimeout(fn, 300);
+  }
+});
+
+async function loadBaustellenstart() {
+  try {
+    const raw = localStorage.getItem('baustellenstart_preview_data');
+    if (raw) {
+      sourceData = JSON.parse(raw);
+    } else {
       const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      sourceData = data;
-
-      document.getElementById('docTitle').textContent = 'Nowy start budowy';
-      document.getElementById('docDate').textContent =
-        'Utworzono dnia: ' + new Date().toLocaleDateString('pl-PL');
-
-      translatedTexts = await translateTexts(data);
-
-      setText('baustellenname', translatedTexts[0]);
-      setText('baustellenadresse', translatedTexts[1]);
-      setText('craftnoteSuchbegriff', translatedTexts[2]);
-      setText('craftnoteEingeladen', craftnoteDisplayPl(data.craftnoteEingeladen));
-
-      setText('worumGehtEs', translatedTexts[3]);
-      setText('lieferung1', translatedTexts[4]);
-      setText('lieferung2', translatedTexts[5]);
-      setText('lieferung3', translatedTexts[6]);
-      setText('lager1', translatedTexts[7]);
-      setText('lager2', translatedTexts[8]);
-      setText('lager3', translatedTexts[9]);
-      setText('sonstiges', translatedTexts[10]);
-
-      setText('baustellenhoehe', data.baustellenhoehe);
-
-      setMark('m_gesamt', !!data.gesamteBaustelleStundenlohn);
-      setMark('m_teilweise', !!data.teilweiseStundenlohn);
-      setMark('m_eventuell', !!data.eventuellTeilweiseStundenlohn);
-      setMark('m_festpreis', !!data.festpreisangebot);
-
-      setMark('m_geruest', data.zugang === 'geruest');
-      setMark('m_leiter', data.zugang === 'leiter');
-
-      setImage('bildBox1', data.bild1, 'Brak zdjęcia');
-      setImage('bildBox2', data.bild2, 'Brak zdjęcia');
-      setImage('bildBox3', data.bild3, 'Brak zdjęcia');
-
-      updateStatusBar(data);
-    } catch (err) {
-      alert('Polska karta rozpoczęcia budowy nie mogła zostać załadowana.');
+      sourceData = await res.json();
     }
-  }
 
-  loadBaustellenstart();
+    const data = sourceData;
+
+    document.getElementById('docTitle').textContent = 'Nowy start budowy';
+    document.getElementById('docDate').textContent =
+      'Utworzono dnia: ' + new Date().toLocaleDateString('pl-PL');
+
+    setText('baustellenname', data.baustellenname);
+    setText('baustellenadresse', data.baustellenadresse);
+    setText('craftnoteSuchbegriff', data.craftnoteSuchbegriff);
+    setText('craftnoteEingeladen', craftnoteDisplayPl(data.craftnoteEingeladen));
+    setText('baustellenhoehe', data.baustellenhoehe);
+    setText('worumGehtEs', data.worumGehtEs);
+    setText('lieferung1', data.lieferung1);
+    setText('lieferung2', data.lieferung2);
+    setText('lieferung3', data.lieferung3);
+    setText('lager1', data.lager1);
+    setText('lager2', data.lager2);
+    setText('lager3', data.lager3);
+    setText('sonstiges', data.sonstiges);
+
+    setMark('m_gesamt', !!data.gesamteBaustelleStundenlohn);
+    setMark('m_teilweise', !!data.teilweiseStundenlohn);
+    setMark('m_eventuell', !!data.eventuellTeilweiseStundenlohn);
+    setMark('m_festpreis', !!data.festpreisangebot);
+    setMark('m_geruest', data.zugang === 'geruest');
+    setMark('m_leiter', data.zugang === 'leiter');
+
+    setImage('bildBox1', data.uploadBild1, data.bild1, 'Brak zdjęcia');
+    setImage('bildBox2', data.uploadBild2, data.bild2, 'Brak zdjęcia');
+    setImage('bildBox3', data.uploadBild3, data.bild3, 'Brak zdjęcia');
+
+    updateImageInfo(data);
+  } catch (err) {
+    alert('Polska karta rozpoczęcia budowy nie mogła zostać załadowana.');
+  }
+}
+
+loadBaustellenstart();
 </script>
 </body>
 </html>
