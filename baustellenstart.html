@@ -505,6 +505,15 @@ body{
     window.open(`${NETLIFY_BASE}/baustellenstart-pl.html`, '_blank');
   }
 
+  function buildGoogleMapsLink(data){
+    const adresse = String(data?.baustellenadresse || '').trim();
+    const name = String(data?.baustellenname || '').trim();
+    const query = adresse || name;
+
+    if (!query) return '';
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  }
+
   function buildGermanWhatsAppText(data){
     const abrechnung = [];
     if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
@@ -522,6 +531,8 @@ body{
       .filter(Boolean)
       .join("\n");
 
+    const mapsLink = buildGoogleMapsLink(data);
+
     const lines = [];
     lines.push("Neustart Baustelle");
     lines.push("");
@@ -535,6 +546,12 @@ body{
     if (data.baustellenadresse) {
       lines.push("Baustellenadresse:");
       lines.push(data.baustellenadresse.trim());
+      lines.push("");
+    }
+
+    if (mapsLink) {
+      lines.push("Google Maps:");
+      lines.push(mapsLink);
       lines.push("");
     }
 
