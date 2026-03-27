@@ -333,6 +333,7 @@ body{
   <div class="topBarTitle">Nowa budowa – widok do druku</div>
   <div class="topBarActions">
     <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
+    <button class="btn btnGreen" type="button" onclick="printAndOpenWhatsAppPolish()">PDF + WhatsApp</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppPolish()">WhatsApp Polski</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
   </div>
@@ -456,6 +457,7 @@ body{
 <script>
   let sourceData = null;
   let translatedTexts = null;
+  let pendingWhatsAppAction = null;
 
   function setText(id, value){
     const el = document.getElementById(id);
@@ -509,6 +511,24 @@ body{
     return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
   }
 
+  function resolvePublicImageUrl(rawValue){
+    const raw = String(rawValue || '').trim();
+    if (!raw) return '';
+
+    if (raw.startsWith('http')) return raw;
+
+    const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
+    return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
+  }
+
+  function buildImageLinks(data){
+    return [
+      resolvePublicImageUrl(data?.bild1),
+      resolvePublicImageUrl(data?.bild2),
+      resolvePublicImageUrl(data?.bild3)
+    ].filter(Boolean);
+  }
+
   async function translateTexts(data) {
     const texts = [
       data.baustellenname || '',
@@ -558,6 +578,7 @@ body{
       .join("\n");
 
     const mapsLink = buildGoogleMapsLink(data);
+    const imageLinks = buildImageLinks(data);
 
     const lines = [];
     lines.push("Nowy start budowy");
@@ -578,6 +599,15 @@ body{
     if (mapsLink) {
       lines.push("Google Maps:");
       lines.push(mapsLink);
+      lines.push("");
+    }
+
+    if (imageLinks.length) {
+      lines.push("Zdjęcia z budowy:");
+      imageLinks.forEach((link, idx) => {
+        lines.push("Zdjęcie " + (idx + 1) + ":");
+        lines.push(link);
+      });
       lines.push("");
     }
 
@@ -636,6 +666,31 @@ body{
     const url = "https://wa.me/?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
   }
+
+  function printAndOpenWhatsAppPolish() {
+    if (!sourceData || !translatedTexts) {
+      alert("Dane nie zostały jeszcze załadowane.");
+      return;
+    }
+
+    pendingWhatsAppAction = () => openWhatsAppPolish();
+    window.print();
+
+    setTimeout(() => {
+      if (pendingWhatsAppAction) {
+        pendingWhatsAppAction();
+        pendingWhatsAppAction = null;
+      }
+    }, 1200);
+  }
+
+  window.addEventListener('afterprint', () => {
+    if (pendingWhatsAppAction) {
+      const fn = pendingWhatsAppAction;
+      pendingWhatsAppAction = null;
+      setTimeout(fn, 300);
+    }
+  });
 
   async function loadBaustellenstart() {
     try {
