@@ -193,6 +193,8 @@ body{
     <button class="btn btnYellow" type="button" onclick="downloadJson()">JSON herunterladen</button>
     <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+    <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde (Drag and Drop)</button>
+    <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Kopieren für Craftnote-Drag and Drop</button>
     <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
   </div>
 </div>
@@ -243,7 +245,7 @@ body{
           <input id="bild3" type="text" placeholder="z. B. bilder/bild3.jpg">
         </div>
       </div>
-      <div class="helper">Die Bilder werden in der Kundenansicht nebeneinander angezeigt und als Links in WhatsApp mitgegeben.</div>
+      <div class="helper">Die Bilder werden in der Kundenansicht nebeneinander angezeigt und in WhatsApp als Links mitgegeben.</div>
     </div>
 
     <div class="section">
@@ -257,7 +259,7 @@ body{
 
   <div class="card">
     <div class="section">
-      <h2 class="sectionTitle">Live-Vorschau WhatsApp</h2>
+      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Kundenkopie</h2>
       <div class="previewBox" id="previewText"></div>
     </div>
 
@@ -288,7 +290,7 @@ Balkonabdichtung mit Triflex</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'kundenbenachrichtigung_formular_v1';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v2';
 
 function defaultData() {
   return {
@@ -353,7 +355,7 @@ function buildImageLinks(data){
     .filter(Boolean);
 }
 
-function buildWhatsAppText(data){
+function buildCustomerVersionText(data){
   const mapsLink = buildMapsLink(data);
   const imageLinks = buildImageLinks(data);
 
@@ -419,6 +421,10 @@ function buildWhatsAppText(data){
   return lines.join("\n").trim();
 }
 
+function buildWhatsAppText(data){
+  return buildCustomerVersionText(data);
+}
+
 function updateImagePreview(boxId, value){
   const box = document.getElementById(boxId);
   if (!box) return;
@@ -434,7 +440,7 @@ function updateImagePreview(boxId, value){
 
 function updatePreview(){
   const data = getFormData();
-  document.getElementById('previewText').textContent = buildWhatsAppText(data);
+  document.getElementById('previewText').textContent = buildCustomerVersionText(data);
   updateImagePreview('previewImage1', data.bild1);
   updateImagePreview('previewImage2', data.bild2);
   updateImagePreview('previewImage3', data.bild3);
@@ -496,6 +502,42 @@ function openWhatsAppFromForm(){
   const data = getFormData();
   const msg = buildWhatsAppText(data);
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+async function copyCustomerVersion(){
+  const data = getFormData();
+  const msg = buildCustomerVersionText(data);
+
+  try {
+    await navigator.clipboard.writeText(msg);
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
+  }
+}
+
+async function copyTextForCraftnote(){
+  const data = getFormData();
+  const msg = buildWhatsAppText(data);
+
+  try {
+    await navigator.clipboard.writeText(msg);
+    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+  } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+  }
 }
 
 document.querySelectorAll('input, textarea').forEach(el => {
