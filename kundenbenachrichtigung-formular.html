@@ -219,8 +219,8 @@ body{
       <h2 class="sectionTitle">Grunddaten</h2>
       <div class="formGrid">
         <div class="fieldWrap">
-          <label for="baustellenname">Baustellenname</label>
-          <input id="baustellenname" type="text" placeholder="Bezeichnung der Baustelle">
+          <label for="baustellenname">Auftraggeber</label>
+          <input id="baustellenname" type="text" placeholder="Name des Auftraggebers">
         </div>
 
         <div class="fieldWrap">
@@ -530,7 +530,7 @@ function buildSiteVersionText(data){
   lines.push("");
 
   if (data.baustellenname) {
-    lines.push("Baustellenname:");
+    lines.push("Auftraggeber:");
     lines.push(data.baustellenname);
     lines.push("");
   }
@@ -573,7 +573,7 @@ function buildSiteVersionText(data){
   }
 
   lines.push("Zugang / Höhe:");
-  lines.push((data.zugang === "geruest" ? "Gerüst erforderlich" : "Leiter reicht") + " / " + data.baustellenhoehe);
+  lines.push((data.zugang === "geruest" ? "Gerüst erforderlich" : "Leiter reicht") + " / " + (data.baustellenhoehe || ""));
   lines.push("");
 
   if (data.worumGehtEs) {
@@ -629,7 +629,7 @@ function updatePreview(){
   updateImagePreview('previewImage3', data.uploadBild3, data.bild3);
 
   const status = [];
-  if (data.baustellenname) status.push('Baustelle eingetragen');
+  if (data.baustellenname) status.push('Auftraggeber eingetragen');
   if (data.baustellenadresse) status.push('Adresse vorhanden');
   if (buildImageLinks(data).length) status.push(buildImageLinks(data).length + ' Bild(er)');
   if (!status.length) status.push('Bereit.');
