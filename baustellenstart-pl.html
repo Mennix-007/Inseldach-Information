@@ -62,6 +62,14 @@ body{
   color:#111;
 }
 
+.btnMain{
+  background:#25D366;
+  color:#111;
+  padding:12px 18px;
+  font-size:16px;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
+}
+
 .page{
   max-width:1180px;
   margin:22px auto;
@@ -70,6 +78,48 @@ body{
   border-radius:18px;
   padding:26px;
   box-sizing:border-box;
+}
+
+.statusBar{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.statusCard{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+}
+
+.statusLabel{
+  font-size:12px;
+  font-weight:800;
+  color:#163d7a;
+  text-transform:uppercase;
+  letter-spacing:.25px;
+  margin-bottom:4px;
+}
+
+.statusValue{
+  font-size:15px;
+  font-weight:700;
+}
+
+.statusOk{ color:#1c7c36; }
+.statusWarn{ color:#b06a00; }
+
+.alertBox{
+  display:none;
+  margin-bottom:16px;
+  border:1px solid #e4b200;
+  background:#fff4bf;
+  color:#5b4600;
+  border-radius:12px;
+  padding:12px 14px;
+  font-weight:700;
 }
 
 .docHeader{
@@ -109,6 +159,8 @@ body{
 
 .section{
   margin-bottom:18px;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .sectionTitle{
@@ -236,6 +288,18 @@ body{
   gap:14px;
 }
 
+.imageWrap{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.imageLabel{
+  font-size:15px;
+  font-weight:800;
+  color:#8b1e1e;
+}
+
 .imageCard{
   border:1px solid #cfd6df;
   border-radius:12px;
@@ -261,10 +325,20 @@ body{
 
 .imageCard img{
   width:100%;
-  height:220px;
+  height:230px;
   object-fit:contain;
   display:block;
   background:#fff;
+}
+
+.imageInfo{
+  margin-top:10px;
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+  font-weight:700;
+  color:#444;
 }
 
 .footerNote{
@@ -290,6 +364,7 @@ body{
     width:220px;
   }
 
+  .statusBar,
   .infoRow,
   .checkGrid4,
   .checkGrid2,
@@ -308,7 +383,8 @@ body{
     background:#fff;
   }
 
-  .topBar{
+  .topBar,
+  .screenOnly{
     display:none !important;
   }
 
@@ -324,6 +400,11 @@ body{
     height:200px;
     object-fit:contain;
   }
+
+  .section{
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
 }
 </style>
 </head>
@@ -332,14 +413,35 @@ body{
 <div class="topBar">
   <div class="topBarTitle">Nowa budowa – widok do druku</div>
   <div class="topBarActions">
-    <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
-    <button class="btn btnGreen" type="button" onclick="printAndOpenWhatsAppPolish()">PDF + WhatsApp</button>
+    <button class="btn btnGreen btnMain" type="button" onclick="printAndOpenWhatsAppPolish()">PDF + WhatsApp</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppPolish()">WhatsApp Polski</button>
+    <button class="btn btnBlue" type="button" onclick="copyPolishTextForCraftnote()">Kopiuj do Craftnote-Drag and Drop</button>
+    <button class="btn btnBlue" type="button" onclick="testGoogleMaps()">Sprawdź Google Maps</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
+    <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
   </div>
 </div>
 
 <div class="page">
+  <div class="statusBar screenOnly">
+    <div class="statusCard">
+      <div class="statusLabel">Adres</div>
+      <div class="statusValue" id="statusAdresse">—</div>
+    </div>
+    <div class="statusCard">
+      <div class="statusLabel">Zdjęcia</div>
+      <div class="statusValue" id="statusBilder">—</div>
+    </div>
+    <div class="statusCard">
+      <div class="statusLabel">Craftnote</div>
+      <div class="statusValue" id="statusCraftnote">—</div>
+    </div>
+  </div>
+
+  <div class="alertBox screenOnly" id="addressWarning">
+    Brak adresu – nie można utworzyć linku Google Maps.
+  </div>
+
   <div class="docHeader">
     <div class="docTitleWrap">
       <h1 class="docTitle" id="docTitle">Nowy start budowy</h1>
@@ -438,10 +540,20 @@ body{
   <div class="section">
     <h2 class="sectionTitle">Zdjęcia przed rozpoczęciem prac</h2>
     <div class="imageGrid">
-      <div class="imageCard empty" id="bildBox1">Brak zdjęcia</div>
-      <div class="imageCard empty" id="bildBox2">Brak zdjęcia</div>
-      <div class="imageCard empty" id="bildBox3">Brak zdjęcia</div>
+      <div class="imageWrap">
+        <div class="imageLabel">Zdjęcie 1</div>
+        <div class="imageCard empty" id="bildBox1">Brak zdjęcia</div>
+      </div>
+      <div class="imageWrap">
+        <div class="imageLabel">Zdjęcie 2</div>
+        <div class="imageCard empty" id="bildBox2">Brak zdjęcia</div>
+      </div>
+      <div class="imageWrap">
+        <div class="imageLabel">Zdjęcie 3</div>
+        <div class="imageCard empty" id="bildBox3">Brak zdjęcia</div>
+      </div>
     </div>
+    <div class="imageInfo screenOnly" id="imageInfo">Brak zdjęć.</div>
   </div>
 
   <div class="section">
@@ -527,6 +639,47 @@ body{
       resolvePublicImageUrl(data?.bild2),
       resolvePublicImageUrl(data?.bild3)
     ].filter(Boolean);
+  }
+
+  function countImages(data){
+    return buildImageLinks(data).length;
+  }
+
+  function updateStatusBar(data){
+    const hasAddress = !!String(data?.baustellenadresse || '').trim();
+    const imageCount = countImages(data);
+    const craftnote = craftnoteDisplayPl(data?.craftnoteEingeladen);
+
+    const statusAdresse = document.getElementById('statusAdresse');
+    const statusBilder = document.getElementById('statusBilder');
+    const statusCraftnote = document.getElementById('statusCraftnote');
+    const addressWarning = document.getElementById('addressWarning');
+    const imageInfo = document.getElementById('imageInfo');
+
+    if (statusAdresse) {
+      statusAdresse.textContent = hasAddress ? 'Jest' : 'Brak';
+      statusAdresse.className = 'statusValue ' + (hasAddress ? 'statusOk' : 'statusWarn');
+    }
+
+    if (statusBilder) {
+      statusBilder.textContent = imageCount + ' zdjęcie/zdjęcia';
+      statusBilder.className = 'statusValue ' + (imageCount > 0 ? 'statusOk' : 'statusWarn');
+    }
+
+    if (statusCraftnote) {
+      statusCraftnote.textContent = craftnote;
+      statusCraftnote.className = 'statusValue ' + (craftnote === 'Tak' ? 'statusOk' : 'statusWarn');
+    }
+
+    if (addressWarning) {
+      addressWarning.style.display = hasAddress ? 'none' : 'block';
+    }
+
+    if (imageInfo) {
+      imageInfo.textContent = imageCount > 0
+        ? imageCount + ' zdjęcie/zdjęcia dodane.'
+        : 'Brak zdjęć.';
+    }
   }
 
   async function translateTexts(data) {
@@ -657,14 +810,58 @@ body{
     return lines.join("\n").trim();
   }
 
+  async function copyPolishTextForCraftnote(){
+    if (!sourceData || !translatedTexts) {
+      alert("Dane nie zostały jeszcze załadowane.");
+      return;
+    }
+
+    const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
+
+    try {
+      await navigator.clipboard.writeText(msg);
+      alert("Tekst został skopiowany do Craftnote-Drag and Drop.");
+    } catch(e) {
+      const ta = document.createElement('textarea');
+      ta.value = msg;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      alert("Tekst został skopiowany do Craftnote-Drag and Drop.");
+    }
+  }
+
+  function confirmChecked() {
+    return confirm("Czy budowa została całkowicie sprawdzona?");
+  }
+
   function openWhatsAppPolish(){
     if (!sourceData || !translatedTexts) {
       alert("Dane nie zostały jeszcze załadowane.");
       return;
     }
+
+    if (!confirmChecked()) return;
+
     const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
     const url = "https://wa.me/?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
+  }
+
+  function testGoogleMaps() {
+    if (!sourceData) {
+      alert("Dane nie zostały jeszcze załadowane.");
+      return;
+    }
+
+    const mapsLink = buildGoogleMapsLink(sourceData);
+    if (!mapsLink) {
+      alert("Brak adresu – nie można utworzyć linku Google Maps.");
+      return;
+    }
+
+    window.open(mapsLink, "_blank");
   }
 
   function printAndOpenWhatsAppPolish() {
@@ -673,7 +870,14 @@ body{
       return;
     }
 
-    pendingWhatsAppAction = () => openWhatsAppPolish();
+    if (!confirmChecked()) return;
+
+    pendingWhatsAppAction = () => {
+      const msg = buildPolishWhatsAppText(sourceData, translatedTexts);
+      const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+      window.open(url, "_blank");
+    };
+
     window.print();
 
     setTimeout(() => {
@@ -732,6 +936,8 @@ body{
       setImage('bildBox1', data.bild1, 'Brak zdjęcia');
       setImage('bildBox2', data.bild2, 'Brak zdjęcia');
       setImage('bildBox3', data.bild3, 'Brak zdjęcia');
+
+      updateStatusBar(data);
     } catch (err) {
       alert('Polska karta rozpoczęcia budowy nie mogła zostać załadowana.');
     }
