@@ -500,6 +500,15 @@ body{
     return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
   }
 
+  function buildGoogleMapsLink(data){
+    const adresse = String(data?.baustellenadresse || '').trim();
+    const name = String(data?.baustellenname || '').trim();
+    const query = adresse || name;
+
+    if (!query) return '';
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  }
+
   async function translateTexts(data) {
     const texts = [
       data.baustellenname || '',
@@ -548,6 +557,8 @@ body{
       .filter(Boolean)
       .join("\n");
 
+    const mapsLink = buildGoogleMapsLink(data);
+
     const lines = [];
     lines.push("Nowy start budowy");
     lines.push("");
@@ -561,6 +572,12 @@ body{
     if (translated[1]) {
       lines.push("Adres budowy:");
       lines.push(translated[1].trim());
+      lines.push("");
+    }
+
+    if (mapsLink) {
+      lines.push("Google Maps:");
+      lines.push(mapsLink);
       lines.push("");
     }
 
