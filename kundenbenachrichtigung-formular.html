@@ -1,1 +1,520 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundenbenachrichtigung – Formular</title>
 
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f3f5f7;
+  color:#111;
+}
+
+.topBar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#163d7a;
+  color:#fff;
+  padding:12px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  box-shadow:0 2px 10px rgba(0,0,0,.12);
+}
+
+.topBarTitle{
+  font-size:22px;
+  font-weight:800;
+}
+
+.topBarActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btnBlue{ background:#fff; color:#163d7a; }
+.btnYellow{ background:#ffd400; color:#000; }
+.btnGreen{ background:#25D366; color:#111; }
+.btnRed{ background:#8b1e1e; color:#fff; }
+
+.wrap{
+  max-width:1300px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  padding:0 16px 20px;
+  box-sizing:border-box;
+}
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.section{
+  margin-bottom:16px;
+}
+
+.sectionTitle{
+  margin:0 0 8px;
+  font-size:18px;
+  font-weight:800;
+  color:#163d7a;
+}
+
+.formGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.fullCol{ grid-column:1 / -1; }
+
+.fieldWrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.fieldWrap label{
+  font-size:14px;
+  font-weight:700;
+}
+
+.fieldWrap input,
+.fieldWrap textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #cfd6df;
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  background:#fbfcfd;
+}
+
+.fieldWrap textarea{
+  resize:vertical;
+  min-height:100px;
+}
+
+.previewBox{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:22px;
+  white-space:pre-wrap;
+  line-height:1.5;
+}
+
+.imageGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
+.imageCard{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  background:#fbfcfd;
+  min-height:170px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#666;
+  font-weight:700;
+}
+
+.imageCard img{
+  width:100%;
+  height:170px;
+  object-fit:contain;
+  background:#fff;
+}
+
+.helper{
+  font-size:13px;
+  color:#555;
+}
+
+.statusLine{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+@media (max-width: 980px){
+  .wrap{
+    grid-template-columns:1fr;
+  }
+
+  .formGrid,
+  .imageGrid{
+    grid-template-columns:1fr;
+  }
+
+  .topBar{
+    position:static;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="topBar">
+  <div class="topBarTitle">Kundenbenachrichtigung – Formular</div>
+  <div class="topBarActions">
+    <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+    <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+    <button class="btn btnYellow" type="button" onclick="downloadJson()">JSON herunterladen</button>
+    <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+    <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+    <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="statusLine" id="statusLine">Bereit.</div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Kundendaten</h2>
+      <div class="formGrid">
+        <div class="fieldWrap">
+          <label for="kunde">Kunde</label>
+          <input id="kunde" type="text" placeholder="Name des Kunden">
+        </div>
+        <div class="fieldWrap">
+          <label for="baustellenname">Baustellenname</label>
+          <input id="baustellenname" type="text" placeholder="Bezeichnung der Baustelle">
+        </div>
+        <div class="fieldWrap fullCol">
+          <label for="baustellenadresse">Baustellenadresse</label>
+          <input id="baustellenadresse" type="text" placeholder="Straße, Hausnummer, PLZ, Ort">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Aktuelle Information</h2>
+      <div class="fieldWrap">
+        <label for="text">Freitext</label>
+        <textarea id="text" placeholder="Aktueller Stand, ausgeführte Arbeiten, Hinweise an den Kunden"></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Bilder</h2>
+      <div class="formGrid">
+        <div class="fieldWrap">
+          <label for="bild1">Bild 1 (Link oder Dateiname)</label>
+          <input id="bild1" type="text" placeholder="z. B. bilder/bild1.jpg">
+        </div>
+        <div class="fieldWrap">
+          <label for="bild2">Bild 2 (Link oder Dateiname)</label>
+          <input id="bild2" type="text" placeholder="z. B. bilder/bild2.jpg">
+        </div>
+        <div class="fieldWrap fullCol">
+          <label for="bild3">Bild 3 (Link oder Dateiname)</label>
+          <input id="bild3" type="text" placeholder="z. B. bilder/bild3.jpg">
+        </div>
+      </div>
+      <div class="helper">Die Bilder werden in der Kundenansicht nebeneinander angezeigt und als Links in WhatsApp mitgegeben.</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Sonstiges</h2>
+      <div class="fieldWrap">
+        <label for="sonstiges">Zusätzlicher Hinweis</label>
+        <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section">
+      <h2 class="sectionTitle">Live-Vorschau WhatsApp</h2>
+      <div class="previewBox" id="previewText"></div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Bild-Vorschau</h2>
+      <div class="imageGrid">
+        <div class="imageCard" id="previewImage1">Kein Bild</div>
+        <div class="imageCard" id="previewImage2">Kein Bild</div>
+        <div class="imageCard" id="previewImage3">Kein Bild</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Fester Leistungsblock</h2>
+      <div class="previewBox">Dachdeckerarbeiten
+Zimmereiarbeiten
+Abdichtungen
+Dachfenster
+Reparaturen
+Gerüstbau
+Klempnerarbeiten
+Dachgaubenbau
+Holzrahmenbau
+Dachterrassen und Beläge
+Balkonabdichtung mit Triflex</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v1';
+
+function defaultData() {
+  return {
+    title: "Kundeninformation",
+    kunde: "",
+    baustellenname: "",
+    baustellenadresse: "",
+    text: "",
+    bild1: "",
+    bild2: "",
+    bild3: "",
+    sonstiges: "",
+    feedbackFrage1: "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?",
+    feedbackFrage2: "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?",
+    feedbackAntwortVorlage: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
+  };
+}
+
+function getFormData() {
+  const d = defaultData();
+  d.kunde = document.getElementById('kunde').value.trim();
+  d.baustellenname = document.getElementById('baustellenname').value.trim();
+  d.baustellenadresse = document.getElementById('baustellenadresse').value.trim();
+  d.text = document.getElementById('text').value.trim();
+  d.bild1 = document.getElementById('bild1').value.trim();
+  d.bild2 = document.getElementById('bild2').value.trim();
+  d.bild3 = document.getElementById('bild3').value.trim();
+  d.sonstiges = document.getElementById('sonstiges').value.trim();
+  return d;
+}
+
+function setFormData(data) {
+  document.getElementById('kunde').value = data.kunde || '';
+  document.getElementById('baustellenname').value = data.baustellenname || '';
+  document.getElementById('baustellenadresse').value = data.baustellenadresse || '';
+  document.getElementById('text').value = data.text || '';
+  document.getElementById('bild1').value = data.bild1 || '';
+  document.getElementById('bild2').value = data.bild2 || '';
+  document.getElementById('bild3').value = data.bild3 || '';
+  document.getElementById('sonstiges').value = data.sonstiges || '';
+  updatePreview();
+}
+
+function resolvePreviewUrl(rawValue){
+  const raw = String(rawValue || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('http')) return raw;
+
+  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, '');
+  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
+}
+
+function buildMapsLink(data){
+  const query = data.baustellenadresse || data.baustellenname;
+  if (!query) return '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+}
+
+function buildImageLinks(data){
+  return [data.bild1, data.bild2, data.bild3]
+    .map(resolvePreviewUrl)
+    .filter(Boolean);
+}
+
+function buildWhatsAppText(data){
+  const mapsLink = buildMapsLink(data);
+  const imageLinks = buildImageLinks(data);
+
+  const lines = [];
+  lines.push("Moin,");
+  lines.push("");
+  lines.push("wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren.");
+  lines.push("");
+
+  if (data.kunde) {
+    lines.push("Kunde:");
+    lines.push(data.kunde);
+    lines.push("");
+  }
+
+  if (data.baustellenname) {
+    lines.push("Baustelle:");
+    lines.push(data.baustellenname);
+    lines.push("");
+  }
+
+  if (data.baustellenadresse) {
+    lines.push("Adresse:");
+    lines.push(data.baustellenadresse);
+    lines.push("");
+  }
+
+  if (mapsLink) {
+    lines.push("Google Maps:");
+    lines.push(mapsLink);
+    lines.push("");
+  }
+
+  if (imageLinks.length) {
+    lines.push("Bilder:");
+    imageLinks.forEach((link, idx) => {
+      lines.push("Bild " + (idx + 1) + ":");
+      lines.push(link);
+    });
+    lines.push("");
+  }
+
+  if (data.text) {
+    lines.push("Aktuelle Information:");
+    lines.push(data.text);
+    lines.push("");
+  }
+
+  lines.push("Was wir für Sie ausführen:");
+  lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex");
+  lines.push("");
+  lines.push(data.feedbackFrage1);
+  lines.push(data.feedbackFrage2);
+  lines.push("");
+  lines.push(data.feedbackAntwortVorlage);
+
+  if (data.sonstiges) {
+    lines.push("");
+    lines.push("Sonstiges:");
+    lines.push(data.sonstiges);
+  }
+
+  return lines.join("\n").trim();
+}
+
+function updateImagePreview(boxId, value){
+  const box = document.getElementById(boxId);
+  if (!box) return;
+  const url = resolvePreviewUrl(value);
+
+  if (!url) {
+    box.innerHTML = 'Kein Bild';
+    return;
+  }
+
+  box.innerHTML = `<img src="${url}" alt="Vorschau">`;
+}
+
+function updatePreview(){
+  const data = getFormData();
+  document.getElementById('previewText').textContent = buildWhatsAppText(data);
+  updateImagePreview('previewImage1', data.bild1);
+  updateImagePreview('previewImage2', data.bild2);
+  updateImagePreview('previewImage3', data.bild3);
+
+  const status = [];
+  if (data.kunde) status.push('Kunde eingetragen');
+  if (data.baustellenadresse) status.push('Adresse vorhanden');
+  if (buildImageLinks(data).length) status.push(buildImageLinks(data).length + ' Bild(er)');
+  if (!status.length) status.push('Bereit.');
+  document.getElementById('statusLine').textContent = status.join(' | ');
+}
+
+function saveBrowser(){
+  const data = getFormData();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
+}
+
+function loadBrowser(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
+    return;
+  }
+  setFormData(JSON.parse(raw));
+  document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+}
+
+function resetForm(){
+  if (!confirm('Formular wirklich leeren?')) return;
+  setFormData(defaultData());
+  document.getElementById('statusLine').textContent = 'Formular geleert.';
+}
+
+function downloadJson(){
+  const data = getFormData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'kundeninfo.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById('statusLine').textContent = 'kundeninfo.json heruntergeladen.';
+}
+
+function openPreview(){
+  saveBrowser();
+  const data = getFormData();
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  const url = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, 'kundenbenachrichtigung.html');
+  window.open(url, '_blank');
+}
+
+function openWhatsAppFromForm(){
+  const data = getFormData();
+  const msg = buildWhatsAppText(data);
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+document.querySelectorAll('input, textarea').forEach(el => {
+  el.addEventListener('input', updatePreview);
+});
+
+(async function init(){
+  try {
+    const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      setFormData({...defaultData(), ...data});
+      document.getElementById('statusLine').textContent = 'kundeninfo.json geladen.';
+      return;
+    }
+  } catch(e) {}
+
+  setFormData(defaultData());
+})();
+</script>
+</body>
+</html>
