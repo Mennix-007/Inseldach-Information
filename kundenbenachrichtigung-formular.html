@@ -10,178 +10,401 @@ body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f3f5f7;
+  color:#111;
 }
 
+.topBar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#163d7a;
+  color:#fff;
+  padding:12px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  box-shadow:0 2px 10px rgba(0,0,0,.12);
+}
+
+.topBarTitle{
+  font-size:22px;
+  font-weight:800;
+}
+
+.topBarActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btnBlue{ background:#fff; color:#163d7a; }
+.btnYellow{ background:#ffd400; color:#000; }
+.btnGreen{ background:#25D366; color:#111; }
+.btnRed{ background:#8b1e1e; color:#fff; }
+
 .wrap{
-  max-width:1200px;
+  max-width:1380px;
   margin:20px auto;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:20px;
+  gap:18px;
+  padding:0 16px 20px;
+  box-sizing:border-box;
 }
 
 .card{
   background:#fff;
-  border-radius:14px;
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
   padding:20px;
-  box-shadow:0 6px 20px rgba(0,0,0,.1);
+  box-sizing:border-box;
   min-width:0;
 }
 
-h2{
-  margin-top:0;
+.section{
+  margin-bottom:18px;
+}
+
+.sectionTitle{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:800;
   color:#163d7a;
 }
 
-input, textarea{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  box-sizing:border-box;
-}
-
-textarea{
-  min-height:90px;
-}
-
-.btn{
-  padding:10px 14px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:700;
-  margin:4px 4px 0 0;
-}
-
-.btnGreen{ background:#25D366; }
-.btnBlue{ background:#163d7a; color:#fff; }
-.btnYellow{ background:#ffd400; color:#000; }
-.btnRed{ background:#8b1e1e; color:#fff; }
-
-.preview{
-  white-space:pre-wrap;
-  background:#f8fafc;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  min-height:220px;
-  overflow-wrap:anywhere;
-  word-break:break-word;
-}
-
-.imageRow{
+.formGrid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:10px;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
 }
 
-.imageBox{
-  border:1px solid #ccc;
-  border-radius:8px;
-  min-height:170px;
+.fullCol{ grid-column:1 / -1; }
+
+.fieldWrap{
   display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  background:#fff;
-  color:#666;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.fieldWrap label{
+  font-size:14px;
   font-weight:700;
 }
 
-.imageBox img{
+.fieldWrap input,
+.fieldWrap textarea{
   width:100%;
-  height:170px;
-  object-fit:contain;
-  display:block;
+  box-sizing:border-box;
+  border:1px solid #cfd6df;
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  background:#fbfcfd;
+}
+
+.fieldWrap textarea{
+  resize:vertical;
+  min-height:110px;
 }
 
 .helper{
   font-size:13px;
   color:#555;
-  line-height:1.4;
-  margin-top:4px;
+  line-height:1.45;
 }
 
-@media (max-width: 980px){
+.statusLine{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.previewBox{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:220px;
+  white-space:pre-wrap;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.imageGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
+.imageCard{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  background:#fbfcfd;
+  min-height:190px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#666;
+  font-weight:700;
+}
+
+.imageCard img{
+  width:100%;
+  height:190px;
+  object-fit:contain;
+  background:#fff;
+  display:block;
+}
+
+.previewActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.logoBox{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:12px;
+  background:#f8fafc;
+  line-height:1.5;
+}
+
+@media (max-width: 1020px){
   .wrap{
     grid-template-columns:1fr;
   }
 
-  .imageRow{
+  .formGrid,
+  .imageGrid{
     grid-template-columns:1fr;
+  }
+
+  .topBar{
+    position:static;
   }
 }
 </style>
 </head>
 <body>
 
+<div class="topBar">
+  <div class="topBarTitle">Kundenbenachrichtigung – Formular</div>
+  <div class="topBarActions">
+    <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+    <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+    <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
+    <button class="btn btnYellow" type="button" onclick="downloadData()">Eingegebene Daten herunterladen</button>
+    <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+    <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+    <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+    <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+    <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde (Drag and Drop)</button>
+    <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Kopieren für Craftnote-Drag and Drop</button>
+    <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+  </div>
+</div>
+
 <div class="wrap">
-
   <div class="card">
-    <h2>Kundenbenachrichtigung eingeben</h2>
+    <div class="statusLine" id="statusLine">Bereit.</div>
 
-    <input id="kunde" placeholder="Kunde">
-    <textarea id="adresse" placeholder="Baustellenadresse"></textarea>
-    <textarea id="text" placeholder="Aktuelle Information"></textarea>
-
-    <label>Bild 1</label>
-    <input type="file" id="bild1" accept="image/*">
-
-    <label>Bild 2</label>
-    <input type="file" id="bild2" accept="image/*">
-
-    <label>Bild 3</label>
-    <input type="file" id="bild3" accept="image/*">
-
-    <textarea id="sonstiges" placeholder="Sonstiges"></textarea>
-
-    <div class="helper">
-      Die Bilder werden hier direkt für Vorschau und Druckansicht verwendet.  
-      In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.
+    <div class="section">
+      <h2 class="sectionTitle">Firmenkopf</h2>
+      <div class="logoBox">
+        <strong>Inseldachdecker GmbH</strong><br>
+        Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
+        Telefon: 04922 9238028<br>
+        E-Mail: menne@email.de<br>
+        WhatsApp: 0151 61513028
+      </div>
     </div>
 
-    <div style="margin-top:14px;">
-      <button class="btn btnGreen" onclick="openPreview()">Kundenansicht öffnen</button>
-      <button class="btn btnGreen" onclick="sendWhatsApp()">WhatsApp</button>
-      <button class="btn btnBlue" onclick="copyCustomerText()">Kopie Kunde (Drag and Drop)</button>
-      <button class="btn btnBlue" onclick="showJSON()">Eingegebene Daten</button>
-      <button class="btn btnYellow" onclick="downloadJSON()">Eingegebene Daten herunterladen</button>
-      <button class="btn btnRed" onclick="clearForm()">Formular leeren</button>
+    <div class="section">
+      <h2 class="sectionTitle">Kundendaten</h2>
+      <div class="formGrid">
+        <div class="fieldWrap">
+          <label for="kunde">Kunde</label>
+          <input id="kunde" type="text" placeholder="Name des Kunden">
+        </div>
+
+        <div class="fieldWrap">
+          <label for="baustellenadresse">Baustellenadresse</label>
+          <input id="baustellenadresse" type="text" placeholder="Straße, Hausnummer, PLZ, Ort">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Aktuelle Information</h2>
+      <div class="fieldWrap">
+        <label for="text">Freitext</label>
+        <textarea id="text" placeholder="Aktueller Stand, ausgeführte Arbeiten, Hinweise an den Kunden"></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Bilder direkt auswählen</h2>
+      <div class="formGrid">
+        <div class="fieldWrap">
+          <label for="fileBild1">Bild 1 hochladen</label>
+          <input id="fileBild1" type="file" accept="image/*">
+        </div>
+        <div class="fieldWrap">
+          <label for="fileBild2">Bild 2 hochladen</label>
+          <input id="fileBild2" type="file" accept="image/*">
+        </div>
+        <div class="fieldWrap fullCol">
+          <label for="fileBild3">Bild 3 hochladen</label>
+          <input id="fileBild3" type="file" accept="image/*">
+        </div>
+      </div>
+      <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
+      <div class="formGrid">
+        <div class="fieldWrap">
+          <label for="bild1">Bild 1 Link oder Dateiname</label>
+          <input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg">
+        </div>
+        <div class="fieldWrap">
+          <label for="bild2">Bild 2 Link oder Dateiname</label>
+          <input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg">
+        </div>
+        <div class="fieldWrap fullCol">
+          <label for="bild3">Bild 3 Link oder Dateiname</label>
+          <input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Sonstiges</h2>
+      <div class="fieldWrap">
+        <label for="sonstiges">Zusätzlicher Hinweis</label>
+        <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
+      </div>
     </div>
   </div>
 
   <div class="card">
-    <h2>Vorschau</h2>
-    <div id="previewText" class="preview"></div>
+    <div class="section">
+      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Kundenkopie</h2>
+      <div class="previewBox" id="previewText"></div>
+    </div>
 
-    <div class="imageRow">
-      <div class="imageBox" id="box1">Kein Bild</div>
-      <div class="imageBox" id="box2">Kein Bild</div>
-      <div class="imageBox" id="box3">Kein Bild</div>
+    <div class="section">
+      <h2 class="sectionTitle">Bild-Vorschau</h2>
+      <div class="imageGrid">
+        <div class="imageCard" id="previewImage1">Kein Bild</div>
+        <div class="imageCard" id="previewImage2">Kein Bild</div>
+        <div class="imageCard" id="previewImage3">Kein Bild</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Fester Leistungsblock</h2>
+      <div class="previewBox">Dachdeckerarbeiten
+Zimmereiarbeiten
+Abdichtungen
+Dachfenster
+Reparaturen
+Gerüstbau
+Klempnerarbeiten
+Dachgaubenbau
+Holzrahmenbau
+Dachterrassen und Beläge
+Balkonabdichtung mit Triflex</div>
+    </div>
+
+    <div class="previewActions">
+      <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+      <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+      <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
     </div>
   </div>
-
 </div>
 
 <script>
-let uploadImages = ["","",""];
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v5';
+let uploadImages = ["", "", ""];
 
-function getData(){
+function defaultData() {
   return {
-    kunde: document.getElementById("kunde").value.trim(),
-    baustellenadresse: document.getElementById("adresse").value.trim(),
-    text: document.getElementById("text").value.trim(),
-    sonstiges: document.getElementById("sonstiges").value.trim(),
-    uploadBild1: uploadImages[0] || "",
-    uploadBild2: uploadImages[1] || "",
-    uploadBild3: uploadImages[2] || "",
+    title: "Kundeninformation",
+    kunde: "",
+    baustellenadresse: "",
+    text: "",
+    bild1: "",
+    bild2: "",
+    bild3: "",
+    sonstiges: "",
     feedbackFrage1: "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?",
     feedbackFrage2: "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?",
     feedbackAntwortVorlage: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
   };
+}
+
+function getFormData() {
+  const d = defaultData();
+  d.kunde = document.getElementById('kunde').value.trim();
+  d.baustellenadresse = document.getElementById('baustellenadresse').value.trim();
+  d.text = document.getElementById('text').value.trim();
+  d.bild1 = document.getElementById('bild1').value.trim();
+  d.bild2 = document.getElementById('bild2').value.trim();
+  d.bild3 = document.getElementById('bild3').value.trim();
+  d.sonstiges = document.getElementById('sonstiges').value.trim();
+  d.uploadBild1 = uploadImages[0] || "";
+  d.uploadBild2 = uploadImages[1] || "";
+  d.uploadBild3 = uploadImages[2] || "";
+  return d;
+}
+
+function setFormData(data) {
+  document.getElementById('kunde').value = data.kunde || '';
+  document.getElementById('baustellenadresse').value = data.baustellenadresse || '';
+  document.getElementById('text').value = data.text || '';
+  document.getElementById('bild1').value = data.bild1 || '';
+  document.getElementById('bild2').value = data.bild2 || '';
+  document.getElementById('bild3').value = data.bild3 || '';
+  document.getElementById('sonstiges').value = data.sonstiges || '';
+
+  uploadImages = [
+    data.uploadBild1 || "",
+    data.uploadBild2 || "",
+    data.uploadBild3 || ""
+  ];
+
+  updatePreview();
+}
+
+function resolvePreviewUrl(rawValue){
+  const raw = String(rawValue || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('http')) return raw;
+  if (raw.startsWith('data:image')) return raw;
+  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, '');
+  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
 }
 
 function buildMapsLink(data){
@@ -190,8 +413,10 @@ function buildMapsLink(data){
   return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
 }
 
-function buildText(data){
+function buildCustomerText(data){
   const maps = buildMapsLink(data);
+  const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
+
   let t = "Moin,\n\n";
   t += "wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren.\n\n";
 
@@ -211,7 +436,7 @@ function buildText(data){
     t += "Aktuelle Information:\n" + data.text + "\n\n";
   }
 
-  if(data.uploadBild1 || data.uploadBild2 || data.uploadBild3){
+  if(hasImages){
     t += "Bilder sind im Formular enthalten\n\n";
   }
 
@@ -229,95 +454,73 @@ function buildText(data){
   return t.trim();
 }
 
-function updatePreview(){
-  const data = getData();
-  document.getElementById("previewText").textContent = buildText(data);
-}
-
-function setImageBox(boxId, src){
+function updateImagePreview(boxId, uploadValue, pathValue){
   const box = document.getElementById(boxId);
-  if(!src){
-    box.innerHTML = "Kein Bild";
+  if (!box) return;
+  const url = resolvePreviewUrl(uploadValue || pathValue);
+  if (!url) {
+    box.innerHTML = 'Kein Bild';
     return;
   }
-  box.innerHTML = `<img src="${src}" alt="Vorschau">`;
+  box.innerHTML = `<img src="${url}" alt="Vorschau">`;
 }
 
-function readImage(input, index){
-  const file = input.files[0];
-  if(!file) return;
+function updatePreview(){
+  const data = getFormData();
+  document.getElementById('previewText').textContent = buildCustomerText(data);
 
-  const reader = new FileReader();
-  reader.onload = e => {
-    uploadImages[index] = e.target.result;
-    setImageBox("box" + (index + 1), e.target.result);
-    updatePreview();
-  };
-  reader.readAsDataURL(file);
+  updateImagePreview('previewImage1', data.uploadBild1, data.bild1);
+  updateImagePreview('previewImage2', data.uploadBild2, data.bild2);
+  updateImagePreview('previewImage3', data.uploadBild3, data.bild3);
+
+  const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
+  const status = [];
+  if (data.kunde) status.push('Kunde eingetragen');
+  if (data.baustellenadresse) status.push('Adresse vorhanden');
+  if (hasImages) status.push('Bilder vorhanden');
+  if (!status.length) status.push('Bereit.');
+  document.getElementById('statusLine').textContent = status.join(' | ');
 }
 
-document.getElementById("bild1").addEventListener("change", e => readImage(e.target, 0));
-document.getElementById("bild2").addEventListener("change", e => readImage(e.target, 1));
-document.getElementById("bild3").addEventListener("change", e => readImage(e.target, 2));
-
-document.querySelectorAll("input[type='text'], textarea").forEach(el => {
-  el.addEventListener("input", updatePreview);
-});
-
-function openPreview(){
-  const data = getData();
-  data.autoPrint = false;
-  data.autoWhatsApp = false;
-  localStorage.setItem("kundenbenachrichtigung_preview_data", JSON.stringify(data));
-  window.open("kundenbenachrichtigung.html", "_blank");
+function saveBrowser(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
 }
 
-function sendWhatsApp(){
-  const data = getData();
-  const text = encodeURIComponent(buildText(data));
-  window.open("https://wa.me/?text=" + text, "_blank");
-}
-
-async function copyCustomerText(){
-  const data = getData();
-  const txt = buildText(data);
-  try{
-    await navigator.clipboard.writeText(txt);
-    alert("Kundenkopie wurde kopiert.");
-  }catch(e){
-    const ta = document.createElement("textarea");
-    ta.value = txt;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    ta.remove();
-    alert("Kundenkopie wurde kopiert.");
+function loadBrowser(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
+    return;
   }
+  setFormData(JSON.parse(raw));
+  document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
 }
 
-function showJSON(){
-  const data = getData();
+function showDataInNewTab(){
+  const data = getFormData();
   const clean = {
     kunde: data.kunde,
     baustellenadresse: data.baustellenadresse,
     text: data.text,
     sonstiges: data.sonstiges,
     bilder: [
-      data.uploadBild1 ? "Bild vorhanden" : "",
-      data.uploadBild2 ? "Bild vorhanden" : "",
-      data.uploadBild3 ? "Bild vorhanden" : ""
+      data.uploadBild1 || data.bild1 ? "Bild vorhanden" : "",
+      data.uploadBild2 || data.bild2 ? "Bild vorhanden" : "",
+      data.uploadBild3 || data.bild3 ? "Bild vorhanden" : ""
     ],
     feedbackFrage1: data.feedbackFrage1,
     feedbackFrage2: data.feedbackFrage2,
     feedbackAntwortVorlage: data.feedbackAntwortVorlage
   };
 
-  const win = window.open("", "_blank");
-  win.document.write("<pre>" + JSON.stringify(clean, null, 2) + "</pre>");
+  const win = window.open('', '_blank');
+  win.document.write('<pre>' + JSON.stringify(clean, null, 2) + '</pre>');
 }
 
-function downloadJSON(){
-  const data = getData();
+function downloadData(){
+  const data = getFormData();
   const clean = {
     kunde: data.kunde,
     baustellenadresse: data.baustellenadresse,
@@ -328,34 +531,123 @@ function downloadJSON(){
     feedbackAntwortVorlage: data.feedbackAntwortVorlage
   };
 
-  const blob = new Blob([JSON.stringify(clean, null, 2)], {type:"application/json"});
+  const blob = new Blob([JSON.stringify(clean, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
+  const a = document.createElement('a');
   a.href = url;
-  a.download = "kundeninfo.json";
+  a.download = 'kundeninfo.json';
   a.click();
   URL.revokeObjectURL(url);
 }
 
-function clearForm(){
-  if(!confirm("Formular wirklich leeren?")) return;
-
-  document.getElementById("kunde").value = "";
-  document.getElementById("adresse").value = "";
-  document.getElementById("text").value = "";
-  document.getElementById("sonstiges").value = "";
-  document.getElementById("bild1").value = "";
-  document.getElementById("bild2").value = "";
-  document.getElementById("bild3").value = "";
-  uploadImages = ["","",""];
-  setImageBox("box1","");
-  setImageBox("box2","");
-  setImageBox("box3","");
-  updatePreview();
+function openPreview(){
+  const data = getFormData();
+  data.autoPrint = false;
+  data.autoWhatsApp = false;
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  window.open('kundenbenachrichtigung.html', '_blank');
 }
 
-updatePreview();
-</script>
+function openPreviewAndPrint(){
+  const data = getFormData();
+  data.autoPrint = true;
+  data.autoWhatsApp = false;
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  window.open('kundenbenachrichtigung.html', '_blank');
+}
 
+function openPreviewPrintAndWhatsApp(){
+  const data = getFormData();
+  data.autoPrint = true;
+  data.autoWhatsApp = true;
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  window.open('kundenbenachrichtigung.html', '_blank');
+}
+
+function openWhatsAppFromForm(){
+  const msg = buildCustomerText(getFormData());
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+async function copyCustomerVersion(){
+  const msg = buildCustomerText(getFormData());
+  try{
+    await navigator.clipboard.writeText(msg);
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
+  }
+}
+
+async function copyTextForCraftnote(){
+  const msg = buildCustomerText(getFormData());
+  try{
+    await navigator.clipboard.writeText(msg);
+    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+  }
+}
+
+function resetForm(){
+  if(!confirm('Formular wirklich leeren?')) return;
+  setFormData(defaultData());
+  document.getElementById('fileBild1').value = '';
+  document.getElementById('fileBild2').value = '';
+  document.getElementById('fileBild3').value = '';
+  uploadImages = ["","",""];
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Formular geleert.';
+}
+
+function bindImageUpload(inputId, index){
+  const input = document.getElementById(inputId);
+  input.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadImages[index] = e.target.result;
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+document.querySelectorAll('input[type="text"], textarea').forEach(el => {
+  el.addEventListener('input', updatePreview);
+});
+
+bindImageUpload('fileBild1', 0);
+bindImageUpload('fileBild2', 1);
+bindImageUpload('fileBild3', 2);
+
+(async function init(){
+  try {
+    const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      const cleaned = {...defaultData(), ...data};
+      delete cleaned.baustellenname;
+      setFormData(cleaned);
+      document.getElementById('statusLine').textContent = 'kundeninfo.json geladen.';
+      return;
+    }
+  } catch(e) {}
+  setFormData(defaultData());
+})();
+</script>
 </body>
 </html>
