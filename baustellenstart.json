@@ -17,7 +17,7 @@
   "lager2": "sdafasdfasd",
   "bild3": "/uploads/2021_menne_003.jpg",
   "lager3": "sdafsadfsadf",
-  "gesamteBaustelleStundenlohn": false,
+  "gesamteBaustelleStundenlohn": true,
   "title": "Neustart Baustelle",
   "baustellenadresse": "Borkum, Norderreihe 22",
   "sonstiges": "Füße sauber machen"
