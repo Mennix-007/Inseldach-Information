@@ -269,3 +269,72 @@ collections:
           - label: "Sonstiges bitte nicht vergessen"
             name: "sonstiges"
             widget: "text"
+
+      # =========================
+      # KUNDENBENACHRICHTIGUNG
+      # =========================
+      - name: "kundeninfo"
+        label: "Kundenbenachrichtigung"
+        file: "kundeninfo.json"
+        format: "json"
+        fields:
+
+          - label: "Feste Überschrift"
+            name: "title"
+            widget: "string"
+            default: "Kundeninformation"
+
+          - label: "Kunde"
+            name: "kunde"
+            widget: "string"
+            required: false
+
+          - label: "Baustellenname"
+            name: "baustellenname"
+            widget: "string"
+            required: false
+
+          - label: "Baustellenadresse"
+            name: "baustellenadresse"
+            widget: "text"
+            required: false
+
+          - label: "Aktuelle Information"
+            name: "text"
+            widget: "text"
+            required: false
+
+          - label: "Bild 1"
+            name: "bild1"
+            widget: "image"
+            required: false
+
+          - label: "Bild 2"
+            name: "bild2"
+            widget: "image"
+            required: false
+
+          - label: "Bild 3"
+            name: "bild3"
+            widget: "image"
+            required: false
+
+          - label: "Sonstiges"
+            name: "sonstiges"
+            widget: "text"
+            required: false
+
+          - label: "Feedbackfrage 1"
+            name: "feedbackFrage1"
+            widget: "string"
+            default: "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?"
+
+          - label: "Feedbackfrage 2"
+            name: "feedbackFrage2"
+            widget: "string"
+            default: "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?"
+
+          - label: "Antwortvorlage"
+            name: "feedbackAntwortVorlage"
+            widget: "text"
+            default: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
