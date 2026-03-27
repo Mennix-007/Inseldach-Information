@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Baustellenstart – Formular</title>
+<title>Kundenbenachrichtigung – Formular</title>
 
 <style>
 body{
@@ -54,7 +54,7 @@ body{
 .btnRed{ background:#8b1e1e; color:#fff; }
 
 .wrap{
-  max-width:1450px;
+  max-width:1380px;
   margin:20px auto;
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -102,8 +102,7 @@ body{
 }
 
 .fieldWrap input,
-.fieldWrap textarea,
-.fieldWrap select{
+.fieldWrap textarea{
   width:100%;
   box-sizing:border-box;
   border:1px solid #cfd6df;
@@ -115,17 +114,7 @@ body{
 
 .fieldWrap textarea{
   resize:vertical;
-  min-height:90px;
-}
-
-.previewBox{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:22px;
-  white-space:pre-wrap;
-  line-height:1.5;
+  min-height:110px;
 }
 
 .helper{
@@ -141,6 +130,16 @@ body{
   background:#f8fafc;
   font-weight:700;
   margin-bottom:14px;
+}
+
+.previewBox{
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:22px;
+  white-space:pre-wrap;
+  line-height:1.5;
 }
 
 .imageGrid{
@@ -176,7 +175,15 @@ body{
   margin-top:14px;
 }
 
-@media (max-width: 1100px){
+.logoBox{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:12px;
+  background:#f8fafc;
+  line-height:1.5;
+}
+
+@media (max-width: 1020px){
   .wrap{
     grid-template-columns:1fr;
   }
@@ -195,17 +202,17 @@ body{
 <body>
 
 <div class="topBar">
-  <div class="topBarTitle">Start neue Baustelle – Formular</div>
+  <div class="topBarTitle">Kundenbenachrichtigung – Formular</div>
   <div class="topBarActions">
     <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
     <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
     <button class="btn btnBlue" type="button" onclick="showJsonInNewTab()">JSON anzeigen</button>
     <button class="btn btnYellow" type="button" onclick="downloadJson()">JSON herunterladen</button>
-    <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
-    <button class="btn btnYellow" type="button" onclick="downloadPdfFromForm()">PDF direkt herunterladen</button>
+    <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+    <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
     <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
-    <button class="btn btnBlue" type="button" onclick="copySiteVersion()">Kopie Baustelle (Drag and Drop)</button>
+    <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde (Drag and Drop)</button>
     <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Kopieren für Craftnote-Drag and Drop</button>
     <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
   </div>
@@ -216,115 +223,36 @@ body{
     <div class="statusLine" id="statusLine">Bereit.</div>
 
     <div class="section">
-      <h2 class="sectionTitle">Grunddaten</h2>
+      <h2 class="sectionTitle">Firmenkopf</h2>
+      <div class="logoBox">
+        <strong>Inseldachdecker GmbH</strong><br>
+        Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
+        Telefon: 04922 9238028<br>
+        E-Mail: menne@email.de<br>
+        WhatsApp: 0151 61513028
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Kundendaten</h2>
       <div class="formGrid">
         <div class="fieldWrap">
-          <label for="baustellenname">Auftraggeber</label>
-          <input id="baustellenname" type="text" placeholder="Name des Auftraggebers">
+          <label for="kunde">Kunde</label>
+          <input id="kunde" type="text" placeholder="Name des Kunden">
         </div>
 
         <div class="fieldWrap">
-          <label for="craftnoteSuchbegriff">Suchbegriff Craftnote</label>
-          <input id="craftnoteSuchbegriff" type="text" placeholder="Suchbegriff">
-        </div>
-
-        <div class="fieldWrap fullCol">
           <label for="baustellenadresse">Baustellenadresse</label>
-          <textarea id="baustellenadresse" placeholder="Straße, Hausnummer, PLZ, Ort"></textarea>
-        </div>
-
-        <div class="fieldWrap">
-          <label for="craftnoteEingeladen">Craftnote eingeladen?</label>
-          <select id="craftnoteEingeladen">
-            <option value="nein">Nein</option>
-            <option value="ja">Ja</option>
-          </select>
-        </div>
-
-        <div class="fieldWrap">
-          <label for="baustellenhoehe">Baustellenhöhe</label>
-          <select id="baustellenhoehe">
-            <option value="2,00 m">2,00 m</option>
-            <option value="2,50 m">2,50 m</option>
-            <option value="3,00 m">3,00 m</option>
-            <option value="3,50 m">3,50 m</option>
-            <option value="4,00 m">4,00 m</option>
-            <option value="4,50 m">4,50 m</option>
-            <option value="5,00 m">5,00 m</option>
-            <option value="5,50 m">5,50 m</option>
-            <option value="6,00 m">6,00 m</option>
-            <option value="6,50 m">6,50 m</option>
-            <option value="7,00 m">7,00 m</option>
-            <option value="7,50 m">7,50 m</option>
-            <option value="8,00 m">8,00 m</option>
-            <option value="8,50 m">8,50 m</option>
-            <option value="9,00 m">9,00 m</option>
-            <option value="9,50 m">9,50 m</option>
-            <option value="10,00 m">10,00 m</option>
-            <option value="10,50 m">10,50 m</option>
-            <option value="11,00 m">11,00 m</option>
-            <option value="11,50 m">11,50 m</option>
-            <option value="12,00 m">12,00 m</option>
-            <option value="12,50 m">12,50 m</option>
-            <option value="13,00 m">13,00 m</option>
-            <option value="13,50 m">13,50 m</option>
-            <option value="14,00 m">14,00 m</option>
-            <option value="14,50 m">14,50 m</option>
-            <option value="15,00 m">15,00 m</option>
-          </select>
+          <input id="baustellenadresse" type="text" placeholder="Straße, Hausnummer, PLZ, Ort">
         </div>
       </div>
     </div>
 
     <div class="section">
-      <h2 class="sectionTitle">Abrechnungsart / Zugang</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label><input type="checkbox" id="gesamteBaustelleStundenlohn"> Gesamte Baustelle Stundenlohn</label>
-        </div>
-        <div class="fieldWrap">
-          <label><input type="checkbox" id="teilweiseStundenlohn"> Teilweise Stundenlohn</label>
-        </div>
-        <div class="fieldWrap">
-          <label><input type="checkbox" id="eventuellTeilweiseStundenlohn"> Eventuell teilweise Stundenlohn</label>
-        </div>
-        <div class="fieldWrap">
-          <label><input type="checkbox" id="festpreisangebot"> Festpreisangebot</label>
-        </div>
-
-        <div class="fieldWrap fullCol">
-          <label for="zugang">Zugang</label>
-          <select id="zugang">
-            <option value="geruest">Gerüst erforderlich</option>
-            <option value="leiter">Leiter reicht</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Leistungsbeschreibung</h2>
+      <h2 class="sectionTitle">Aktuelle Information</h2>
       <div class="fieldWrap">
-        <label for="worumGehtEs">Worum geht es hier / Was muss gemacht werden</label>
-        <textarea id="worumGehtEs" placeholder="Beschreibung der Arbeiten"></textarea>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Lieferung zur Baustelle</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label for="lieferung1">Feld 1</label><textarea id="lieferung1"></textarea></div>
-        <div class="fieldWrap"><label for="lieferung2">Feld 2</label><textarea id="lieferung2"></textarea></div>
-        <div class="fieldWrap fullCol"><label for="lieferung3">Feld 3</label><textarea id="lieferung3"></textarea></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Mitnahme aus dem Lager</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label for="lager1">Feld 1</label><textarea id="lager1"></textarea></div>
-        <div class="fieldWrap"><label for="lager2">Feld 2</label><textarea id="lager2"></textarea></div>
-        <div class="fieldWrap fullCol"><label for="lager3">Feld 3</label><textarea id="lager3"></textarea></div>
+        <label for="text">Freitext</label>
+        <textarea id="text" placeholder="Aktueller Stand, ausgeführte Arbeiten, Hinweise an den Kunden"></textarea>
       </div>
     </div>
 
@@ -344,30 +272,40 @@ body{
           <input id="fileBild3" type="file" accept="image/*">
         </div>
       </div>
-      <div class="helper">Diese Bilder werden direkt im Browser verwendet. Das ist ideal zum schnellen Arbeiten, speichert die Bilddateien aber nicht automatisch ins Repo.</div>
+      <div class="helper">Diese Bilder werden direkt im Browser verwendet. Das ist ideal zum schnellen Arbeiten, speichert die Bilddateien aber nicht automatisch in GitHub.</div>
     </div>
 
     <div class="section">
       <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
       <div class="formGrid">
-        <div class="fieldWrap"><label for="bild1">Bild 1 Link oder Dateiname</label><input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg"></div>
-        <div class="fieldWrap"><label for="bild2">Bild 2 Link oder Dateiname</label><input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg"></div>
-        <div class="fieldWrap fullCol"><label for="bild3">Bild 3 Link oder Dateiname</label><input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg"></div>
+        <div class="fieldWrap">
+          <label for="bild1">Bild 1 Link oder Dateiname</label>
+          <input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg">
+        </div>
+        <div class="fieldWrap">
+          <label for="bild2">Bild 2 Link oder Dateiname</label>
+          <input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg">
+        </div>
+        <div class="fieldWrap fullCol">
+          <label for="bild3">Bild 3 Link oder Dateiname</label>
+          <input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg">
+        </div>
       </div>
+      <div class="helper">Wenn du später über Netlify-CMS arbeitest, kommen hier typischerweise die Bildpfade rein.</div>
     </div>
 
     <div class="section">
       <h2 class="sectionTitle">Sonstiges</h2>
       <div class="fieldWrap">
-        <label for="sonstiges">Sonstiges bitte nicht vergessen</label>
-        <textarea id="sonstiges" placeholder="Zusätzlicher Hinweis"></textarea>
+        <label for="sonstiges">Zusätzlicher Hinweis</label>
+        <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="section">
-      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Baustellenkopie</h2>
+      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Kundenkopie</h2>
       <div class="previewBox" id="previewText"></div>
     </div>
 
@@ -380,95 +318,71 @@ body{
       </div>
     </div>
 
+    <div class="section">
+      <h2 class="sectionTitle">Fester Leistungsblock</h2>
+      <div class="previewBox">Dachdeckerarbeiten
+Zimmereiarbeiten
+Abdichtungen
+Dachfenster
+Reparaturen
+Gerüstbau
+Klempnerarbeiten
+Dachgaubenbau
+Holzrahmenbau
+Dachterrassen und Beläge
+Balkonabdichtung mit Triflex</div>
+    </div>
+
     <div class="previewActions">
-      <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
-      <button class="btn btnYellow" type="button" onclick="downloadPdfFromForm()">PDF direkt herunterladen</button>
+      <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+      <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
       <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
     </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = 'baustellenstart_formular_v2';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v4';
 let uploadImages = ["", "", ""];
 
 function defaultData() {
   return {
-    title: "Neustart Baustelle",
-    baustellenname: "",
+    title: "Kundeninformation",
+    kunde: "",
     baustellenadresse: "",
-    craftnoteSuchbegriff: "",
-    craftnoteEingeladen: "nein",
-    gesamteBaustelleStundenlohn: false,
-    teilweiseStundenlohn: false,
-    eventuellTeilweiseStundenlohn: false,
-    festpreisangebot: false,
-    zugang: "geruest",
-    baustellenhoehe: "2,00 m",
-    worumGehtEs: "",
-    lieferung1: "",
-    lieferung2: "",
-    lieferung3: "",
-    lager1: "",
-    lager2: "",
-    lager3: "",
+    text: "",
     bild1: "",
     bild2: "",
     bild3: "",
     uploadBild1: "",
     uploadBild2: "",
     uploadBild3: "",
-    sonstiges: ""
+    sonstiges: "",
+    feedbackFrage1: "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?",
+    feedbackFrage2: "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?",
+    feedbackAntwortVorlage: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
   };
 }
 
 function getFormData() {
   const d = defaultData();
-  d.baustellenname = document.getElementById('baustellenname').value.trim();
+  d.kunde = document.getElementById('kunde').value.trim();
   d.baustellenadresse = document.getElementById('baustellenadresse').value.trim();
-  d.craftnoteSuchbegriff = document.getElementById('craftnoteSuchbegriff').value.trim();
-  d.craftnoteEingeladen = document.getElementById('craftnoteEingeladen').value;
-  d.gesamteBaustelleStundenlohn = document.getElementById('gesamteBaustelleStundenlohn').checked;
-  d.teilweiseStundenlohn = document.getElementById('teilweiseStundenlohn').checked;
-  d.eventuellTeilweiseStundenlohn = document.getElementById('eventuellTeilweiseStundenlohn').checked;
-  d.festpreisangebot = document.getElementById('festpreisangebot').checked;
-  d.zugang = document.getElementById('zugang').value;
-  d.baustellenhoehe = document.getElementById('baustellenhoehe').value;
-  d.worumGehtEs = document.getElementById('worumGehtEs').value.trim();
-  d.lieferung1 = document.getElementById('lieferung1').value.trim();
-  d.lieferung2 = document.getElementById('lieferung2').value.trim();
-  d.lieferung3 = document.getElementById('lieferung3').value.trim();
-  d.lager1 = document.getElementById('lager1').value.trim();
-  d.lager2 = document.getElementById('lager2').value.trim();
-  d.lager3 = document.getElementById('lager3').value.trim();
+  d.text = document.getElementById('text').value.trim();
   d.bild1 = document.getElementById('bild1').value.trim();
   d.bild2 = document.getElementById('bild2').value.trim();
   d.bild3 = document.getElementById('bild3').value.trim();
+  d.sonstiges = document.getElementById('sonstiges').value.trim();
   d.uploadBild1 = uploadImages[0] || "";
   d.uploadBild2 = uploadImages[1] || "";
   d.uploadBild3 = uploadImages[2] || "";
-  d.sonstiges = document.getElementById('sonstiges').value.trim();
   return d;
 }
 
 function setFormData(data) {
-  document.getElementById('baustellenname').value = data.baustellenname || '';
+  document.getElementById('kunde').value = data.kunde || '';
   document.getElementById('baustellenadresse').value = data.baustellenadresse || '';
-  document.getElementById('craftnoteSuchbegriff').value = data.craftnoteSuchbegriff || '';
-  document.getElementById('craftnoteEingeladen').value = data.craftnoteEingeladen || 'nein';
-  document.getElementById('gesamteBaustelleStundenlohn').checked = !!data.gesamteBaustelleStundenlohn;
-  document.getElementById('teilweiseStundenlohn').checked = !!data.teilweiseStundenlohn;
-  document.getElementById('eventuellTeilweiseStundenlohn').checked = !!data.eventuellTeilweiseStundenlohn;
-  document.getElementById('festpreisangebot').checked = !!data.festpreisangebot;
-  document.getElementById('zugang').value = data.zugang || 'geruest';
-  document.getElementById('baustellenhoehe').value = data.baustellenhoehe || '2,00 m';
-  document.getElementById('worumGehtEs').value = data.worumGehtEs || '';
-  document.getElementById('lieferung1').value = data.lieferung1 || '';
-  document.getElementById('lieferung2').value = data.lieferung2 || '';
-  document.getElementById('lieferung3').value = data.lieferung3 || '';
-  document.getElementById('lager1').value = data.lager1 || '';
-  document.getElementById('lager2').value = data.lager2 || '';
-  document.getElementById('lager3').value = data.lager3 || '';
+  document.getElementById('text').value = data.text || '';
   document.getElementById('bild1').value = data.bild1 || '';
   document.getElementById('bild2').value = data.bild2 || '';
   document.getElementById('bild3').value = data.bild3 || '';
@@ -489,49 +403,35 @@ function resolvePreviewUrl(rawValue){
   if (raw.startsWith('http')) return raw;
   if (raw.startsWith('data:image')) return raw;
 
-  const base = location.origin + location.pathname.replace(/baustellenstart-formular\.html$/i, '');
+  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, '');
   return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
 }
 
-function getPreferredImageSource(uploadValue, pathValue){
-  if (uploadValue) return uploadValue;
-  return resolvePreviewUrl(pathValue);
-}
-
 function buildMapsLink(data){
-  const query = data.baustellenadresse || data.baustellenname;
+  const query = data.baustellenadresse || data.kunde;
   if (!query) return '';
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
 
 function buildImageLinks(data){
-  return [
-    getPreferredImageSource(data.uploadBild1, data.bild1),
-    getPreferredImageSource(data.uploadBild2, data.bild2),
-    getPreferredImageSource(data.uploadBild3, data.bild3)
-  ].filter(Boolean);
+  return [data.uploadBild1 || data.bild1, data.uploadBild2 || data.bild2, data.uploadBild3 || data.bild3]
+    .map(resolvePreviewUrl)
+    .filter(Boolean);
 }
 
-function buildSiteVersionText(data){
+function buildCustomerVersionText(data){
   const mapsLink = buildMapsLink(data);
   const imageLinks = buildImageLinks(data);
 
-  const abrechnung = [];
-  if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
-  if (data.teilweiseStundenlohn) abrechnung.push("Teilweise Stundenlohn");
-  if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
-  if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
-
-  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3].filter(Boolean);
-  const lager = [data.lager1, data.lager2, data.lager3].filter(Boolean);
-
   const lines = [];
-  lines.push("Neustart Baustelle");
+  lines.push("Moin,");
+  lines.push("");
+  lines.push("wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren.");
   lines.push("");
 
-  if (data.baustellenname) {
-    lines.push("Auftraggeber:");
-    lines.push(data.baustellenname);
+  if (data.kunde) {
+    lines.push("Kunde:");
+    lines.push(data.kunde);
     lines.push("");
   }
 
@@ -548,7 +448,7 @@ function buildSiteVersionText(data){
   }
 
   if (imageLinks.length) {
-    lines.push("Bilder zur Baustelle:");
+    lines.push("Bilder:");
     imageLinks.forEach((link, idx) => {
       lines.push("Bild " + (idx + 1) + ":");
       lines.push(link);
@@ -556,45 +456,22 @@ function buildSiteVersionText(data){
     lines.push("");
   }
 
-  if (data.craftnoteSuchbegriff) {
-    lines.push("Suchbegriff Craftnote:");
-    lines.push(data.craftnoteSuchbegriff);
+  if (data.text) {
+    lines.push("Aktuelle Information:");
+    lines.push(data.text);
     lines.push("");
   }
 
-  lines.push("Craftnote eingeladen:");
-  lines.push(data.craftnoteEingeladen === "ja" ? "Ja" : "Nein");
+  lines.push("Das können wir Ihnen aus anbieten:");
+  lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex");
   lines.push("");
-
-  if (abrechnung.length) {
-    lines.push("Abrechnungsart:");
-    lines.push(abrechnung.join(", "));
-    lines.push("");
-  }
-
-  lines.push("Zugang / Höhe:");
-  lines.push((data.zugang === "geruest" ? "Gerüst erforderlich" : "Leiter reicht") + " / " + (data.baustellenhoehe || ""));
+  lines.push(data.feedbackFrage1);
+  lines.push(data.feedbackFrage2);
   lines.push("");
-
-  if (data.worumGehtEs) {
-    lines.push("Was ist zu tun:");
-    lines.push(data.worumGehtEs);
-    lines.push("");
-  }
-
-  if (lieferung.length) {
-    lines.push("Lieferung zur Baustelle:");
-    lieferung.forEach(v => lines.push("- " + v));
-    lines.push("");
-  }
-
-  if (lager.length) {
-    lines.push("Mitnahme aus dem Lager:");
-    lager.forEach(v => lines.push("- " + v));
-    lines.push("");
-  }
+  lines.push(data.feedbackAntwortVorlage);
 
   if (data.sonstiges) {
+    lines.push("");
     lines.push("Sonstiges:");
     lines.push(data.sonstiges);
   }
@@ -603,14 +480,13 @@ function buildSiteVersionText(data){
 }
 
 function buildWhatsAppText(data){
-  return buildSiteVersionText(data);
+  return buildCustomerVersionText(data);
 }
 
 function updateImagePreview(boxId, uploadValue, pathValue){
   const box = document.getElementById(boxId);
   if (!box) return;
-
-  const url = getPreferredImageSource(uploadValue, pathValue);
+  const url = resolvePreviewUrl(uploadValue || pathValue);
 
   if (!url) {
     box.innerHTML = 'Kein Bild';
@@ -622,14 +498,14 @@ function updateImagePreview(boxId, uploadValue, pathValue){
 
 function updatePreview(){
   const data = getFormData();
-  document.getElementById('previewText').textContent = buildSiteVersionText(data);
+  document.getElementById('previewText').textContent = buildCustomerVersionText(data);
 
   updateImagePreview('previewImage1', data.uploadBild1, data.bild1);
   updateImagePreview('previewImage2', data.uploadBild2, data.bild2);
   updateImagePreview('previewImage3', data.uploadBild3, data.bild3);
 
   const status = [];
-  if (data.baustellenname) status.push('Auftraggeber eingetragen');
+  if (data.kunde) status.push('Kunde eingetragen');
   if (data.baustellenadresse) status.push('Adresse vorhanden');
   if (buildImageLinks(data).length) status.push(buildImageLinks(data).length + ' Bild(er)');
   if (!status.length) status.push('Bereit.');
@@ -655,10 +531,12 @@ function loadBrowser(){
 
 function resetForm(){
   if (!confirm('Formular wirklich leeren?')) return;
+
   setFormData(defaultData());
   document.getElementById('fileBild1').value = '';
   document.getElementById('fileBild2').value = '';
   document.getElementById('fileBild3').value = '';
+
   document.getElementById('statusLine').textContent = 'Formular geleert.';
 }
 
@@ -684,7 +562,7 @@ function showJsonInNewTab(){
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>baustellenstart.json – Vorschau</title>
+<title>kundeninfo.json – Vorschau</title>
 <style>
 body{font-family:Consolas,Monaco,monospace;background:#f3f5f7;margin:0;padding:24px;color:#111;}
 pre{white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid #cfd6df;border-radius:12px;padding:18px;max-width:1000px;margin:0 auto;box-shadow:0 8px 28px rgba(0,0,0,.08);}
@@ -695,6 +573,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid 
 </body>
 </html>`);
   newWindow.document.close();
+
   document.getElementById('statusLine').textContent = 'JSON in neuer Registerkarte geöffnet.';
 }
 
@@ -704,12 +583,12 @@ function downloadJson(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'baustellenstart.json';
+  a.download = 'kundeninfo.json';
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  document.getElementById('statusLine').textContent = 'baustellenstart.json heruntergeladen.';
+  document.getElementById('statusLine').textContent = 'kundeninfo.json heruntergeladen.';
 }
 
 function openPreview(){
@@ -717,8 +596,18 @@ function openPreview(){
   const data = getFormData();
   data.autoPrint = false;
   data.autoWhatsApp = false;
-  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-  const url = location.origin + location.pathname.replace(/baustellenstart-formular\.html$/i, 'baustellenstart.html');
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  const url = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, 'kundenbenachrichtigung.html');
+  window.open(url, '_blank');
+}
+
+function openPreviewAndPrint(){
+  saveBrowser();
+  const data = getFormData();
+  data.autoPrint = true;
+  data.autoWhatsApp = false;
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  const url = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, 'kundenbenachrichtigung.html');
   window.open(url, '_blank');
 }
 
@@ -727,8 +616,8 @@ function openPreviewPrintAndWhatsApp(){
   const data = getFormData();
   data.autoPrint = true;
   data.autoWhatsApp = true;
-  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-  const url = location.origin + location.pathname.replace(/baustellenstart-formular\.html$/i, 'baustellenstart.html');
+  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  const url = location.origin + location.pathname.replace(/kundenbenachrichtigung-formular\.html$/i, 'kundenbenachrichtigung.html');
   window.open(url, '_blank');
 }
 
@@ -738,13 +627,13 @@ function openWhatsAppFromForm(){
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 
-async function copySiteVersion(){
+async function copyCustomerVersion(){
   const data = getFormData();
-  const msg = buildSiteVersionText(data);
+  const msg = buildCustomerVersionText(data);
 
   try {
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Baustellenkopie für Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
   } catch(e) {
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -752,7 +641,7 @@ async function copySiteVersion(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Baustellenkopie für Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
   }
 }
 
@@ -791,32 +680,23 @@ function bindImageUpload(inputId, index){
   });
 }
 
-document.querySelectorAll('input[type="text"], textarea, select, input[type="checkbox"]').forEach(el => {
+document.querySelectorAll('input[type="text"], textarea').forEach(el => {
   el.addEventListener('input', updatePreview);
-  el.addEventListener('change', updatePreview);
 });
 
 bindImageUpload('fileBild1', 0);
 bindImageUpload('fileBild2', 1);
 bindImageUpload('fileBild3', 2);
 
-async function downloadPdfFromForm(){
-  saveBrowser();
-  const data = getFormData();
-  data.autoPrint = false;
-  data.autoWhatsApp = false;
-  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-  const url = location.origin + location.pathname.replace(/baustellenstart-formular\.html$/i, 'baustellenstart.html?downloadPdf=1');
-  window.open(url, '_blank');
-}
-
 (async function init(){
   try {
-    const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
+    const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
-      setFormData({...defaultData(), ...data});
-      document.getElementById('statusLine').textContent = 'baustellenstart.json geladen.';
+      const cleaned = {...defaultData(), ...data};
+      delete cleaned.baustellenname;
+      setFormData(cleaned);
+      document.getElementById('statusLine').textContent = 'kundeninfo.json geladen.';
       return;
     }
   } catch(e) {}
