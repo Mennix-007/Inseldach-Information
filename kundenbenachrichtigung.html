@@ -370,11 +370,6 @@ So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden h
   </div>
 
   <div class="section">
-    <h2 class="sectionTitle">Baustelle</h2>
-    <div class="box" id="baustellenname">—</div>
-  </div>
-
-  <div class="section">
     <h2 class="sectionTitle">Baustellenadresse</h2>
     <div class="box" id="baustellenadresse">—</div>
   </div>
@@ -404,7 +399,7 @@ So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden h
   </div>
 
   <div class="section">
-    <h2 class="sectionTitle">Was wir für Sie ausführen</h2>
+    <h2 class="sectionTitle">Das können wir Ihnen aus anbieten</h2>
     <div class="box leistungenBox">Dachdeckerarbeiten
 Zimmereiarbeiten
 Abdichtungen
@@ -551,14 +546,8 @@ function buildCustomerVersionText(data){
     lines.push("");
   }
 
-  if (data.baustellenname) {
-    lines.push("Baustelle:");
-    lines.push(String(data.baustellenname).trim());
-    lines.push("");
-  }
-
   if (data.baustellenadresse) {
-    lines.push("Adresse:");
+    lines.push("Baustellenadresse:");
     lines.push(String(data.baustellenadresse).trim());
     lines.push("");
   }
@@ -584,7 +573,7 @@ function buildCustomerVersionText(data){
     lines.push("");
   }
 
-  lines.push("Was wir für Sie ausführen:");
+  lines.push("Das können wir Ihnen aus anbieten:");
   lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex");
   lines.push("");
 
@@ -700,8 +689,9 @@ function printAndOpenWhatsApp(){
 
   setTimeout(() => {
     if (pendingWhatsAppAction) {
-      pendingWhatsAppAction();
+      const fn = pendingWhatsAppAction;
       pendingWhatsAppAction = null;
+      fn();
     }
   }, 1200);
 }
@@ -731,7 +721,6 @@ async function loadKundeninfo() {
     document.getElementById('docTitle').textContent = data.title || 'Kundenbenachrichtigung';
 
     setText('kunde', data.kunde);
-    setText('baustellenname', data.baustellenname);
     setText('baustellenadresse', data.baustellenadresse);
     setText('text', data.text);
     setText('sonstiges', data.sonstiges);
