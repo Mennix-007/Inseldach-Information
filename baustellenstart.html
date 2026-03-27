@@ -333,6 +333,7 @@ body{
   <div class="topBarTitle">Start neue Baustelle – Druckansicht</div>
   <div class="topBarActions">
     <button class="btn btnBlue" type="button" onclick="location.reload()">Neu laden</button>
+    <button class="btn btnGreen" type="button" onclick="printAndOpenWhatsAppGerman()">PDF + WhatsApp</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppGerman()">WhatsApp Deutsch</button>
     <button class="btn btnBlue" type="button" onclick="openPolishVersion()">Polnisch erzeugen</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drucken / PDF</button>
@@ -457,6 +458,7 @@ body{
 <script>
   const NETLIFY_BASE = "https://imaginative-wisp-b0fe62.netlify.app";
   let baustellenstartData = null;
+  let pendingWhatsAppAction = null;
 
   function setText(id, value){
     const el = document.getElementById(id);
@@ -514,6 +516,24 @@ body{
     return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
   }
 
+  function resolvePublicImageUrl(rawValue){
+    const raw = String(rawValue || '').trim();
+    if (!raw) return '';
+
+    if (raw.startsWith('http')) return raw;
+
+    const base = location.origin + location.pathname.replace(/baustellenstart\.html$/i, '');
+    return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
+  }
+
+  function buildImageLinks(data){
+    return [
+      resolvePublicImageUrl(data?.bild1),
+      resolvePublicImageUrl(data?.bild2),
+      resolvePublicImageUrl(data?.bild3)
+    ].filter(Boolean);
+  }
+
   function buildGermanWhatsAppText(data){
     const abrechnung = [];
     if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
@@ -532,6 +552,7 @@ body{
       .join("\n");
 
     const mapsLink = buildGoogleMapsLink(data);
+    const imageLinks = buildImageLinks(data);
 
     const lines = [];
     lines.push("Neustart Baustelle");
@@ -552,6 +573,15 @@ body{
     if (mapsLink) {
       lines.push("Google Maps:");
       lines.push(mapsLink);
+      lines.push("");
+    }
+
+    if (imageLinks.length) {
+      lines.push("Bilder zur Baustelle:");
+      imageLinks.forEach((link, idx) => {
+        lines.push("Bild " + (idx + 1) + ":");
+        lines.push(link);
+      });
       lines.push("");
     }
 
@@ -610,6 +640,31 @@ body{
     const url = "https://wa.me/?text=" + encodeURIComponent(msg);
     window.open(url, "_blank");
   }
+
+  function printAndOpenWhatsAppGerman() {
+    if (!baustellenstartData) {
+      alert("Baustellendaten sind noch nicht geladen.");
+      return;
+    }
+
+    pendingWhatsAppAction = () => openWhatsAppGerman();
+    window.print();
+
+    setTimeout(() => {
+      if (pendingWhatsAppAction) {
+        pendingWhatsAppAction();
+        pendingWhatsAppAction = null;
+      }
+    }, 1200);
+  }
+
+  window.addEventListener('afterprint', () => {
+    if (pendingWhatsAppAction) {
+      const fn = pendingWhatsAppAction;
+      pendingWhatsAppAction = null;
+      setTimeout(fn, 300);
+    }
+  });
 
   async function loadBaustellenstart() {
     try {
