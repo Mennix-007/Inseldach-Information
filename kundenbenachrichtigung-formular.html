@@ -190,6 +190,7 @@ body{
   <div class="topBarActions">
     <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
     <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+    <button class="btn btnBlue" type="button" onclick="showJsonInNewTab()">JSON anzeigen</button>
     <button class="btn btnYellow" type="button" onclick="downloadJson()">JSON herunterladen</button>
     <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
@@ -474,6 +475,43 @@ function resetForm(){
   if (!confirm('Formular wirklich leeren?')) return;
   setFormData(defaultData());
   document.getElementById('statusLine').textContent = 'Formular geleert.';
+}
+
+function getPrettyJsonString(){
+  return JSON.stringify(getFormData(), null, 2);
+}
+
+function showJsonInNewTab(){
+  const jsonString = getPrettyJsonString();
+  const escaped = jsonString
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  const newWindow = window.open('', '_blank');
+  if (!newWindow) {
+    alert('Die neue Registerkarte wurde blockiert.');
+    return;
+  }
+
+  newWindow.document.open();
+  newWindow.document.write(`<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>kundeninfo.json – Vorschau</title>
+<style>
+body{font-family:Consolas,Monaco,monospace;background:#f3f5f7;margin:0;padding:24px;color:#111;}
+pre{white-space:pre-wrap;word-break:break-word;background:#fff;border:1px solid #cfd6df;border-radius:12px;padding:18px;max-width:1000px;margin:0 auto;box-shadow:0 8px 28px rgba(0,0,0,.08);}
+</style>
+</head>
+<body>
+<pre>${escaped}</pre>
+</body>
+</html>`);
+  newWindow.document.close();
+
+  document.getElementById('statusLine').textContent = 'JSON in neuer Registerkarte geöffnet.';
 }
 
 function downloadJson(){
