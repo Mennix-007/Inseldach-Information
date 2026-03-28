@@ -12,7 +12,6 @@ body{
   background:#f3f5f7;
   color:#111;
 }
-
 .topBar{
   position:sticky;
   top:0;
@@ -27,37 +26,12 @@ body{
   flex-wrap:wrap;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
-
-.topBarTitle{
-  font-size:22px;
-  font-weight:800;
-}
-
-.topBarActions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  font-size:15px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.btnBlue{ background:#fff; color:#163d7a; }
-.btnYellow{ background:#ffd400; color:#000; }
-.btnGreen{ background:#25D366; color:#111; }
-.btnMain{
-  background:#25D366;
-  color:#111;
-  padding:12px 18px;
-  font-size:16px;
-  box-shadow:0 2px 10px rgba(0,0,0,.18);
-}
+.topBarTitle{font-size:22px;font-weight:800;}
+.topBarActions{display:flex;gap:10px;flex-wrap:wrap;}
+.btn{border:none;border-radius:10px;padding:10px 14px;font-size:15px;font-weight:700;cursor:pointer;}
+.btnBlue{background:#fff;color:#163d7a;}
+.btnYellow{background:#ffd400;color:#000;}
+.btnGreen{background:#25D366;color:#111;}
 
 .page{
   max-width:1180px;
@@ -68,289 +42,65 @@ body{
   padding:26px;
   box-sizing:border-box;
 }
-
 .docHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  margin-bottom:22px;
-  border-bottom:3px solid #163d7a;
-  padding-bottom:16px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+  margin-bottom:22px;border-bottom:3px solid #163d7a;padding-bottom:16px;
 }
-
-.docTitleWrap{
-  flex:1;
-  min-width:0;
-}
-
-.docTitle{
-  font-size:34px;
-  font-weight:900;
-  margin:0 0 8px;
-  color:#8b1e1e;
-}
-
-.docSub{
-  font-size:15px;
-  color:#444;
-  margin:0;
-}
-
-.docLogo{
-  width:220px;
-  max-width:36%;
-  height:auto;
-  object-fit:contain;
-}
-
-.section{
-  margin-bottom:18px;
-  break-inside:avoid;
-  page-break-inside:avoid;
-}
-
-.sectionTitle{
-  margin:0 0 8px;
-  font-size:20px;
-  font-weight:800;
-  color:#163d7a;
-}
-
+.docTitleWrap{flex:1;min-width:0;}
+.docTitle{font-size:34px;font-weight:900;margin:0 0 8px;color:#8b1e1e;}
+.docSub{font-size:15px;color:#444;margin:0;}
+.docLogo{width:220px;max-width:36%;height:auto;object-fit:contain;}
+.section{margin-bottom:18px;}
+.sectionTitle{margin:0 0 8px;font-size:20px;font-weight:800;color:#163d7a;}
 .box{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:22px;
-  white-space:pre-wrap;
-  line-height:1.45;
+  border:1px solid #cfd6df;border-radius:12px;padding:12px 14px;background:#fbfcfd;
+  min-height:22px;white-space:pre-wrap;line-height:1.45;
 }
-
-.addressBox{
-  min-height:56px;
-  max-height:56px;
-  overflow:hidden;
-}
-
-.infoRow{
-  display:grid;
-  grid-template-columns:1fr 260px;
-  gap:12px;
-  margin-top:12px;
-}
-
-.smallInfoBox{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:22px;
-}
-
-.infoLabel{
-  font-size:13px;
-  font-weight:800;
-  color:#163d7a;
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:.2px;
-}
-
-.infoValue{
-  white-space:pre-wrap;
-  line-height:1.35;
-}
-
-.checkGrid4{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-
-.checkGrid2{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  align-items:start;
-}
-
+.addressBox{min-height:56px;max-height:56px;overflow:hidden;}
+.infoRow{display:grid;grid-template-columns:1fr 260px;gap:12px;margin-top:12px;}
+.smallInfoBox{border:1px solid #cfd6df;border-radius:12px;padding:12px 14px;background:#fbfcfd;min-height:22px;}
+.infoLabel{font-size:13px;font-weight:800;color:#163d7a;margin-bottom:6px;text-transform:uppercase;letter-spacing:.2px;}
+.infoValue{white-space:pre-wrap;line-height:1.35;}
+.checkGrid4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.checkGrid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:start;}
 .checkItem{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-height:24px;
+  border:1px solid #cfd6df;border-radius:12px;padding:12px 14px;background:#fbfcfd;
+  display:flex;align-items:center;gap:10px;min-height:24px;
 }
-
 .mark{
-  width:22px;
-  height:22px;
-  border:2px solid #555;
-  border-radius:4px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;
-  font-weight:900;
-  flex:0 0 22px;
+  width:22px;height:22px;border:2px solid #555;border-radius:4px;display:inline-flex;
+  align-items:center;justify-content:center;font-size:16px;font-weight:900;flex:0 0 22px;
 }
-
-.mark.active{
-  background:#163d7a;
-  color:#fff;
-  border-color:#163d7a;
-}
-
+.mark.active{background:#163d7a;color:#fff;border-color:#163d7a;}
 .heightBox{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:24px;
+  display:flex;gap:10px;align-items:center;border:1px solid #cfd6df;border-radius:12px;
+  padding:12px 14px;background:#fbfcfd;min-height:24px;
 }
-
-.tripleGrid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-
-.tripleColTitle{
-  font-size:15px;
-  font-weight:800;
-  margin:0 0 8px;
-  color:#8b1e1e;
-}
-
-.imageGrid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px;
-}
-
-.imageWrap{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.imageLabel{
-  font-size:15px;
-  font-weight:800;
-  color:#8b1e1e;
-}
-
+.tripleGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.tripleColTitle{font-size:15px;font-weight:800;margin:0 0 8px;color:#8b1e1e;}
+.imageGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
 .imageCard{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  background:#fbfcfd;
-  overflow:hidden;
-  min-height:220px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  border:1px solid #cfd6df;border-radius:12px;background:#fbfcfd;overflow:hidden;
+  min-height:220px;display:flex;align-items:center;justify-content:center;
 }
-
 .imageCard.empty{
-  color:#666;
-  font-weight:700;
-  background:repeating-linear-gradient(
-    45deg,
-    #f4f6f8,
-    #f4f6f8 12px,
-    #eef2f5 12px,
-    #eef2f5 24px
-  );
+  color:#666;font-weight:700;
+  background:repeating-linear-gradient(45deg,#f4f6f8,#f4f6f8 12px,#eef2f5 12px,#eef2f5 24px);
 }
-
-.imageCard img{
-  width:100%;
-  height:220px;
-  object-fit:contain;
-  display:block;
-  background:#fff;
-}
-
-.imageInfo{
-  margin-top:10px;
-  border:1px solid #d7e0ea;
-  border-radius:12px;
-  padding:10px 12px;
-  background:#f8fafc;
-  font-weight:700;
-  color:#444;
-}
-
-.footerNote{
-  margin-top:24px;
-  padding-top:14px;
-  border-top:2px solid #e6ebf0;
-  font-size:13px;
-  color:#555;
-}
+.imageCard img{width:100%;height:220px;object-fit:contain;display:block;background:#fff;}
+.footerNote{margin-top:24px;padding-top:14px;border-top:2px solid #e6ebf0;font-size:13px;color:#555;}
 
 @media (max-width: 900px){
-  .page{
-    margin:12px;
-    padding:18px;
-  }
-
-  .docHeader{
-    flex-direction:column;
-  }
-
-  .docLogo{
-    max-width:220px;
-    width:220px;
-  }
-
-  .infoRow,
-  .checkGrid4,
-  .checkGrid2,
-  .tripleGrid,
-  .imageGrid{
-    grid-template-columns:1fr;
-  }
-
-  .topBar{
-    position:static;
-  }
+  .page{margin:12px;padding:18px;}
+  .docHeader{flex-direction:column;}
+  .docLogo{max-width:220px;width:220px;}
+  .infoRow,.checkGrid4,.checkGrid2,.tripleGrid,.imageGrid{grid-template-columns:1fr;}
+  .topBar{position:static;}
 }
-
 @media print{
-  body{
-    background:#fff;
-  }
-
-  .topBar,
-  .screenOnly{
-    display:none !important;
-  }
-
-  .page{
-    max-width:none;
-    margin:0;
-    box-shadow:none;
-    border-radius:0;
-    padding:0;
-  }
-
-  .imageCard img{
-    height:200px;
-    object-fit:contain;
-  }
-
-  .section{
-    break-inside:avoid;
-    page-break-inside:avoid;
-  }
+  body{background:#fff;}
+  .topBar{display:none !important;}
+  .page{max-width:none;margin:0;box-shadow:none;border-radius:0;padding:0;}
 }
 </style>
 </head>
@@ -359,10 +109,7 @@ body{
 <div class="topBar">
   <div class="topBarTitle">Nowy start budowy – widok do druku</div>
   <div class="topBarActions">
-    <button class="btn btnGreen btnMain" type="button" onclick="printAndOpenWhatsApp()">PDF + WhatsApp</button>
     <button class="btn btnGreen" type="button" onclick="openWhatsApp()">WhatsApp Polski</button>
-    <button class="btn btnBlue" type="button" onclick="copySiteVersion()">Kopia budowy (Drag and Drop)</button>
-    <button class="btn btnBlue" type="button" onclick="testGoogleMaps()">Sprawdź Google Maps</button>
     <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
     <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
   </div>
@@ -431,56 +178,28 @@ body{
   <div class="section">
     <h2 class="sectionTitle">Co zostanie dostarczone na budowę</h2>
     <div class="tripleGrid">
-      <div>
-        <div class="tripleColTitle">Pole 1</div>
-        <div class="box" id="lieferung1">—</div>
-      </div>
-      <div>
-        <div class="tripleColTitle">Pole 2</div>
-        <div class="box" id="lieferung2">—</div>
-      </div>
-      <div>
-        <div class="tripleColTitle">Pole 3</div>
-        <div class="box" id="lieferung3">—</div>
-      </div>
+      <div><div class="tripleColTitle">Pole 1</div><div class="box" id="lieferung1">—</div></div>
+      <div><div class="tripleColTitle">Pole 2</div><div class="box" id="lieferung2">—</div></div>
+      <div><div class="tripleColTitle">Pole 3</div><div class="box" id="lieferung3">—</div></div>
     </div>
   </div>
 
   <div class="section">
     <h2 class="sectionTitle">Co należy zabrać z magazynu</h2>
     <div class="tripleGrid">
-      <div>
-        <div class="tripleColTitle">Pole 1</div>
-        <div class="box" id="lager1">—</div>
-      </div>
-      <div>
-        <div class="tripleColTitle">Pole 2</div>
-        <div class="box" id="lager2">—</div>
-      </div>
-      <div>
-        <div class="tripleColTitle">Pole 3</div>
-        <div class="box" id="lager3">—</div>
-      </div>
+      <div><div class="tripleColTitle">Pole 1</div><div class="box" id="lager1">—</div></div>
+      <div><div class="tripleColTitle">Pole 2</div><div class="box" id="lager2">—</div></div>
+      <div><div class="tripleColTitle">Pole 3</div><div class="box" id="lager3">—</div></div>
     </div>
   </div>
 
   <div class="section">
     <h2 class="sectionTitle">Zdjęcia przed rozpoczęciem prac</h2>
     <div class="imageGrid">
-      <div class="imageWrap">
-        <div class="imageLabel">Zdjęcie 1</div>
-        <div class="imageCard empty" id="bildBox1">Brak zdjęcia</div>
-      </div>
-      <div class="imageWrap">
-        <div class="imageLabel">Zdjęcie 2</div>
-        <div class="imageCard empty" id="bildBox2">Brak zdjęcia</div>
-      </div>
-      <div class="imageWrap">
-        <div class="imageLabel">Zdjęcie 3</div>
-        <div class="imageCard empty" id="bildBox3">Brak zdjęcia</div>
-      </div>
+      <div class="imageCard empty" id="bildBox1">Brak zdjęcia</div>
+      <div class="imageCard empty" id="bildBox2">Brak zdjęcia</div>
+      <div class="imageCard empty" id="bildBox3">Brak zdjęcia</div>
     </div>
-    <div class="imageInfo screenOnly" id="imageInfo">Brak zdjęć.</div>
   </div>
 
   <div class="section">
@@ -495,7 +214,6 @@ body{
 
 <script>
 let sourceData = null;
-let pendingWhatsAppAction = null;
 
 function setText(id, value){
   const el = document.getElementById(id);
@@ -516,80 +234,38 @@ function setMark(id, active){
   }
 }
 
-function getImageUrl(uploadValue, pathValue){
-  const upload = String(uploadValue || '').trim();
-  const path = String(pathValue || '').trim();
-
-  if (upload) return upload;
-  if (!path) return '';
-
-  if (path.startsWith('http')) return path;
-  if (path.startsWith('data:image')) return path;
-
-  const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
-  return base.replace(/\/$/, '') + (path.startsWith('/') ? path : '/' + path);
-}
-
-function setImage(boxId, uploadValue, pathValue, emptyText){
+function setImage(boxId, value, emptyText){
   const box = document.getElementById(boxId);
   if (!box) return;
 
-  const resolved = getImageUrl(uploadValue, pathValue);
-
-  if (!resolved) {
+  const raw = String(value || '').trim();
+  if (!raw) {
     box.className = 'imageCard empty';
     box.textContent = emptyText;
     return;
   }
 
   box.className = 'imageCard';
-  box.innerHTML = `<img src="${resolved}" alt="Zdjęcie budowy" loading="eager">`;
-}
-
-function buildGoogleMapsLink(data){
-  const adresse = String(data?.baustellenadresse || '').trim();
-  const name = String(data?.baustellenname || '').trim();
-  const query = adresse || name;
-  if (!query) return '';
-  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
-}
-
-function buildImageLinks(data){
-  return [
-    getImageUrl(data?.uploadBild1, data?.bild1),
-    getImageUrl(data?.uploadBild2, data?.bild2),
-    getImageUrl(data?.uploadBild3, data?.bild3)
-  ].filter(Boolean);
-}
-
-function updateImageInfo(data){
-  const imageInfo = document.getElementById('imageInfo');
-  if (!imageInfo) return;
-  const count = buildImageLinks(data).length;
-  imageInfo.textContent = count > 0 ? count + ' zdjęcie/zdjęcia dodane.' : 'Brak zdjęć.';
+  box.innerHTML = `<img src="${raw}" alt="Zdjęcie budowy" loading="eager">`;
 }
 
 function craftnoteDisplayPl(value){
   return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
 }
 
-function buildPolishWhatsAppText(data) {
+function buildPolishWhatsAppText(data){
   const abrechnung = [];
   if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
   if (data.teilweiseStundenlohn) abrechnung.push("Częściowo robocizna godzinowa");
   if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
   if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
 
-  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3]
-    .map(x => String(x || "").trim())
-    .filter(Boolean);
+  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3].filter(Boolean).join("\n");
+  const lager = [data.lager1, data.lager2, data.lager3].filter(Boolean).join("\n");
 
-  const lager = [data.lager1, data.lager2, data.lager3]
-    .map(x => String(x || "").trim())
-    .filter(Boolean);
-
-  const mapsLink = buildGoogleMapsLink(data);
-  const imageLinks = buildImageLinks(data);
+  const maps = data.baustellenadresse
+    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse)
+    : "";
 
   const lines = [];
   lines.push("Nowy start budowy");
@@ -607,18 +283,9 @@ function buildPolishWhatsAppText(data) {
     lines.push("");
   }
 
-  if (mapsLink) {
+  if (maps) {
     lines.push("Google Maps:");
-    lines.push(mapsLink);
-    lines.push("");
-  }
-
-  if (imageLinks.length) {
-    lines.push("Zdjęcia z budowy:");
-    imageLinks.forEach((link, idx) => {
-      lines.push("Zdjęcie " + (idx + 1) + ":");
-      lines.push(link);
-    });
+    lines.push(maps);
     lines.push("");
   }
 
@@ -648,15 +315,15 @@ function buildPolishWhatsAppText(data) {
     lines.push("");
   }
 
-  if (lieferung.length) {
+  if (lieferung) {
     lines.push("Dostawa na budowę:");
-    lieferung.forEach(v => lines.push("- " + v));
+    lines.push(lieferung);
     lines.push("");
   }
 
-  if (lager.length) {
+  if (lager) {
     lines.push("Zabrać z magazynu:");
-    lager.forEach(v => lines.push("- " + v));
+    lines.push(lager);
     lines.push("");
   }
 
@@ -668,92 +335,14 @@ function buildPolishWhatsAppText(data) {
   return lines.join("\n").trim();
 }
 
-async function copySiteVersion(){
-  if (!sourceData) {
-    alert("Dane nie zostały jeszcze załadowane.");
-    return;
-  }
-
-  const msg = buildPolishWhatsAppText(sourceData);
-
-  try {
-    await navigator.clipboard.writeText(msg);
-    alert("Kopia budowy została skopiowana.");
-  } catch(e) {
-    const ta = document.createElement('textarea');
-    ta.value = msg;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-    alert("Kopia budowy została skopiowana.");
-  }
-}
-
-function confirmChecked() {
-  return confirm("Czy informacje o budowie zostały całkowicie sprawdzone?");
-}
-
 function openWhatsApp(){
   if (!sourceData) {
     alert("Dane nie zostały jeszcze załadowane.");
     return;
   }
-
-  if (!confirmChecked()) return;
-
   const msg = buildPolishWhatsAppText(sourceData);
-  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-  window.open(url, "_blank");
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
-
-function testGoogleMaps(){
-  if (!sourceData) {
-    alert("Dane nie zostały jeszcze załadowane.");
-    return;
-  }
-
-  const mapsLink = buildGoogleMapsLink(sourceData);
-  if (!mapsLink) {
-    alert("Brak adresu – nie można utworzyć linku Google Maps.");
-    return;
-  }
-
-  window.open(mapsLink, "_blank");
-}
-
-function printAndOpenWhatsApp(){
-  if (!sourceData) {
-    alert("Dane nie zostały jeszcze załadowane.");
-    return;
-  }
-
-  if (!confirmChecked()) return;
-
-  pendingWhatsAppAction = () => {
-    const msg = buildPolishWhatsAppText(sourceData);
-    const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-    window.open(url, "_blank");
-  };
-
-  window.print();
-
-  setTimeout(() => {
-    if (pendingWhatsAppAction) {
-      const fn = pendingWhatsAppAction;
-      pendingWhatsAppAction = null;
-      fn();
-    }
-  }, 1200);
-}
-
-window.addEventListener('afterprint', () => {
-  if (pendingWhatsAppAction) {
-    const fn = pendingWhatsAppAction;
-    pendingWhatsAppAction = null;
-    setTimeout(fn, 300);
-  }
-});
 
 async function loadBaustellenstart() {
   try {
@@ -793,11 +382,9 @@ async function loadBaustellenstart() {
     setMark('m_geruest', data.zugang === 'geruest');
     setMark('m_leiter', data.zugang === 'leiter');
 
-    setImage('bildBox1', data.uploadBild1, data.bild1, 'Brak zdjęcia');
-    setImage('bildBox2', data.uploadBild2, data.bild2, 'Brak zdjęcia');
-    setImage('bildBox3', data.uploadBild3, data.bild3, 'Brak zdjęcia');
-
-    updateImageInfo(data);
+    setImage('bildBox1', data.uploadBild1 || data.bild1, 'Brak zdjęcia');
+    setImage('bildBox2', data.uploadBild2 || data.bild2, 'Brak zdjęcia');
+    setImage('bildBox3', data.uploadBild3 || data.bild3, 'Brak zdjęcia');
   } catch (err) {
     alert('Polska karta rozpoczęcia budowy nie mogła zostać załadowana.');
   }
