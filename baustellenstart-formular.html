@@ -330,8 +330,6 @@ body{
       <button class="btn" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
 
       <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-      <button class="btn" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
-
       <button class="btn" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
 
       <button class="btn" type="button" onclick="copySiteVersion()">Kopie Baustelle</button>
@@ -544,7 +542,6 @@ body{
           <button class="btn" type="button" onclick="openPreview()">Vorschau öffnen</button>
           <button class="btn" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
           <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-          <button class="btn" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
         </div>
       </div>
 
@@ -816,14 +813,6 @@ function openPreviewAndPrint(){
   const data = getFormData();
   data.autoPrint = true;
   data.autoWhatsApp = false;
-  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-  window.open('baustellenstart.html', '_blank');
-}
-
-function openPreviewPrintAndWhatsApp(){
-  const data = getFormData();
-  data.autoPrint = true;
-  data.autoWhatsApp = true;
   localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
   window.open('baustellenstart.html', '_blank');
 }
