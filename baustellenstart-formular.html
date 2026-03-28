@@ -268,6 +268,22 @@ body{
   min-width:180px;
 }
 
+#copyToast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#163d7a;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+
 @media (max-width: 1300px){
   .wrap{
     grid-template-columns:1fr;
@@ -319,10 +335,19 @@ body{
   .sideBar{
     padding:16px;
   }
+
+  #copyToast{
+    right:10px;
+    left:10px;
+    bottom:12px;
+    text-align:center;
+  }
 }
 </style>
 </head>
 <body>
+
+<div id="copyToast">Inhalt kopiert – Drag and Drop bereit.</div>
 
 <div class="topBar">
   <div class="topBarTitle">Start neue Baustelle – Formular</div>
@@ -749,6 +774,16 @@ function updatePreview(){
   document.getElementById('statusLine').textContent = status.join(' | ');
 }
 
+function showCopyToast(){
+  const toast = document.getElementById('copyToast');
+  if (!toast) return;
+  toast.style.opacity = '1';
+  clearTimeout(window.copyToastTimer);
+  window.copyToastTimer = setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 1800);
+}
+
 function saveBrowser(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
   updatePreview();
@@ -806,8 +841,6 @@ async function copySiteVersion(){
   const msg = buildSiteVersionText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-    alert('Inhalt kopiert – Drag and Drop bereit.');
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -815,17 +848,15 @@ async function copySiteVersion(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-    alert('Inhalt kopiert – Drag and Drop bereit.');
   }
+  document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+  showCopyToast();
 }
 
 async function copyTextForCraftnote(){
   const msg = buildSiteVersionText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-    alert('Inhalt kopiert – Drag and Drop bereit.');
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -833,9 +864,9 @@ async function copyTextForCraftnote(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-    alert('Inhalt kopiert – Drag and Drop bereit.');
   }
+  document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+  showCopyToast();
 }
 
 function resetForm(){
