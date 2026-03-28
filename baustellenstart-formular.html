@@ -767,9 +767,10 @@ function updatePreview(){
   document.getElementById('statusLine').textContent = status.join(' | ');
 }
 
-function showCopyToast(){
+function showCopyToast(message){
   const toast = document.getElementById('copyToast');
   if (!toast) return;
+  toast.textContent = message || 'Inhalt kopiert – Drag and Drop bereit.';
   toast.style.opacity = '1';
   clearTimeout(window.copyToastTimer);
   window.copyToastTimer = setTimeout(() => {
@@ -781,6 +782,7 @@ function saveBrowser(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
   updatePreview();
   document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
+  showCopyToast('Im Browser gespeichert.');
 }
 
 function loadBrowser(){
@@ -835,7 +837,7 @@ async function copySiteVersion(){
     ta.remove();
   }
   document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-  showCopyToast();
+  showCopyToast('Inhalt kopiert – Drag and Drop bereit.');
 }
 
 async function copyTextForCraftnote(){
@@ -851,7 +853,7 @@ async function copyTextForCraftnote(){
     ta.remove();
   }
   document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-  showCopyToast();
+  showCopyToast('Inhalt kopiert – Drag and Drop bereit.');
 }
 
 function resetForm(){
