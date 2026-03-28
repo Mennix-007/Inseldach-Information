@@ -76,8 +76,8 @@ body{
   display:flex;gap:10px;align-items:center;border:1px solid #cfd6df;border-radius:12px;
   padding:12px 14px;background:#fbfcfd;min-height:24px;
 }
-.tripleGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
-.tripleColTitle{font-size:15px;font-weight:800;margin:0 0 8px;color:#8b1e1e;}
+.doubleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.doubleColTitle{font-size:15px;font-weight:800;margin:0 0 8px;color:#8b1e1e;}
 .imageGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
 .imageCard{
   border:1px solid #cfd6df;border-radius:12px;background:#fbfcfd;overflow:hidden;
@@ -94,7 +94,7 @@ body{
   .page{margin:12px;padding:18px;}
   .docHeader{flex-direction:column;}
   .docLogo{max-width:220px;width:220px;}
-  .infoRow,.checkGrid4,.checkGrid2,.tripleGrid,.imageGrid{grid-template-columns:1fr;}
+  .infoRow,.checkGrid4,.checkGrid2,.doubleGrid,.imageGrid{grid-template-columns:1fr;}
   .topBar{position:static;}
 }
 @media print{
@@ -178,19 +178,17 @@ body{
 
   <div class="section">
     <h2 class="sectionTitle">Was wird zur Baustelle geliefert</h2>
-    <div class="tripleGrid">
-      <div><div class="tripleColTitle">Feld 1</div><div class="box" id="lieferung1">—</div></div>
-      <div><div class="tripleColTitle">Feld 2</div><div class="box" id="lieferung2">—</div></div>
-      <div><div class="tripleColTitle">Feld 3</div><div class="box" id="lieferung3">—</div></div>
+    <div class="doubleGrid">
+      <div><div class="doubleColTitle">Feld 1</div><div class="box" id="lieferung1">—</div></div>
+      <div><div class="doubleColTitle">Feld 2</div><div class="box" id="lieferung3">—</div></div>
     </div>
   </div>
 
   <div class="section">
     <h2 class="sectionTitle">Was muss mitgenommen werden vom Lager</h2>
-    <div class="tripleGrid">
-      <div><div class="tripleColTitle">Feld 1</div><div class="box" id="lager1">—</div></div>
-      <div><div class="tripleColTitle">Feld 2</div><div class="box" id="lager2">—</div></div>
-      <div><div class="tripleColTitle">Feld 3</div><div class="box" id="lager3">—</div></div>
+    <div class="doubleGrid">
+      <div><div class="doubleColTitle">Feld 1</div><div class="box" id="lager1">—</div></div>
+      <div><div class="doubleColTitle">Feld 2</div><div class="box" id="lager3">—</div></div>
     </div>
   </div>
 
@@ -235,11 +233,21 @@ function setMark(id, active){
   }
 }
 
+function resolveImageUrl(rawValue){
+  const raw = String(rawValue || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('http')) return raw;
+  if (raw.startsWith('data:image')) return raw;
+
+  const base = location.origin + location.pathname.replace(/baustellenstart\.html$/i, '');
+  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
+}
+
 function setImage(boxId, value, emptyText){
   const box = document.getElementById(boxId);
   if (!box) return;
 
-  const raw = String(value || '').trim();
+  const raw = resolveImageUrl(value);
   if (!raw) {
     box.className = 'imageCard empty';
     box.textContent = emptyText;
@@ -247,7 +255,7 @@ function setImage(boxId, value, emptyText){
   }
 
   box.className = 'imageCard';
-  box.innerHTML = `<img src="${raw}" alt="Baustellenbild" loading="eager">`;
+  box.innerHTML = `<img src="${raw}" alt="Baustellenbild" loading="eager" onerror="this.parentElement.className='imageCard empty'; this.parentElement.textContent='Bild nicht gefunden';">`;
 }
 
 function craftnoteDisplay(value){
@@ -261,8 +269,8 @@ function buildGermanWhatsAppText(data){
   if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
   if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
 
-  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3].filter(Boolean).join("\n");
-  const lager = [data.lager1, data.lager2, data.lager3].filter(Boolean).join("\n");
+  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean).join("\n");
+  const lager = [data.lager1, data.lager3].filter(Boolean).join("\n");
 
   const maps = data.baustellenadresse
     ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse)
@@ -373,10 +381,8 @@ async function loadBaustellenstart() {
     setText('baustellenhoehe', data.baustellenhoehe);
     setText('worumGehtEs', data.worumGehtEs);
     setText('lieferung1', data.lieferung1);
-    setText('lieferung2', data.lieferung2);
     setText('lieferung3', data.lieferung3);
     setText('lager1', data.lager1);
-    setText('lager2', data.lager2);
     setText('lager3', data.lager3);
     setText('sonstiges', data.sonstiges);
 
