@@ -729,7 +729,7 @@ function updateImagePreview(boxId, uploadValue, pathValue){
     box.innerHTML = 'Kein Bild';
     return;
   }
-  box.innerHTML = `<img src="${url}" alt="Vorschau">`;
+  box.innerHTML = `<img src="${url}" alt="Vorschau" onerror="this.parentElement.innerHTML='Bild nicht gefunden';">`;
 }
 
 function updatePreview(){
@@ -806,7 +806,8 @@ async function copySiteVersion(){
   const msg = buildSiteVersionText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Baustellenkopie für Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+    alert('Inhalt kopiert – Drag and Drop bereit.');
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -814,7 +815,8 @@ async function copySiteVersion(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Baustellenkopie für Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+    alert('Inhalt kopiert – Drag and Drop bereit.');
   }
 }
 
@@ -822,7 +824,8 @@ async function copyTextForCraftnote(){
   const msg = buildSiteVersionText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+    alert('Inhalt kopiert – Drag and Drop bereit.');
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -830,7 +833,8 @@ async function copyTextForCraftnote(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+    document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+    alert('Inhalt kopiert – Drag and Drop bereit.');
   }
 }
 
