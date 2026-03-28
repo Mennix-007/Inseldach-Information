@@ -195,7 +195,11 @@ body{
 
 .fieldWrap textarea{
   resize:vertical;
-  min-height:90px;
+  min-height:50px;
+}
+
+.bigField{
+  min-height:180px !important;
 }
 
 .previewBox{
@@ -333,8 +337,6 @@ body{
     <div class="sideBarButtons">
       <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
       <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
-      <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
-      <button class="btn btnYellow" type="button" onclick="downloadData()">Daten herunterladen</button>
       <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
       <button class="btn btnBlue" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
       <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
@@ -441,9 +443,15 @@ body{
         <div class="section">
           <h2 class="sectionTitle">Lieferung zur Baustelle</h2>
           <div class="formGrid">
-            <div class="fieldWrap"><label for="lieferung1">Feld 1</label><textarea id="lieferung1"></textarea></div>
-            <div class="fieldWrap"><label for="lieferung2">Feld 2</label><textarea id="lieferung2"></textarea></div>
-            <div class="fieldWrap fullCol"><label for="lieferung3">Feld 3</label><textarea id="lieferung3"></textarea></div>
+            <div class="fieldWrap fullCol">
+              <label for="lieferung1">Feld 1</label>
+              <textarea id="lieferung1"></textarea>
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="lieferung3">Feld 2</label>
+              <textarea id="lieferung3"></textarea>
+            </div>
           </div>
         </div>
 
@@ -488,7 +496,7 @@ body{
           <h2 class="sectionTitle">Sonstiges</h2>
           <div class="fieldWrap">
             <label for="sonstiges">Sonstiges bitte nicht vergessen</label>
-            <textarea id="sonstiges" placeholder="Zusätzlicher Hinweis"></textarea>
+            <textarea id="sonstiges" class="bigField" placeholder="Zusätzlicher Hinweis"></textarea>
           </div>
         </div>
       </div>
@@ -538,7 +546,6 @@ function defaultData() {
     baustellenhoehe: "2,00 m",
     worumGehtEs: "",
     lieferung1: "",
-    lieferung2: "",
     lieferung3: "",
     lager1: "",
     lager2: "",
@@ -564,7 +571,6 @@ function getFormData() {
   d.baustellenhoehe = document.getElementById('baustellenhoehe').value;
   d.worumGehtEs = document.getElementById('worumGehtEs').value.trim();
   d.lieferung1 = document.getElementById('lieferung1').value.trim();
-  d.lieferung2 = document.getElementById('lieferung2').value.trim();
   d.lieferung3 = document.getElementById('lieferung3').value.trim();
   d.lager1 = document.getElementById('lager1').value.trim();
   d.lager2 = document.getElementById('lager2').value.trim();
@@ -592,7 +598,6 @@ function setFormData(data) {
   document.getElementById('baustellenhoehe').value = data.baustellenhoehe || '2,00 m';
   document.getElementById('worumGehtEs').value = data.worumGehtEs || '';
   document.getElementById('lieferung1').value = data.lieferung1 || '';
-  document.getElementById('lieferung2').value = data.lieferung2 || '';
   document.getElementById('lieferung3').value = data.lieferung3 || '';
   document.getElementById('lager1').value = data.lager1 || '';
   document.getElementById('lager2').value = data.lager2 || '';
@@ -635,7 +640,7 @@ function buildSiteVersionText(data){
   if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
   if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
 
-  const lieferung = [data.lieferung1, data.lieferung2, data.lieferung3].filter(Boolean);
+  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean);
   const lager = [data.lager1, data.lager2, data.lager3].filter(Boolean);
 
   const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
@@ -755,70 +760,6 @@ function loadBrowser(){
   }
   setFormData(JSON.parse(raw));
   document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
-}
-
-function showDataInNewTab(){
-  const data = getFormData();
-  const clean = {
-    auftraggeber: data.baustellenname,
-    baustellenadresse: data.baustellenadresse,
-    craftnoteSuchbegriff: data.craftnoteSuchbegriff,
-    craftnoteEingeladen: data.craftnoteEingeladen,
-    gesamteBaustelleStundenlohn: data.gesamteBaustelleStundenlohn,
-    teilweiseStundenlohn: data.teilweiseStundenlohn,
-    eventuellTeilweiseStundenlohn: data.eventuellTeilweiseStundenlohn,
-    festpreisangebot: data.festpreisangebot,
-    zugang: data.zugang,
-    baustellenhoehe: data.baustellenhoehe,
-    worumGehtEs: data.worumGehtEs,
-    lieferung1: data.lieferung1,
-    lieferung2: data.lieferung2,
-    lieferung3: data.lieferung3,
-    lager1: data.lager1,
-    lager2: data.lager2,
-    lager3: data.lager3,
-    sonstiges: data.sonstiges,
-    bilder: [
-      data.uploadBild1 || data.bild1 ? "Bild vorhanden" : "",
-      data.uploadBild2 || data.bild2 ? "Bild vorhanden" : "",
-      data.uploadBild3 || data.bild3 ? "Bild vorhanden" : ""
-    ]
-  };
-
-  const win = window.open('', '_blank');
-  win.document.write('<pre>' + JSON.stringify(clean, null, 2) + '</pre>');
-}
-
-function downloadData(){
-  const data = getFormData();
-  const clean = {
-    auftraggeber: data.baustellenname,
-    baustellenadresse: data.baustellenadresse,
-    craftnoteSuchbegriff: data.craftnoteSuchbegriff,
-    craftnoteEingeladen: data.craftnoteEingeladen,
-    gesamteBaustelleStundenlohn: data.gesamteBaustelleStundenlohn,
-    teilweiseStundenlohn: data.teilweiseStundenlohn,
-    eventuellTeilweiseStundenlohn: data.eventuellTeilweiseStundenlohn,
-    festpreisangebot: data.festpreisangebot,
-    zugang: data.zugang,
-    baustellenhoehe: data.baustellenhoehe,
-    worumGehtEs: data.worumGehtEs,
-    lieferung1: data.lieferung1,
-    lieferung2: data.lieferung2,
-    lieferung3: data.lieferung3,
-    lager1: data.lager1,
-    lager2: data.lager2,
-    lager3: data.lager3,
-    sonstiges: data.sonstiges
-  };
-
-  const blob = new Blob([JSON.stringify(clean, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'baustellenstart.json';
-  a.click();
-  URL.revokeObjectURL(url);
 }
 
 function openPreview(){
