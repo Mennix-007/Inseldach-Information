@@ -6,6 +6,10 @@
 <title>Kundenbenachrichtigung – Formular</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
@@ -16,51 +20,125 @@ body{
 .topBar{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
   background:#163d7a;
   color:#fff;
-  padding:12px 18px;
+  padding:14px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
 .topBarTitle{
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
+  line-height:1.2;
 }
 
-.topBarActions{
+.topBarLogo{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  align-items:center;
+  justify-content:flex-end;
+  min-width:120px;
+}
+
+.topBarLogo img{
+  max-height:52px;
+  max-width:180px;
+  width:auto;
+  height:auto;
+  display:block;
+  object-fit:contain;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:10px;
+}
+
+.pageLayout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:20px;
+  max-width:1600px;
+  margin:20px auto;
+  padding:0 16px 24px;
+  align-items:start;
+}
+
+.sideBar{
+  background:#163d7a;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  position:sticky;
+  top:92px;
+}
+
+.sideBarTitle{
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+  margin:0 0 14px 0;
+  text-align:center;
+}
+
+.sideBarButtons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
 .btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
+  width:100%;
+  min-height:54px;
+  border:1px solid #d4dbe4;
+  border-radius:12px;
+  padding:12px 14px;
   font-size:15px;
   font-weight:700;
   cursor:pointer;
+  background:#fff;
+  color:#163d7a;
+  text-align:center;
+  transition:all .15s ease;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
 }
 
-.btnBlue{ background:#fff; color:#163d7a; }
-.btnYellow{ background:#ffd400; color:#000; }
-.btnGreen{ background:#25D366; color:#111; }
-.btnRed{ background:#8b1e1e; color:#fff; }
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.btnBlue{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnYellow{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnGreen{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnRed{
+  background:#fff;
+  color:#8b1e1e;
+  border:1px solid #e0bcbc;
+}
+
+.mainContent{
+  min-width:0;
+}
 
 .wrap{
-  max-width:1380px;
-  margin:20px auto;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:18px;
-  padding:0 16px 20px;
-  box-sizing:border-box;
 }
 
 .card{
@@ -68,7 +146,6 @@ body{
   border-radius:18px;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
   padding:20px;
-  box-sizing:border-box;
   min-width:0;
 }
 
@@ -89,7 +166,9 @@ body{
   gap:12px;
 }
 
-.fullCol{ grid-column:1 / -1; }
+.fullCol{
+  grid-column:1 / -1;
+}
 
 .fieldWrap{
   display:flex;
@@ -106,7 +185,6 @@ body{
 .fieldWrap input,
 .fieldWrap textarea{
   width:100%;
-  box-sizing:border-box;
   border:1px solid #cfd6df;
   border-radius:10px;
   padding:10px 12px;
@@ -180,6 +258,11 @@ body{
   margin-top:14px;
 }
 
+.previewActions .btn{
+  width:auto;
+  min-width:180px;
+}
+
 .logoBox{
   border:1px solid #d7e0ea;
   border-radius:12px;
@@ -188,18 +271,56 @@ body{
   line-height:1.5;
 }
 
-@media (max-width: 1020px){
+@media (max-width: 1300px){
   .wrap{
     grid-template-columns:1fr;
   }
+}
 
-  .formGrid,
-  .imageGrid{
+@media (max-width: 1100px){
+  .pageLayout{
     grid-template-columns:1fr;
   }
 
+  .sideBar{
+    position:static;
+  }
+
+  .sideBarButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+}
+
+@media (max-width: 800px){
   .topBar{
     position:static;
+    padding:12px 14px;
+  }
+
+  .topBarTitle{
+    font-size:20px;
+  }
+
+  .topBarLogo img{
+    max-height:42px;
+    max-width:130px;
+  }
+
+  .formGrid,
+  .imageGrid,
+  .sideBarButtons{
+    grid-template-columns:1fr;
+  }
+
+  .pageLayout{
+    padding:0 10px 18px;
+  }
+
+  .card,
+  .sideBar{
+    padding:16px;
   }
 }
 </style>
@@ -208,123 +329,132 @@ body{
 
 <div class="topBar">
   <div class="topBarTitle">Kundenbenachrichtigung – Formular</div>
-  <div class="topBarActions">
-    <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
-    <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
-    <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
-    <button class="btn btnYellow" type="button" onclick="downloadData()">Eingegebene Daten herunterladen</button>
-    <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
-    <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-    <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
-    <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
-    <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde (Drag and Drop)</button>
-    <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Kopieren für Craftnote-Drag and Drop</button>
-    <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+  <div class="topBarLogo">
+    <img src="Logo_Menne_min.png" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
   </div>
 </div>
 
-<div class="wrap">
-  <div class="card">
-    <div class="statusLine" id="statusLine">Bereit.</div>
+<div class="pageLayout">
+  <aside class="sideBar">
+    <h2 class="sideBarTitle">Aktionen</h2>
+    <div class="sideBarButtons">
+      <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+      <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+      <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
+      <button class="btn btnYellow" type="button" onclick="downloadData()">Daten herunterladen</button>
+      <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+      <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+      <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+      <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+      <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde</button>
+      <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
+      <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+    </div>
+  </aside>
 
-    <div class="section">
-      <h2 class="sectionTitle">Firmenkopf</h2>
-      <div class="logoBox">
-        <strong>Inseldachdecker GmbH</strong><br>
-        Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
-        Telefon: 04922 9238028<br>
-        E-Mail: menne@email.de<br>
-        WhatsApp: 0151 61513028
+  <main class="mainContent">
+    <div class="wrap">
+      <div class="card">
+        <div class="statusLine" id="statusLine">Bereit.</div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Firmenkopf</h2>
+          <div class="logoBox">
+            <strong>Inseldachdecker GmbH</strong><br>
+            Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
+            Telefon: 04922 9238028<br>
+            E-Mail: menne@email.de<br>
+            WhatsApp: 0151 61513028
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Kundendaten</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="kunde">Kunde</label>
+              <input id="kunde" type="text" placeholder="Name des Kunden">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="baustellenadresse">Baustellenadresse</label>
+              <input id="baustellenadresse" type="text" placeholder="Straße, Hausnummer, PLZ, Ort">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Aktuelle Information</h2>
+          <div class="fieldWrap">
+            <label for="text">Freitext</label>
+            <textarea id="text" placeholder="Aktueller Stand, ausgeführte Arbeiten, Hinweise an den Kunden"></textarea>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Bilder direkt auswählen</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="fileBild1">Bild 1 hochladen</label>
+              <input id="fileBild1" type="file" accept="image/*">
+            </div>
+            <div class="fieldWrap">
+              <label for="fileBild2">Bild 2 hochladen</label>
+              <input id="fileBild2" type="file" accept="image/*">
+            </div>
+            <div class="fieldWrap fullCol">
+              <label for="fileBild3">Bild 3 hochladen</label>
+              <input id="fileBild3" type="file" accept="image/*">
+            </div>
+          </div>
+          <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="bild1">Bild 1 Link oder Dateiname</label>
+              <input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg">
+            </div>
+            <div class="fieldWrap">
+              <label for="bild2">Bild 2 Link oder Dateiname</label>
+              <input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg">
+            </div>
+            <div class="fieldWrap fullCol">
+              <label for="bild3">Bild 3 Link oder Dateiname</label>
+              <input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Sonstiges</h2>
+          <div class="fieldWrap">
+            <label for="sonstiges">Zusätzlicher Hinweis</label>
+            <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="section">
-      <h2 class="sectionTitle">Kundendaten</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label for="kunde">Kunde</label>
-          <input id="kunde" type="text" placeholder="Name des Kunden">
+      <div class="card">
+        <div class="section">
+          <h2 class="sectionTitle">Live-Vorschau WhatsApp / Kundenkopie</h2>
+          <div class="previewBox" id="previewText"></div>
         </div>
 
-        <div class="fieldWrap">
-          <label for="baustellenadresse">Baustellenadresse</label>
-          <input id="baustellenadresse" type="text" placeholder="Straße, Hausnummer, PLZ, Ort">
+        <div class="section">
+          <h2 class="sectionTitle">Bild-Vorschau</h2>
+          <div class="imageGrid">
+            <div class="imageCard" id="previewImage1">Kein Bild</div>
+            <div class="imageCard" id="previewImage2">Kein Bild</div>
+            <div class="imageCard" id="previewImage3">Kein Bild</div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="section">
-      <h2 class="sectionTitle">Aktuelle Information</h2>
-      <div class="fieldWrap">
-        <label for="text">Freitext</label>
-        <textarea id="text" placeholder="Aktueller Stand, ausgeführte Arbeiten, Hinweise an den Kunden"></textarea>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Bilder direkt auswählen</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label for="fileBild1">Bild 1 hochladen</label>
-          <input id="fileBild1" type="file" accept="image/*">
-        </div>
-        <div class="fieldWrap">
-          <label for="fileBild2">Bild 2 hochladen</label>
-          <input id="fileBild2" type="file" accept="image/*">
-        </div>
-        <div class="fieldWrap fullCol">
-          <label for="fileBild3">Bild 3 hochladen</label>
-          <input id="fileBild3" type="file" accept="image/*">
-        </div>
-      </div>
-      <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label for="bild1">Bild 1 Link oder Dateiname</label>
-          <input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg">
-        </div>
-        <div class="fieldWrap">
-          <label for="bild2">Bild 2 Link oder Dateiname</label>
-          <input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg">
-        </div>
-        <div class="fieldWrap fullCol">
-          <label for="bild3">Bild 3 Link oder Dateiname</label>
-          <input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg">
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Sonstiges</h2>
-      <div class="fieldWrap">
-        <label for="sonstiges">Zusätzlicher Hinweis</label>
-        <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section">
-      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Kundenkopie</h2>
-      <div class="previewBox" id="previewText"></div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Bild-Vorschau</h2>
-      <div class="imageGrid">
-        <div class="imageCard" id="previewImage1">Kein Bild</div>
-        <div class="imageCard" id="previewImage2">Kein Bild</div>
-        <div class="imageCard" id="previewImage3">Kein Bild</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Fester Leistungsblock</h2>
-      <div class="previewBox">Dachdeckerarbeiten
+        <div class="section">
+          <h2 class="sectionTitle">Fester Leistungsblock</h2>
+          <div class="previewBox">Dachdeckerarbeiten
 Zimmereiarbeiten
 Abdichtungen
 Dachfenster
@@ -335,14 +465,16 @@ Dachgaubenbau
 Holzrahmenbau
 Dachterrassen und Beläge
 Balkonabdichtung mit Triflex</div>
-    </div>
+        </div>
 
-    <div class="previewActions">
-      <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
-      <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-      <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+        <div class="previewActions">
+          <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+          <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+          <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+        </div>
+      </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <script>
