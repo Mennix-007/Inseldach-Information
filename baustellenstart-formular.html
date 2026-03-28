@@ -6,82 +6,315 @@
 <title>Start neue Baustelle – Formular</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
   background:#f3f5f7;
   color:#111;
 }
+
 .topBar{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
   background:#163d7a;
   color:#fff;
-  padding:12px 18px;
+  padding:14px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
-.topBarTitle{font-size:22px;font-weight:800;}
-.topBarActions{display:flex;gap:10px;flex-wrap:wrap;}
-.btn{
-  border:none;border-radius:10px;padding:10px 14px;
-  font-size:15px;font-weight:700;cursor:pointer;
+
+.topBarTitle{
+  font-size:24px;
+  font-weight:800;
+  line-height:1.2;
 }
-.btnBlue{ background:#fff; color:#163d7a; }
-.btnYellow{ background:#ffd400; color:#000; }
-.btnGreen{ background:#25D366; color:#111; }
-.btnRed{ background:#8b1e1e; color:#fff; }
+
+.topBarLogo{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  min-width:120px;
+}
+
+.topBarLogo img{
+  max-height:52px;
+  max-width:180px;
+  width:auto;
+  height:auto;
+  display:block;
+  object-fit:contain;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:10px;
+}
+
+.pageLayout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:20px;
+  max-width:1600px;
+  margin:20px auto;
+  padding:0 16px 24px;
+  align-items:start;
+}
+
+.sideBar{
+  background:#163d7a;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  position:sticky;
+  top:92px;
+}
+
+.sideBarTitle{
+  color:#fff;
+  font-size:18px;
+  font-weight:800;
+  margin:0 0 14px 0;
+  text-align:center;
+}
+
+.sideBarButtons{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.btn{
+  width:100%;
+  min-height:54px;
+  border:1px solid #d4dbe4;
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  background:#fff;
+  color:#163d7a;
+  text-align:center;
+  transition:all .15s ease;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.btnBlue{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnYellow{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnGreen{
+  background:#fff;
+  color:#163d7a;
+}
+
+.btnRed{
+  background:#fff;
+  color:#8b1e1e;
+  border:1px solid #e0bcbc;
+}
+
+.mainContent{
+  min-width:0;
+}
 
 .wrap{
-  max-width:1450px;
-  margin:20px auto;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:18px;
-  padding:0 16px 20px;
-  box-sizing:border-box;
 }
+
 .card{
-  background:#fff;border-radius:18px;box-shadow:0 8px 28px rgba(0,0,0,.12);
-  padding:20px;box-sizing:border-box;min-width:0;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  padding:20px;
+  min-width:0;
 }
-.section{margin-bottom:18px;}
-.sectionTitle{margin:0 0 10px;font-size:18px;font-weight:800;color:#163d7a;}
-.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fullCol{ grid-column:1 / -1; }
-.fieldWrap{display:flex;flex-direction:column;gap:6px;min-width:0;}
-.fieldWrap label{font-size:14px;font-weight:700;}
-.fieldWrap input,.fieldWrap textarea,.fieldWrap select{
-  width:100%;box-sizing:border-box;border:1px solid #cfd6df;border-radius:10px;
-  padding:10px 12px;font:inherit;background:#fbfcfd;
+
+.section{
+  margin-bottom:18px;
 }
-.fieldWrap textarea{resize:vertical;min-height:90px;}
+
+.sectionTitle{
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:800;
+  color:#163d7a;
+}
+
+.formGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.fullCol{
+  grid-column:1 / -1;
+}
+
+.fieldWrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.fieldWrap label{
+  font-size:14px;
+  font-weight:700;
+}
+
+.fieldWrap input,
+.fieldWrap textarea,
+.fieldWrap select{
+  width:100%;
+  border:1px solid #cfd6df;
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  background:#fbfcfd;
+}
+
+.fieldWrap textarea{
+  resize:vertical;
+  min-height:90px;
+}
+
 .previewBox{
-  border:1px solid #cfd6df;border-radius:12px;padding:12px 14px;background:#fbfcfd;
-  min-height:220px;white-space:pre-wrap;line-height:1.5;overflow-wrap:anywhere;word-break:break-word;
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  min-height:220px;
+  white-space:pre-wrap;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
-.helper{font-size:13px;color:#555;line-height:1.45;}
+
+.helper{
+  font-size:13px;
+  color:#555;
+  line-height:1.45;
+}
+
 .statusLine{
-  border:1px solid #d7e0ea;border-radius:12px;padding:10px 12px;background:#f8fafc;
-  font-weight:700;margin-bottom:14px;
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+  font-weight:700;
+  margin-bottom:14px;
 }
-.imageGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+
+.imageGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+
 .imageCard{
-  border:1px solid #cfd6df;border-radius:12px;background:#fbfcfd;min-height:190px;
-  overflow:hidden;display:flex;align-items:center;justify-content:center;color:#666;font-weight:700;
+  border:1px solid #cfd6df;
+  border-radius:12px;
+  background:#fbfcfd;
+  min-height:190px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#666;
+  font-weight:700;
 }
-.imageCard img{width:100%;height:190px;object-fit:contain;background:#fff;display:block;}
-.previewActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+
+.imageCard img{
+  width:100%;
+  height:190px;
+  object-fit:contain;
+  background:#fff;
+  display:block;
+}
+
+.previewActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.previewActions .btn{
+  width:auto;
+  min-width:180px;
+}
+
+@media (max-width: 1300px){
+  .wrap{
+    grid-template-columns:1fr;
+  }
+}
 
 @media (max-width: 1100px){
-  .wrap{grid-template-columns:1fr;}
-  .formGrid,.imageGrid{grid-template-columns:1fr;}
-  .topBar{position:static;}
+  .pageLayout{
+    grid-template-columns:1fr;
+  }
+
+  .sideBar{
+    position:static;
+  }
+
+  .sideBarButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+}
+
+@media (max-width: 800px){
+  .topBar{
+    position:static;
+    padding:12px 14px;
+  }
+
+  .topBarTitle{
+    font-size:20px;
+  }
+
+  .topBarLogo img{
+    max-height:42px;
+    max-width:130px;
+  }
+
+  .formGrid,
+  .imageGrid,
+  .sideBarButtons{
+    grid-template-columns:1fr;
+  }
+
+  .pageLayout{
+    padding:0 10px 18px;
+  }
+
+  .card,
+  .sideBar{
+    padding:16px;
+  }
 }
 </style>
 </head>
@@ -89,190 +322,201 @@ body{
 
 <div class="topBar">
   <div class="topBarTitle">Start neue Baustelle – Formular</div>
-  <div class="topBarActions">
-    <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
-    <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
-    <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
-    <button class="btn btnYellow" type="button" onclick="downloadData()">Eingegebene Daten herunterladen</button>
-    <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
-    <button class="btn btnBlue" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
-    <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-    <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
-    <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
-    <button class="btn btnBlue" type="button" onclick="copySiteVersion()">Kopie Baustelle (Drag and Drop)</button>
-    <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Kopieren für Craftnote-Drag and Drop</button>
-    <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+  <div class="topBarLogo">
+    <img src="Logo_Menne_min.png" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
   </div>
 </div>
 
-<div class="wrap">
-  <div class="card">
-    <div class="statusLine" id="statusLine">Bereit.</div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Grunddaten</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label for="baustellenname">Auftraggeber</label>
-          <input id="baustellenname" type="text" placeholder="Name des Auftraggebers">
-        </div>
-
-        <div class="fieldWrap">
-          <label for="craftnoteSuchbegriff">Suchbegriff Craftnote</label>
-          <input id="craftnoteSuchbegriff" type="text" placeholder="Suchbegriff">
-        </div>
-
-        <div class="fieldWrap fullCol">
-          <label for="baustellenadresse">Baustellenadresse</label>
-          <textarea id="baustellenadresse" placeholder="Straße, Hausnummer, PLZ, Ort"></textarea>
-        </div>
-
-        <div class="fieldWrap">
-          <label for="craftnoteEingeladen">Craftnote eingeladen?</label>
-          <select id="craftnoteEingeladen">
-            <option value="nein">Nein</option>
-            <option value="ja">Ja</option>
-          </select>
-        </div>
-
-        <div class="fieldWrap">
-          <label for="baustellenhoehe">Baustellenhöhe</label>
-          <select id="baustellenhoehe">
-            <option value="2,00 m">2,00 m</option>
-            <option value="2,50 m">2,50 m</option>
-            <option value="3,00 m">3,00 m</option>
-            <option value="3,50 m">3,50 m</option>
-            <option value="4,00 m">4,00 m</option>
-            <option value="4,50 m">4,50 m</option>
-            <option value="5,00 m">5,00 m</option>
-            <option value="5,50 m">5,50 m</option>
-            <option value="6,00 m">6,00 m</option>
-            <option value="6,50 m">6,50 m</option>
-            <option value="7,00 m">7,00 m</option>
-            <option value="7,50 m">7,50 m</option>
-            <option value="8,00 m">8,00 m</option>
-            <option value="8,50 m">8,50 m</option>
-            <option value="9,00 m">9,00 m</option>
-            <option value="9,50 m">9,50 m</option>
-            <option value="10,00 m">10,00 m</option>
-            <option value="10,50 m">10,50 m</option>
-            <option value="11,00 m">11,00 m</option>
-            <option value="11,50 m">11,50 m</option>
-            <option value="12,00 m">12,00 m</option>
-            <option value="12,50 m">12,50 m</option>
-            <option value="13,00 m">13,00 m</option>
-            <option value="13,50 m">13,50 m</option>
-            <option value="14,00 m">14,00 m</option>
-            <option value="14,50 m">14,50 m</option>
-            <option value="15,00 m">15,00 m</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Abrechnungsart / Zugang</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label><input type="checkbox" id="gesamteBaustelleStundenlohn"> Gesamte Baustelle Stundenlohn</label></div>
-        <div class="fieldWrap"><label><input type="checkbox" id="teilweiseStundenlohn"> Teilweise Stundenlohn</label></div>
-        <div class="fieldWrap"><label><input type="checkbox" id="eventuellTeilweiseStundenlohn"> Eventuell teilweise Stundenlohn</label></div>
-        <div class="fieldWrap"><label><input type="checkbox" id="festpreisangebot"> Festpreisangebot</label></div>
-
-        <div class="fieldWrap fullCol">
-          <label for="zugang">Zugang</label>
-          <select id="zugang">
-            <option value="geruest">Gerüst erforderlich</option>
-            <option value="leiter">Leiter reicht</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Leistungsbeschreibung</h2>
-      <div class="fieldWrap">
-        <label for="worumGehtEs">Worum geht es hier / Was muss gemacht werden</label>
-        <textarea id="worumGehtEs" placeholder="Beschreibung der Arbeiten"></textarea>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Lieferung zur Baustelle</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label for="lieferung1">Feld 1</label><textarea id="lieferung1"></textarea></div>
-        <div class="fieldWrap"><label for="lieferung2">Feld 2</label><textarea id="lieferung2"></textarea></div>
-        <div class="fieldWrap fullCol"><label for="lieferung3">Feld 3</label><textarea id="lieferung3"></textarea></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Mitnahme aus dem Lager</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label for="lager1">Feld 1</label><textarea id="lager1"></textarea></div>
-        <div class="fieldWrap"><label for="lager2">Feld 2</label><textarea id="lager2"></textarea></div>
-        <div class="fieldWrap fullCol"><label for="lager3">Feld 3</label><textarea id="lager3"></textarea></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Bilder direkt auswählen</h2>
-      <div class="formGrid">
-        <div class="fieldWrap">
-          <label for="fileBild1">Bild 1 hochladen</label>
-          <input id="fileBild1" type="file" accept="image/*">
-        </div>
-        <div class="fieldWrap">
-          <label for="fileBild2">Bild 2 hochladen</label>
-          <input id="fileBild2" type="file" accept="image/*">
-        </div>
-        <div class="fieldWrap fullCol">
-          <label for="fileBild3">Bild 3 hochladen</label>
-          <input id="fileBild3" type="file" accept="image/*">
-        </div>
-      </div>
-      <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
-      <div class="formGrid">
-        <div class="fieldWrap"><label for="bild1">Bild 1 Link oder Dateiname</label><input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg"></div>
-        <div class="fieldWrap"><label for="bild2">Bild 2 Link oder Dateiname</label><input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg"></div>
-        <div class="fieldWrap fullCol"><label for="bild3">Bild 3 Link oder Dateiname</label><input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg"></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Sonstiges</h2>
-      <div class="fieldWrap">
-        <label for="sonstiges">Sonstiges bitte nicht vergessen</label>
-        <textarea id="sonstiges" placeholder="Zusätzlicher Hinweis"></textarea>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="section">
-      <h2 class="sectionTitle">Live-Vorschau WhatsApp / Baustellenkopie</h2>
-      <div class="previewBox" id="previewText"></div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Bild-Vorschau</h2>
-      <div class="imageGrid">
-        <div class="imageCard" id="previewImage1">Kein Bild</div>
-        <div class="imageCard" id="previewImage2">Kein Bild</div>
-        <div class="imageCard" id="previewImage3">Kein Bild</div>
-      </div>
-    </div>
-
-    <div class="previewActions">
+<div class="pageLayout">
+  <aside class="sideBar">
+    <h2 class="sideBarTitle">Aktionen</h2>
+    <div class="sideBarButtons">
+      <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+      <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+      <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
+      <button class="btn btnYellow" type="button" onclick="downloadData()">Daten herunterladen</button>
       <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
       <button class="btn btnBlue" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
       <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
       <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+      <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+      <button class="btn btnBlue" type="button" onclick="copySiteVersion()">Kopie Baustelle</button>
+      <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
+      <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
     </div>
-  </div>
+  </aside>
+
+  <main class="mainContent">
+    <div class="wrap">
+      <div class="card">
+        <div class="statusLine" id="statusLine">Bereit.</div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Grunddaten</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="baustellenname">Auftraggeber</label>
+              <input id="baustellenname" type="text" placeholder="Name des Auftraggebers">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="craftnoteSuchbegriff">Suchbegriff Craftnote</label>
+              <input id="craftnoteSuchbegriff" type="text" placeholder="Suchbegriff">
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="baustellenadresse">Baustellenadresse</label>
+              <textarea id="baustellenadresse" placeholder="Straße, Hausnummer, PLZ, Ort"></textarea>
+            </div>
+
+            <div class="fieldWrap">
+              <label for="craftnoteEingeladen">Craftnote eingeladen?</label>
+              <select id="craftnoteEingeladen">
+                <option value="nein">Nein</option>
+                <option value="ja">Ja</option>
+              </select>
+            </div>
+
+            <div class="fieldWrap">
+              <label for="baustellenhoehe">Baustellenhöhe</label>
+              <select id="baustellenhoehe">
+                <option value="2,00 m">2,00 m</option>
+                <option value="2,50 m">2,50 m</option>
+                <option value="3,00 m">3,00 m</option>
+                <option value="3,50 m">3,50 m</option>
+                <option value="4,00 m">4,00 m</option>
+                <option value="4,50 m">4,50 m</option>
+                <option value="5,00 m">5,00 m</option>
+                <option value="5,50 m">5,50 m</option>
+                <option value="6,00 m">6,00 m</option>
+                <option value="6,50 m">6,50 m</option>
+                <option value="7,00 m">7,00 m</option>
+                <option value="7,50 m">7,50 m</option>
+                <option value="8,00 m">8,00 m</option>
+                <option value="8,50 m">8,50 m</option>
+                <option value="9,00 m">9,00 m</option>
+                <option value="9,50 m">9,50 m</option>
+                <option value="10,00 m">10,00 m</option>
+                <option value="10,50 m">10,50 m</option>
+                <option value="11,00 m">11,00 m</option>
+                <option value="11,50 m">11,50 m</option>
+                <option value="12,00 m">12,00 m</option>
+                <option value="12,50 m">12,50 m</option>
+                <option value="13,00 m">13,00 m</option>
+                <option value="13,50 m">13,50 m</option>
+                <option value="14,00 m">14,00 m</option>
+                <option value="14,50 m">14,50 m</option>
+                <option value="15,00 m">15,00 m</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Abrechnungsart / Zugang</h2>
+          <div class="formGrid">
+            <div class="fieldWrap"><label><input type="checkbox" id="gesamteBaustelleStundenlohn"> Gesamte Baustelle Stundenlohn</label></div>
+            <div class="fieldWrap"><label><input type="checkbox" id="teilweiseStundenlohn"> Teilweise Stundenlohn</label></div>
+            <div class="fieldWrap"><label><input type="checkbox" id="eventuellTeilweiseStundenlohn"> Eventuell teilweise Stundenlohn</label></div>
+            <div class="fieldWrap"><label><input type="checkbox" id="festpreisangebot"> Festpreisangebot</label></div>
+
+            <div class="fieldWrap fullCol">
+              <label for="zugang">Zugang</label>
+              <select id="zugang">
+                <option value="geruest">Gerüst erforderlich</option>
+                <option value="leiter">Leiter reicht</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Leistungsbeschreibung</h2>
+          <div class="fieldWrap">
+            <label for="worumGehtEs">Worum geht es hier / Was muss gemacht werden</label>
+            <textarea id="worumGehtEs" placeholder="Beschreibung der Arbeiten"></textarea>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Lieferung zur Baustelle</h2>
+          <div class="formGrid">
+            <div class="fieldWrap"><label for="lieferung1">Feld 1</label><textarea id="lieferung1"></textarea></div>
+            <div class="fieldWrap"><label for="lieferung2">Feld 2</label><textarea id="lieferung2"></textarea></div>
+            <div class="fieldWrap fullCol"><label for="lieferung3">Feld 3</label><textarea id="lieferung3"></textarea></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Mitnahme aus dem Lager</h2>
+          <div class="formGrid">
+            <div class="fieldWrap"><label for="lager1">Feld 1</label><textarea id="lager1"></textarea></div>
+            <div class="fieldWrap"><label for="lager2">Feld 2</label><textarea id="lager2"></textarea></div>
+            <div class="fieldWrap fullCol"><label for="lager3">Feld 3</label><textarea id="lager3"></textarea></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Bilder direkt auswählen</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="fileBild1">Bild 1 hochladen</label>
+              <input id="fileBild1" type="file" accept="image/*">
+            </div>
+            <div class="fieldWrap">
+              <label for="fileBild2">Bild 2 hochladen</label>
+              <input id="fileBild2" type="file" accept="image/*">
+            </div>
+            <div class="fieldWrap fullCol">
+              <label for="fileBild3">Bild 3 hochladen</label>
+              <input id="fileBild3" type="file" accept="image/*">
+            </div>
+          </div>
+          <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
+          <div class="formGrid">
+            <div class="fieldWrap"><label for="bild1">Bild 1 Link oder Dateiname</label><input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg"></div>
+            <div class="fieldWrap"><label for="bild2">Bild 2 Link oder Dateiname</label><input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg"></div>
+            <div class="fieldWrap fullCol"><label for="bild3">Bild 3 Link oder Dateiname</label><input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Sonstiges</h2>
+          <div class="fieldWrap">
+            <label for="sonstiges">Sonstiges bitte nicht vergessen</label>
+            <textarea id="sonstiges" placeholder="Zusätzlicher Hinweis"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section">
+          <h2 class="sectionTitle">Live-Vorschau WhatsApp / Baustellenkopie</h2>
+          <div class="previewBox" id="previewText"></div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Bild-Vorschau</h2>
+          <div class="imageGrid">
+            <div class="imageCard" id="previewImage1">Kein Bild</div>
+            <div class="imageCard" id="previewImage2">Kein Bild</div>
+            <div class="imageCard" id="previewImage3">Kein Bild</div>
+          </div>
+        </div>
+
+        <div class="previewActions">
+          <button class="btn btnBlue" type="button" onclick="openPreview()">Vorschau öffnen</button>
+          <button class="btn btnBlue" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
+          <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+          <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
