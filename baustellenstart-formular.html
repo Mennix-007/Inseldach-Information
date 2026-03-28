@@ -458,9 +458,15 @@ body{
         <div class="section">
           <h2 class="sectionTitle">Mitnahme aus dem Lager</h2>
           <div class="formGrid">
-            <div class="fieldWrap"><label for="lager1">Feld 1</label><textarea id="lager1"></textarea></div>
-            <div class="fieldWrap"><label for="lager2">Feld 2</label><textarea id="lager2"></textarea></div>
-            <div class="fieldWrap fullCol"><label for="lager3">Feld 3</label><textarea id="lager3"></textarea></div>
+            <div class="fieldWrap fullCol">
+              <label for="lager1">Feld 1</label>
+              <textarea id="lager1"></textarea>
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="lager3">Feld 2</label>
+              <textarea id="lager3"></textarea>
+            </div>
           </div>
         </div>
 
@@ -548,7 +554,6 @@ function defaultData() {
     lieferung1: "",
     lieferung3: "",
     lager1: "",
-    lager2: "",
     lager3: "",
     bild1: "",
     bild2: "",
@@ -573,7 +578,6 @@ function getFormData() {
   d.lieferung1 = document.getElementById('lieferung1').value.trim();
   d.lieferung3 = document.getElementById('lieferung3').value.trim();
   d.lager1 = document.getElementById('lager1').value.trim();
-  d.lager2 = document.getElementById('lager2').value.trim();
   d.lager3 = document.getElementById('lager3').value.trim();
   d.bild1 = document.getElementById('bild1').value.trim();
   d.bild2 = document.getElementById('bild2').value.trim();
@@ -600,7 +604,6 @@ function setFormData(data) {
   document.getElementById('lieferung1').value = data.lieferung1 || '';
   document.getElementById('lieferung3').value = data.lieferung3 || '';
   document.getElementById('lager1').value = data.lager1 || '';
-  document.getElementById('lager2').value = data.lager2 || '';
   document.getElementById('lager3').value = data.lager3 || '';
   document.getElementById('bild1').value = data.bild1 || '';
   document.getElementById('bild2').value = data.bild2 || '';
@@ -641,7 +644,7 @@ function buildSiteVersionText(data){
   if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
 
   const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean);
-  const lager = [data.lager1, data.lager2, data.lager3].filter(Boolean);
+  const lager = [data.lager1, data.lager3].filter(Boolean);
 
   const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
 
