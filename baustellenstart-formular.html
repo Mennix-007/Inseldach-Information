@@ -25,10 +25,15 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
-.topBarTitle{font-size:24px;font-weight:800;}
+.topBarTitle{
+  font-size:24px;
+  font-weight:800;
+  line-height:1.2;
+}
 
 .topBarLogo img{
   max-height:50px;
@@ -44,6 +49,7 @@ body{
   max-width:1600px;
   margin:20px auto;
   padding:0 16px 24px;
+  align-items:start;
 }
 
 .sideBar{
@@ -52,6 +58,7 @@ body{
   padding:16px;
   position:sticky;
   top:90px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
 }
 
 .sideBarTitle{
@@ -59,6 +66,7 @@ body{
   text-align:center;
   font-weight:800;
   margin-bottom:14px;
+  font-size:18px;
 }
 
 .sideBarButtons{
@@ -72,13 +80,25 @@ body{
   min-height:54px;
   border-radius:12px;
   padding:12px;
+  font-size:15px;
   font-weight:700;
   cursor:pointer;
   background:#fff;
+  color:#163d7a;
   border:1px solid #d4dbe4;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  transition:all .15s ease;
 }
 
-.btnRed{color:#8b1e1e;}
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+
+.btnRed{
+  color:#8b1e1e;
+  border-color:#e0bcbc;
+}
 
 .wrap{
   display:grid;
@@ -91,13 +111,18 @@ body{
   border-radius:18px;
   padding:20px;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
+  min-width:0;
+}
+
+.section{
+  margin-bottom:18px;
 }
 
 .sectionTitle{
   font-size:18px;
   font-weight:800;
   color:#163d7a;
-  margin-bottom:10px;
+  margin:0 0 10px 0;
 }
 
 .formGrid{
@@ -106,9 +131,35 @@ body{
   gap:12px;
 }
 
-.fullCol{grid-column:1/-1;}
+.fullCol{
+  grid-column:1/-1;
+}
+
+.fieldWrap{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:0;
+}
+
+.fieldWrap label{
+  font-size:14px;
+  font-weight:700;
+}
+
+.fieldWrap input,
+.fieldWrap textarea,
+.fieldWrap select{
+  width:100%;
+  border:1px solid #cfd6df;
+  border-radius:10px;
+  padding:10px 12px;
+  font:inherit;
+  background:#fbfcfd;
+}
 
 .fieldWrap textarea{
+  resize:vertical;
   min-height:50px;
 }
 
@@ -123,21 +174,63 @@ body{
   background:#fbfcfd;
   min-height:220px;
   white-space:pre-wrap;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.helper{
+  font-size:13px;
+  color:#555;
+  line-height:1.45;
+}
+
+.statusLine{
+  border:1px solid #d7e0ea;
+  border-radius:12px;
+  padding:10px 12px;
+  background:#f8fafc;
+  font-weight:700;
+  margin-bottom:14px;
 }
 
 .imageGrid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:10px;
 }
 
 .imageCard{
   border:1px solid #ccc;
   border-radius:10px;
-  min-height:150px;
+  min-height:170px;
   display:flex;
   align-items:center;
   justify-content:center;
+  background:#fbfcfd;
+  overflow:hidden;
+  color:#666;
+  font-weight:700;
+}
+
+.imageCard img{
+  width:100%;
+  height:170px;
+  object-fit:contain;
+  background:#fff;
+  display:block;
+}
+
+.previewActions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.previewActions .btn{
+  width:auto;
+  min-width:180px;
 }
 
 #copyToast{
@@ -150,7 +243,65 @@ body{
   border-radius:12px;
   font-weight:700;
   opacity:0;
-  transition:.3s;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:9999;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+@media (max-width:1300px){
+  .wrap{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:1100px){
+  .pageLayout{
+    grid-template-columns:1fr;
+  }
+
+  .sideBar{
+    position:static;
+  }
+
+  .sideBarButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+}
+
+@media (max-width:800px){
+  .topBar{
+    position:static;
+    padding:12px 14px;
+  }
+
+  .topBarTitle{
+    font-size:20px;
+  }
+
+  .pageLayout{
+    padding:0 10px 18px;
+  }
+
+  .formGrid,
+  .imageGrid,
+  .sideBarButtons{
+    grid-template-columns:1fr;
+  }
+
+  .card,
+  .sideBar{
+    padding:16px;
+  }
+
+  #copyToast{
+    right:10px;
+    left:10px;
+    bottom:12px;
+    text-align:center;
+  }
 }
 </style>
 </head>
@@ -162,129 +313,613 @@ body{
 <div class="topBar">
   <div class="topBarTitle">Start neue Baustelle – Formular</div>
   <div class="topBarLogo">
-    <img src="Logo_Menne_min.png">
+    <img src="Logo_Menne_min.png" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
   </div>
 </div>
 
 <div class="pageLayout">
 
-<!-- Sidebar -->
-<aside class="sideBar">
-  <div class="sideBarTitle">Aktionen</div>
+  <aside class="sideBar">
+    <div class="sideBarTitle">Aktionen</div>
 
-  <div class="sideBarButtons">
-    <button class="btn" onclick="saveBrowser()">Im Browser speichern</button>
-    <button class="btn" onclick="loadBrowser()">Browser-Stand laden</button>
+    <div class="sideBarButtons">
+      <button class="btn" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+      <button class="btn" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
 
-    <button class="btn" onclick="openPreview()">Vorschau öffnen</button>
-    <button class="btn" onclick="openPreviewPl()">Polnisch öffnen</button>
+      <button class="btn" type="button" onclick="openPreview()">Vorschau öffnen</button>
+      <button class="btn" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
 
-    <button class="btn" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-    <button class="btn" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+      <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+      <button class="btn" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
 
-    <button class="btn" onclick="openWhatsAppFromForm()">WhatsApp</button>
+      <button class="btn" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
 
-    <button class="btn" onclick="copySiteVersion()">Kopie Baustelle</button>
-    <button class="btn" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
+      <button class="btn" type="button" onclick="copySiteVersion()">Kopie Baustelle</button>
+      <button class="btn" type="button" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
 
-    <button class="btn btnRed" onclick="resetForm()">Formular leeren</button>
-  </div>
-</aside>
+      <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
+    </div>
+  </aside>
 
-<!-- Inhalt -->
-<main>
+  <main>
+    <div class="wrap">
 
-<div class="wrap">
+      <div class="card">
+        <div class="statusLine" id="statusLine">Bereit.</div>
 
-<div class="card">
+        <div class="section">
+          <h2 class="sectionTitle">Grunddaten</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="baustellenname">Auftraggeber</label>
+              <input id="baustellenname" type="text" placeholder="Name des Auftraggebers">
+            </div>
 
-<div class="sectionTitle">Grunddaten</div>
+            <div class="fieldWrap">
+              <label for="craftnoteSuchbegriff">Craftnote Suchbegriff</label>
+              <input id="craftnoteSuchbegriff" type="text" placeholder="Craftnote Suchbegriff">
+            </div>
 
-<div class="formGrid">
-<input id="baustellenname" placeholder="Auftraggeber">
-<input id="craftnoteSuchbegriff" placeholder="Craftnote Suchbegriff">
+            <div class="fieldWrap fullCol">
+              <label for="baustellenadresse">Baustellenadresse</label>
+              <textarea id="baustellenadresse" placeholder="Adresse"></textarea>
+            </div>
 
-<textarea id="baustellenadresse" class="fullCol" placeholder="Adresse"></textarea>
+            <div class="fieldWrap">
+              <label for="craftnoteEingeladen">Craftnote eingeladen?</label>
+              <select id="craftnoteEingeladen">
+                <option value="nein">nein</option>
+                <option value="ja">ja</option>
+              </select>
+            </div>
 
-<select id="craftnoteEingeladen">
-<option>nein</option><option>ja</option>
-</select>
+            <div class="fieldWrap">
+              <label for="baustellenhoehe">Baustellenhöhe</label>
+              <select id="baustellenhoehe">
+                <option value="2,00 m">2,00 m</option>
+                <option value="2,50 m">2,50 m</option>
+                <option value="3,00 m">3,00 m</option>
+                <option value="3,50 m">3,50 m</option>
+                <option value="4,00 m">4,00 m</option>
+                <option value="4,50 m">4,50 m</option>
+                <option value="5,00 m">5,00 m</option>
+                <option value="5,50 m">5,50 m</option>
+                <option value="6,00 m">6,00 m</option>
+                <option value="6,50 m">6,50 m</option>
+                <option value="7,00 m">7,00 m</option>
+                <option value="7,50 m">7,50 m</option>
+                <option value="8,00 m">8,00 m</option>
+                <option value="8,50 m">8,50 m</option>
+                <option value="9,00 m">9,00 m</option>
+                <option value="9,50 m">9,50 m</option>
+                <option value="10,00 m">10,00 m</option>
+                <option value="10,50 m">10,50 m</option>
+                <option value="11,00 m">11,00 m</option>
+                <option value="11,50 m">11,50 m</option>
+                <option value="12,00 m">12,00 m</option>
+                <option value="12,50 m">12,50 m</option>
+                <option value="13,00 m">13,00 m</option>
+                <option value="13,50 m">13,50 m</option>
+                <option value="14,00 m">14,00 m</option>
+                <option value="14,50 m">14,50 m</option>
+                <option value="15,00 m">15,00 m</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-<select id="baustellenhoehe">
-<option>2,00 m</option>
-<option>3,00 m</option>
-<option>4,00 m</option>
-<option>5,00 m</option>
-</select>
-</div>
+        <div class="section">
+          <h2 class="sectionTitle">Abrechnungsart / Zugang</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label><input type="checkbox" id="gesamteBaustelleStundenlohn"> Gesamte Baustelle Stundenlohn</label>
+            </div>
 
-<div class="sectionTitle">Lieferung</div>
-<textarea id="lieferung1"></textarea>
-<textarea id="lieferung3"></textarea>
+            <div class="fieldWrap">
+              <label><input type="checkbox" id="teilweiseStundenlohn"> Teilweise Stundenlohn</label>
+            </div>
 
-<div class="sectionTitle">Lager</div>
-<textarea id="lager1"></textarea>
-<textarea id="lager3"></textarea>
+            <div class="fieldWrap">
+              <label><input type="checkbox" id="eventuellTeilweiseStundenlohn"> Eventuell teilweise Stundenlohn</label>
+            </div>
 
-<div class="sectionTitle">Sonstiges</div>
-<textarea id="sonstiges" class="bigField"></textarea>
+            <div class="fieldWrap">
+              <label><input type="checkbox" id="festpreisangebot"> Festpreisangebot</label>
+            </div>
 
-</div>
+            <div class="fieldWrap fullCol">
+              <label for="zugang">Zugang</label>
+              <select id="zugang">
+                <option value="geruest">Gerüst erforderlich</option>
+                <option value="leiter">Leiter reicht</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-<div class="card">
+        <div class="section">
+          <h2 class="sectionTitle">Leistungsbeschreibung</h2>
+          <div class="fieldWrap">
+            <label for="worumGehtEs">Worum geht es hier / Was muss gemacht werden</label>
+            <textarea id="worumGehtEs" placeholder="Beschreibung der Arbeiten"></textarea>
+          </div>
+        </div>
 
-<div class="sectionTitle">Vorschau</div>
-<div id="previewText" class="previewBox"></div>
+        <div class="section">
+          <h2 class="sectionTitle">Lieferung zur Baustelle</h2>
+          <div class="formGrid">
+            <div class="fieldWrap fullCol">
+              <label for="lieferung1">Feld 1</label>
+              <textarea id="lieferung1"></textarea>
+            </div>
 
-<div class="imageGrid">
-<div class="imageCard">Bild</div>
-<div class="imageCard">Bild</div>
-<div class="imageCard">Bild</div>
-</div>
+            <div class="fieldWrap fullCol">
+              <label for="lieferung3">Feld 2</label>
+              <textarea id="lieferung3"></textarea>
+            </div>
+          </div>
+        </div>
 
-</div>
+        <div class="section">
+          <h2 class="sectionTitle">Mitnahme aus dem Lager</h2>
+          <div class="formGrid">
+            <div class="fieldWrap fullCol">
+              <label for="lager1">Feld 1</label>
+              <textarea id="lager1"></textarea>
+            </div>
 
-</div>
+            <div class="fieldWrap fullCol">
+              <label for="lager3">Feld 2</label>
+              <textarea id="lager3"></textarea>
+            </div>
+          </div>
+        </div>
 
-</main>
+        <div class="section">
+          <h2 class="sectionTitle">Bilder direkt auswählen</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="fileBild1">Bild 1 hochladen</label>
+              <input id="fileBild1" type="file" accept="image/*">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="fileBild2">Bild 2 hochladen</label>
+              <input id="fileBild2" type="file" accept="image/*">
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="fileBild3">Bild 3 hochladen</label>
+              <input id="fileBild3" type="file" accept="image/*">
+            </div>
+          </div>
+          <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet.</div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Alternative Bildpfade / Links</h2>
+          <div class="formGrid">
+            <div class="fieldWrap">
+              <label for="bild1">Bild 1 Link oder Dateiname</label>
+              <input id="bild1" type="text" placeholder="z. B. uploads/bild1.jpg">
+            </div>
+
+            <div class="fieldWrap">
+              <label for="bild2">Bild 2 Link oder Dateiname</label>
+              <input id="bild2" type="text" placeholder="z. B. uploads/bild2.jpg">
+            </div>
+
+            <div class="fieldWrap fullCol">
+              <label for="bild3">Bild 3 Link oder Dateiname</label>
+              <input id="bild3" type="text" placeholder="z. B. uploads/bild3.jpg">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Sonstiges</h2>
+          <div class="fieldWrap">
+            <label for="sonstiges">Sonstiges bitte nicht vergessen</label>
+            <textarea id="sonstiges" class="bigField"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section">
+          <h2 class="sectionTitle">Live-Vorschau WhatsApp / Baustellenkopie</h2>
+          <div id="previewText" class="previewBox"></div>
+        </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Bild-Vorschau</h2>
+          <div class="imageGrid">
+            <div class="imageCard" id="previewImage1">Kein Bild</div>
+            <div class="imageCard" id="previewImage2">Kein Bild</div>
+            <div class="imageCard" id="previewImage3">Kein Bild</div>
+          </div>
+        </div>
+
+        <div class="previewActions">
+          <button class="btn" type="button" onclick="openPreview()">Vorschau öffnen</button>
+          <button class="btn" type="button" onclick="openPreviewPl()">Polnisch öffnen</button>
+          <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+          <button class="btn" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
 </div>
 
 <script>
+const STORAGE_KEY = 'baustellenstart_formular_v5';
+let uploadImages = ["", "", ""];
+
+function defaultData() {
+  return {
+    title: "Neustart Baustelle",
+    baustellenname: "",
+    baustellenadresse: "",
+    craftnoteSuchbegriff: "",
+    craftnoteEingeladen: "nein",
+    gesamteBaustelleStundenlohn: false,
+    teilweiseStundenlohn: false,
+    eventuellTeilweiseStundenlohn: false,
+    festpreisangebot: false,
+    zugang: "geruest",
+    baustellenhoehe: "2,00 m",
+    worumGehtEs: "",
+    lieferung1: "",
+    lieferung3: "",
+    lager1: "",
+    lager3: "",
+    bild1: "",
+    bild2: "",
+    bild3: "",
+    sonstiges: "",
+    uploadBild1: "",
+    uploadBild2: "",
+    uploadBild3: ""
+  };
+}
+
+function getFormData() {
+  const d = defaultData();
+  d.baustellenname = document.getElementById('baustellenname').value.trim();
+  d.baustellenadresse = document.getElementById('baustellenadresse').value.trim();
+  d.craftnoteSuchbegriff = document.getElementById('craftnoteSuchbegriff').value.trim();
+  d.craftnoteEingeladen = document.getElementById('craftnoteEingeladen').value;
+  d.gesamteBaustelleStundenlohn = document.getElementById('gesamteBaustelleStundenlohn').checked;
+  d.teilweiseStundenlohn = document.getElementById('teilweiseStundenlohn').checked;
+  d.eventuellTeilweiseStundenlohn = document.getElementById('eventuellTeilweiseStundenlohn').checked;
+  d.festpreisangebot = document.getElementById('festpreisangebot').checked;
+  d.zugang = document.getElementById('zugang').value;
+  d.baustellenhoehe = document.getElementById('baustellenhoehe').value;
+  d.worumGehtEs = document.getElementById('worumGehtEs').value.trim();
+  d.lieferung1 = document.getElementById('lieferung1').value.trim();
+  d.lieferung3 = document.getElementById('lieferung3').value.trim();
+  d.lager1 = document.getElementById('lager1').value.trim();
+  d.lager3 = document.getElementById('lager3').value.trim();
+  d.bild1 = document.getElementById('bild1').value.trim();
+  d.bild2 = document.getElementById('bild2').value.trim();
+  d.bild3 = document.getElementById('bild3').value.trim();
+  d.sonstiges = document.getElementById('sonstiges').value.trim();
+  d.uploadBild1 = uploadImages[0] || "";
+  d.uploadBild2 = uploadImages[1] || "";
+  d.uploadBild3 = uploadImages[2] || "";
+  return d;
+}
+
+function setFormData(data) {
+  document.getElementById('baustellenname').value = data.baustellenname || '';
+  document.getElementById('baustellenadresse').value = data.baustellenadresse || '';
+  document.getElementById('craftnoteSuchbegriff').value = data.craftnoteSuchbegriff || '';
+  document.getElementById('craftnoteEingeladen').value = data.craftnoteEingeladen || 'nein';
+  document.getElementById('gesamteBaustelleStundenlohn').checked = !!data.gesamteBaustelleStundenlohn;
+  document.getElementById('teilweiseStundenlohn').checked = !!data.teilweiseStundenlohn;
+  document.getElementById('eventuellTeilweiseStundenlohn').checked = !!data.eventuellTeilweiseStundenlohn;
+  document.getElementById('festpreisangebot').checked = !!data.festpreisangebot;
+  document.getElementById('zugang').value = data.zugang || 'geruest';
+  document.getElementById('baustellenhoehe').value = data.baustellenhoehe || '2,00 m';
+  document.getElementById('worumGehtEs').value = data.worumGehtEs || '';
+  document.getElementById('lieferung1').value = data.lieferung1 || '';
+  document.getElementById('lieferung3').value = data.lieferung3 || '';
+  document.getElementById('lager1').value = data.lager1 || '';
+  document.getElementById('lager3').value = data.lager3 || '';
+  document.getElementById('bild1').value = data.bild1 || '';
+  document.getElementById('bild2').value = data.bild2 || '';
+  document.getElementById('bild3').value = data.bild3 || '';
+  document.getElementById('sonstiges').value = data.sonstiges || '';
+
+  uploadImages = [
+    data.uploadBild1 || "",
+    data.uploadBild2 || "",
+    data.uploadBild3 || ""
+  ];
+
+  updatePreview();
+}
+
+function resolvePreviewUrl(rawValue){
+  const raw = String(rawValue || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('http')) return raw;
+  if (raw.startsWith('data:image')) return raw;
+  const base = location.origin + location.pathname.replace(/baustellenstart-formular\.html$/i, '');
+  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
+}
+
+function buildMapsLink(data){
+  const query = data.baustellenadresse || data.baustellenname;
+  if (!query) return '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+}
+
+function buildSiteVersionText(data){
+  const mapsLink = buildMapsLink(data);
+
+  const abrechnung = [];
+  if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
+  if (data.teilweiseStundenlohn) abrechnung.push("Teilweise Stundenlohn");
+  if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
+  if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
+
+  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean);
+  const lager = [data.lager1, data.lager3].filter(Boolean);
+  const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
+
+  const lines = [];
+  lines.push("Neustart Baustelle");
+  lines.push("");
+
+  if (data.baustellenname) {
+    lines.push("Auftraggeber:");
+    lines.push(data.baustellenname);
+    lines.push("");
+  }
+
+  if (data.baustellenadresse) {
+    lines.push("Baustellenadresse:");
+    lines.push(data.baustellenadresse);
+    lines.push("");
+  }
+
+  if (mapsLink) {
+    lines.push("Google Maps:");
+    lines.push(mapsLink);
+    lines.push("");
+  }
+
+  if (data.craftnoteSuchbegriff) {
+    lines.push("Suchbegriff Craftnote:");
+    lines.push(data.craftnoteSuchbegriff);
+    lines.push("");
+  }
+
+  lines.push("Craftnote eingeladen:");
+  lines.push(data.craftnoteEingeladen === "ja" ? "Ja" : "Nein");
+  lines.push("");
+
+  if (abrechnung.length) {
+    lines.push("Abrechnungsart:");
+    lines.push(abrechnung.join(", "));
+    lines.push("");
+  }
+
+  lines.push("Zugang / Höhe:");
+  lines.push((data.zugang === "geruest" ? "Gerüst erforderlich" : "Leiter reicht") + " / " + data.baustellenhoehe);
+  lines.push("");
+
+  if (data.worumGehtEs) {
+    lines.push("Was ist zu tun:");
+    lines.push(data.worumGehtEs);
+    lines.push("");
+  }
+
+  if (lieferung.length) {
+    lines.push("Lieferung zur Baustelle:");
+    lieferung.forEach(v => lines.push("- " + v));
+    lines.push("");
+  }
+
+  if (lager.length) {
+    lines.push("Mitnahme aus dem Lager:");
+    lager.forEach(v => lines.push("- " + v));
+    lines.push("");
+  }
+
+  if (hasImages) {
+    lines.push("Bilder sind im Formular enthalten");
+    lines.push("");
+  }
+
+  if (data.sonstiges) {
+    lines.push("Sonstiges:");
+    lines.push(data.sonstiges);
+  }
+
+  return lines.join("\n").trim();
+}
+
+function updateImagePreview(boxId, uploadValue, pathValue){
+  const box = document.getElementById(boxId);
+  if (!box) return;
+  const url = resolvePreviewUrl(uploadValue || pathValue);
+  if (!url) {
+    box.innerHTML = 'Kein Bild';
+    return;
+  }
+  box.innerHTML = `<img src="${url}" alt="Vorschau" onerror="this.parentElement.innerHTML='Bild nicht gefunden';">`;
+}
+
+function updatePreview(){
+  const data = getFormData();
+  document.getElementById('previewText').textContent = buildSiteVersionText(data);
+
+  updateImagePreview('previewImage1', data.uploadBild1, data.bild1);
+  updateImagePreview('previewImage2', data.uploadBild2, data.bild2);
+  updateImagePreview('previewImage3', data.uploadBild3, data.bild3);
+
+  const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
+  const status = [];
+  if (data.baustellenname) status.push('Auftraggeber eingetragen');
+  if (data.baustellenadresse) status.push('Adresse vorhanden');
+  if (hasImages) status.push('Bilder vorhanden');
+  if (!status.length) status.push('Bereit.');
+  document.getElementById('statusLine').textContent = status.join(' | ');
+}
 
 function showCopyToast(){
-  const t=document.getElementById('copyToast');
-  t.style.opacity=1;
-  setTimeout(()=>t.style.opacity=0,1800);
-}
-
-function copySiteVersion(){
-  navigator.clipboard.writeText("Text kopiert");
-  showCopyToast();
-}
-
-function copyTextForCraftnote(){
-  navigator.clipboard.writeText("Text kopiert");
-  showCopyToast();
+  const toast = document.getElementById('copyToast');
+  if (!toast) return;
+  toast.style.opacity = '1';
+  clearTimeout(window.copyToastTimer);
+  window.copyToastTimer = setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 1800);
 }
 
 function saveBrowser(){
-  localStorage.setItem("test","ok");
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
 }
 
 function loadBrowser(){
-  alert("geladen");
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
+    return;
+  }
+  setFormData(JSON.parse(raw));
+  document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
 }
 
-function openPreview(){alert("Preview")}
-function openPreviewPl(){alert("PL")}
-function openPreviewAndPrint(){alert("PDF")}
-function openPreviewPrintAndWhatsApp(){alert("PDF + WA")}
-function openWhatsAppFromForm(){alert("WA")}
+function openPreview(){
+  const data = getFormData();
+  data.autoPrint = false;
+  data.autoWhatsApp = false;
+  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  window.open('baustellenstart.html', '_blank');
+}
+
+function openPreviewPl(){
+  const data = getFormData();
+  data.autoPrint = false;
+  data.autoWhatsApp = false;
+  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  window.open('baustellenstart-pl.html', '_blank');
+}
+
+function openPreviewAndPrint(){
+  const data = getFormData();
+  data.autoPrint = true;
+  data.autoWhatsApp = false;
+  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  window.open('baustellenstart.html', '_blank');
+}
+
+function openPreviewPrintAndWhatsApp(){
+  const data = getFormData();
+  data.autoPrint = true;
+  data.autoWhatsApp = true;
+  localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  window.open('baustellenstart.html', '_blank');
+}
+
+function openWhatsAppFromForm(){
+  const msg = buildSiteVersionText(getFormData());
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+}
+
+async function copySiteVersion(){
+  const msg = buildSiteVersionText(getFormData());
+  try{
+    await navigator.clipboard.writeText(msg);
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+  showCopyToast();
+}
+
+async function copyTextForCraftnote(){
+  const msg = buildSiteVersionText(getFormData());
+  try{
+    await navigator.clipboard.writeText(msg);
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+  }
+  document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
+  showCopyToast();
+}
 
 function resetForm(){
-  document.querySelectorAll("input,textarea").forEach(e=>e.value="");
+  if(!confirm('Formular wirklich leeren?')) return;
+  setFormData(defaultData());
+  document.getElementById('fileBild1').value = '';
+  document.getElementById('fileBild2').value = '';
+  document.getElementById('fileBild3').value = '';
+  uploadImages = ["","",""];
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Formular geleert.';
 }
 
+function bindImageUpload(inputId, index){
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.addEventListener('change', (event) => {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadImages[index] = e.target.result;
+      updatePreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+document.querySelectorAll('input[type="text"], textarea, select, input[type="checkbox"]').forEach(el => {
+  el.addEventListener('input', updatePreview);
+  el.addEventListener('change', updatePreview);
+});
+
+bindImageUpload('fileBild1', 0);
+bindImageUpload('fileBild2', 1);
+bindImageUpload('fileBild3', 2);
+
+(async function init(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      setFormData(JSON.parse(raw));
+      document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+      return;
+    }
+
+    const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      setFormData({...defaultData(), ...data});
+      document.getElementById('statusLine').textContent = 'baustellenstart.json geladen.';
+      return;
+    }
+  } catch(e) {}
+
+  setFormData(defaultData());
+})();
 </script>
 
 </body>
