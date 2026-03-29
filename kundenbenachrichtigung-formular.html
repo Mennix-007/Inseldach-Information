@@ -484,8 +484,10 @@ Balkonabdichtung mit Triflex</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'kundenbenachrichtigung_formular_v6';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v7';
 let uploadImages = ["", "", ""];
+let pendingImageReads = 0;
+let pendingSaveAfterImages = false;
 
 function defaultData() {
   return {
@@ -616,6 +618,7 @@ function updatePreview(){
   if (data.kunde) status.push('Kunde eingetragen');
   if (data.baustellenadresse) status.push('Adresse vorhanden');
   if (hasImages) status.push('Bilder vorhanden');
+  if (pendingImageReads > 0) status.push('Bilder werden verarbeitet');
   if (!status.length) status.push('Bereit.');
   document.getElementById('statusLine').textContent = status.join(' | ');
 }
@@ -631,11 +634,26 @@ function showToast(message){
   }, 1800);
 }
 
+function doBrowserSave(successMessage = 'Im Browser gespeichert.'){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+    updatePreview();
+    document.getElementById('statusLine').textContent = successMessage;
+    showToast(successMessage);
+  }catch(e){
+    document.getElementById('statusLine').textContent = 'Speichern fehlgeschlagen.';
+    showToast('Speichern fehlgeschlagen.');
+  }
+}
+
 function saveBrowser(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
-  updatePreview();
-  document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
-  showToast('Im Browser gespeichert.');
+  if (pendingImageReads > 0) {
+    pendingSaveAfterImages = true;
+    document.getElementById('statusLine').textContent = 'Bild wird noch verarbeitet – Speicherung folgt automatisch.';
+    showToast('Bild wird verarbeitet – Speicherung folgt automatisch.');
+    return;
+  }
+  doBrowserSave('Im Browser gespeichert.');
 }
 
 function loadBrowser(){
@@ -708,21 +726,60 @@ function resetForm(){
   document.getElementById('fileBild2').value = '';
   document.getElementById('fileBild3').value = '';
   uploadImages = ["","",""];
+  pendingImageReads = 0;
+  pendingSaveAfterImages = false;
   updatePreview();
   document.getElementById('statusLine').textContent = 'Formular geleert.';
+}
+
+function finalizeImageProcessing(){
+  pendingImageReads = Math.max(0, pendingImageReads - 1);
+  updatePreview();
+
+  if (pendingImageReads === 0 && pendingSaveAfterImages) {
+    pendingSaveAfterImages = false;
+    doBrowserSave('Bild verarbeitet und im Browser gespeichert.');
+  }
 }
 
 function bindImageUpload(inputId, index){
   const input = document.getElementById(inputId);
   if (!input) return;
+
   input.addEventListener('change', (event) => {
     const file = event.target.files && event.target.files[0];
-    if (!file) return;
+
+    if (!file) {
+      uploadImages[index] = "";
+      updatePreview();
+      doBrowserSave('Im Browser gespeichert.');
+      return;
+    }
+
+    pendingImageReads += 1;
+    document.getElementById('statusLine').textContent = 'Bild wird verarbeitet...';
+    updatePreview();
+
     const reader = new FileReader();
+
     reader.onload = (e) => {
-      uploadImages[index] = e.target.result;
+      uploadImages[index] = e.target.result || "";
       updatePreview();
     };
+
+    reader.onerror = () => {
+      uploadImages[index] = "";
+      document.getElementById('statusLine').textContent = 'Bild konnte nicht verarbeitet werden.';
+      showToast('Bild konnte nicht verarbeitet werden.');
+    };
+
+    reader.onloadend = () => {
+      finalizeImageProcessing();
+      if (pendingImageReads === 0 && !pendingSaveAfterImages) {
+        doBrowserSave('Bild übernommen und im Browser gespeichert.');
+      }
+    };
+
     reader.readAsDataURL(file);
   });
 }
