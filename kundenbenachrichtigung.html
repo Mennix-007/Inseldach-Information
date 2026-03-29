@@ -391,7 +391,6 @@ body{
   <aside class="sideBar">
     <div class="sideBarTitle">Aktionen</div>
     <div class="sideBarButtons">
-      <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
       <button class="btn" type="button" onclick="openPrintDialog()">Drucken / PDF</button>
       <button class="btn" type="button" onclick="reloadView()">Neu laden</button>
     </div>
@@ -612,106 +611,6 @@ function updateStatusBar(data){
   }
 }
 
-function buildCustomerVersionText(data){
-  const mapsLink = buildGoogleMapsLink(data);
-  const imageLinks = buildImageLinks(data);
-
-  const lines = [];
-  lines.push("Moin,");
-  lines.push("");
-  lines.push("wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren.");
-  lines.push("");
-
-  if (data.kunde) {
-    lines.push("Kunde:");
-    lines.push(String(data.kunde).trim());
-    lines.push("");
-  }
-
-  if (data.baustellenadresse) {
-    lines.push("Baustellenadresse:");
-    lines.push(String(data.baustellenadresse).trim());
-    lines.push("");
-  }
-
-  if (mapsLink) {
-    lines.push("Google Maps:");
-    lines.push(mapsLink);
-    lines.push("");
-  }
-
-  if (imageLinks.length) {
-    lines.push("Bilder:");
-    imageLinks.forEach((link, idx) => {
-      lines.push("Bild " + (idx + 1) + ":");
-      lines.push(link);
-    });
-    lines.push("");
-  }
-
-  if (data.text) {
-    lines.push("Aktuelle Information:");
-    lines.push(String(data.text).trim());
-    lines.push("");
-  }
-
-  lines.push("Das können wir Ihnen auch anbieten:");
-  lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex, Photovoltaik- und Solaranlagenbau – alles aus einer Hand, Fertiggauben in nur einem Tag – schnell und sauber montiert, Regelmäßige Dachwartung – frühzeitig Schäden erkennen und Kosten sparen, Schneller Sturmschaden-Service – wir sind kurzfristig für Sie da, Arbeiten rund um Ihr Haus – flexibel und zuverlässig umgesetzt, Energieberatung inklusive Förderanträgen – wir holen das Maximum für Sie raus");
-  lines.push("");
-
-  if (data.feedbackFrage1) lines.push(String(data.feedbackFrage1).trim());
-  if (data.feedbackFrage2) lines.push(String(data.feedbackFrage2).trim());
-  lines.push("");
-  if (data.feedbackAntwortVorlage) lines.push(String(data.feedbackAntwortVorlage).trim());
-
-  if (data.sonstiges) {
-    lines.push("");
-    lines.push("Sonstiges:");
-    lines.push(String(data.sonstiges).trim());
-  }
-
-  return lines.join("\n").trim();
-}
-
-function buildWhatsAppText(data){
-  return buildCustomerVersionText(data);
-}
-
-function openWhatsApp(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
-    return;
-  }
-
-  const msg = buildWhatsAppText(kundenData);
-  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(() => {
-    if (document.hasFocus()) {
-      window.location.href = url;
-    }
-  }, 500);
-}
-
-function openPrintDialog(){
-  window.focus();
-  setTimeout(() => {
-    window.print();
-  }, 100);
-}
-
-function reloadView(){
-  location.reload();
-}
-
 async function loadKundeninfo() {
   try {
     const raw = localStorage.getItem('kundenbenachrichtigung_preview_data');
@@ -753,6 +652,17 @@ async function loadKundeninfo() {
   } catch (err) {
     alert('kundeninfo.json konnte nicht geladen werden.');
   }
+}
+
+function openPrintDialog(){
+  window.focus();
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+function reloadView(){
+  location.reload();
 }
 
 loadKundeninfo();
