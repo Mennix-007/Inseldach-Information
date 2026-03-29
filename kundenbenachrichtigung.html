@@ -392,8 +392,8 @@ body{
     <div class="sideBarTitle">Aktionen</div>
     <div class="sideBarButtons">
       <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
-      <button class="btn" type="button" onclick="window.print()">Drucken / PDF</button>
-      <button class="btn" type="button" onclick="location.reload()">Neu laden</button>
+      <button class="btn" type="button" onclick="openPrintDialog()">Drucken / PDF</button>
+      <button class="btn" type="button" onclick="reloadView()">Neu laden</button>
     </div>
   </aside>
 
@@ -688,6 +688,17 @@ function openWhatsApp(){
   window.open(url, "_blank");
 }
 
+function openPrintDialog(){
+  window.focus();
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+function reloadView(){
+  location.reload();
+}
+
 async function loadKundeninfo() {
   try {
     const raw = localStorage.getItem('kundenbenachrichtigung_preview_data');
@@ -723,7 +734,7 @@ async function loadKundeninfo() {
       data.autoPrint = false;
       data.autoWhatsApp = false;
       localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
-      setTimeout(() => window.print(), 400);
+      setTimeout(() => openPrintDialog(), 400);
     }
 
   } catch (err) {
