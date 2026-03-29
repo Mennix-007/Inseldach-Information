@@ -691,10 +691,7 @@ function openWhatsApp(){
 
   const msg = buildWhatsAppText(kundenData);
   const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-  const win = window.open(url, "_blank");
-  if (!win) {
-    window.location.href = url;
-  }
+  location.href = url;
 }
 
 function openPrintDialog(){
