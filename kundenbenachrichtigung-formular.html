@@ -414,7 +414,7 @@ body{
               <input id="fileBild3" type="file" accept="image/*">
             </div>
           </div>
-          <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. In den eingegebenen Daten steht nur, ob ein Bild vorhanden ist.</div>
+          <div class="helper">Die Bilder werden direkt für Vorschau und Druckansicht verwendet. Sie werden nicht im Browser-Stand gespeichert.</div>
         </div>
 
         <div class="section">
@@ -484,10 +484,8 @@ Balkonabdichtung mit Triflex</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'kundenbenachrichtigung_formular_v7';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v8';
 let uploadImages = ["", "", ""];
-let pendingImageReads = 0;
-let pendingSaveAfterImages = false;
 
 function defaultData() {
   return {
@@ -505,7 +503,7 @@ function defaultData() {
   };
 }
 
-function getFormData() {
+function getFormData(includeImages = true) {
   const d = defaultData();
   d.kunde = document.getElementById('kunde').value.trim();
   d.baustellenadresse = document.getElementById('baustellenadresse').value.trim();
@@ -514,10 +512,18 @@ function getFormData() {
   d.bild2 = document.getElementById('bild2').value.trim();
   d.bild3 = document.getElementById('bild3').value.trim();
   d.sonstiges = document.getElementById('sonstiges').value.trim();
-  d.uploadBild1 = uploadImages[0] || "";
-  d.uploadBild2 = uploadImages[1] || "";
-  d.uploadBild3 = uploadImages[2] || "";
+
+  if (includeImages) {
+    d.uploadBild1 = uploadImages[0] || "";
+    d.uploadBild2 = uploadImages[1] || "";
+    d.uploadBild3 = uploadImages[2] || "";
+  }
+
   return d;
+}
+
+function getBrowserSaveData() {
+  return getFormData(false);
 }
 
 function setFormData(data) {
@@ -528,12 +534,6 @@ function setFormData(data) {
   document.getElementById('bild2').value = data.bild2 || '';
   document.getElementById('bild3').value = data.bild3 || '';
   document.getElementById('sonstiges').value = data.sonstiges || '';
-
-  uploadImages = [
-    data.uploadBild1 || "",
-    data.uploadBild2 || "",
-    data.uploadBild3 || ""
-  ];
 
   updatePreview();
 }
@@ -606,7 +606,7 @@ function updateImagePreview(boxId, uploadValue, pathValue){
 }
 
 function updatePreview(){
-  const data = getFormData();
+  const data = getFormData(true);
   document.getElementById('previewText').textContent = buildCustomerText(data);
 
   updateImagePreview('previewImage1', data.uploadBild1, data.bild1);
@@ -618,7 +618,6 @@ function updatePreview(){
   if (data.kunde) status.push('Kunde eingetragen');
   if (data.baustellenadresse) status.push('Adresse vorhanden');
   if (hasImages) status.push('Bilder vorhanden');
-  if (pendingImageReads > 0) status.push('Bilder werden verarbeitet');
   if (!status.length) status.push('Bereit.');
   document.getElementById('statusLine').textContent = status.join(' | ');
 }
@@ -631,29 +630,21 @@ function showToast(message){
   clearTimeout(window.copyToastTimer);
   window.copyToastTimer = setTimeout(() => {
     toast.style.opacity = '0';
-  }, 1800);
+  }, 2200);
 }
 
-function doBrowserSave(successMessage = 'Im Browser gespeichert.'){
+function saveBrowser(){
   try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
+    document.getElementById('statusLine').textContent = 'Speicherung läuft ...';
+    showToast('Speicherung läuft ...');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getBrowserSaveData()));
     updatePreview();
-    document.getElementById('statusLine').textContent = successMessage;
-    showToast(successMessage);
+    document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
+    showToast('Im Browser gespeichert.');
   }catch(e){
     document.getElementById('statusLine').textContent = 'Speichern fehlgeschlagen.';
     showToast('Speichern fehlgeschlagen.');
   }
-}
-
-function saveBrowser(){
-  if (pendingImageReads > 0) {
-    pendingSaveAfterImages = true;
-    document.getElementById('statusLine').textContent = 'Bild wird noch verarbeitet – Speicherung folgt automatisch.';
-    showToast('Bild wird verarbeitet – Speicherung folgt automatisch.');
-    return;
-  }
-  doBrowserSave('Im Browser gespeichert.');
 }
 
 function loadBrowser(){
@@ -662,12 +653,15 @@ function loadBrowser(){
     document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
     return;
   }
-  setFormData(JSON.parse(raw));
-  document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+
+  const data = JSON.parse(raw);
+  setFormData(data);
+  document.getElementById('statusLine').textContent = 'Browser-Stand geladen. Bilder werden nicht aus dem Browser-Stand geladen.';
+  showToast('Browser-Stand geladen.');
 }
 
 function openPreview(){
-  const data = getFormData();
+  const data = getFormData(true);
   data.autoPrint = false;
   data.autoWhatsApp = false;
   localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
@@ -675,7 +669,7 @@ function openPreview(){
 }
 
 function openPreviewAndPrint(){
-  const data = getFormData();
+  const data = getFormData(true);
   data.autoPrint = true;
   data.autoWhatsApp = false;
   localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
@@ -683,12 +677,12 @@ function openPreviewAndPrint(){
 }
 
 function openWhatsAppFromForm(){
-  const msg = buildCustomerText(getFormData());
+  const msg = buildCustomerText(getFormData(true));
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 
 async function copyCustomerVersion(){
-  const msg = buildCustomerText(getFormData());
+  const msg = buildCustomerText(getFormData(true));
   try{
     await navigator.clipboard.writeText(msg);
   }catch(e){
@@ -704,7 +698,7 @@ async function copyCustomerVersion(){
 }
 
 async function copyTextForCraftnote(){
-  const msg = buildCustomerText(getFormData());
+  const msg = buildCustomerText(getFormData(true));
   try{
     await navigator.clipboard.writeText(msg);
   }catch(e){
@@ -726,20 +720,8 @@ function resetForm(){
   document.getElementById('fileBild2').value = '';
   document.getElementById('fileBild3').value = '';
   uploadImages = ["","",""];
-  pendingImageReads = 0;
-  pendingSaveAfterImages = false;
   updatePreview();
   document.getElementById('statusLine').textContent = 'Formular geleert.';
-}
-
-function finalizeImageProcessing(){
-  pendingImageReads = Math.max(0, pendingImageReads - 1);
-  updatePreview();
-
-  if (pendingImageReads === 0 && pendingSaveAfterImages) {
-    pendingSaveAfterImages = false;
-    doBrowserSave('Bild verarbeitet und im Browser gespeichert.');
-  }
 }
 
 function bindImageUpload(inputId, index){
@@ -752,32 +734,26 @@ function bindImageUpload(inputId, index){
     if (!file) {
       uploadImages[index] = "";
       updatePreview();
-      doBrowserSave('Im Browser gespeichert.');
       return;
     }
 
-    pendingImageReads += 1;
-    document.getElementById('statusLine').textContent = 'Bild wird verarbeitet...';
-    updatePreview();
+    document.getElementById('statusLine').textContent = 'Bild wird verarbeitet ...';
+    showToast('Bild wird verarbeitet ...');
 
     const reader = new FileReader();
 
     reader.onload = (e) => {
       uploadImages[index] = e.target.result || "";
       updatePreview();
+      document.getElementById('statusLine').textContent = 'Bild übernommen.';
+      showToast('Bild übernommen.');
     };
 
     reader.onerror = () => {
       uploadImages[index] = "";
+      updatePreview();
       document.getElementById('statusLine').textContent = 'Bild konnte nicht verarbeitet werden.';
       showToast('Bild konnte nicht verarbeitet werden.');
-    };
-
-    reader.onloadend = () => {
-      finalizeImageProcessing();
-      if (pendingImageReads === 0 && !pendingSaveAfterImages) {
-        doBrowserSave('Bild übernommen und im Browser gespeichert.');
-      }
     };
 
     reader.readAsDataURL(file);
