@@ -258,18 +258,23 @@ body{
 
 #copyToast{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#163d7a;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(22,61,122,0.96);
   color:#fff;
-  padding:12px 18px;
-  border-radius:12px;
+  padding:18px 28px;
+  border-radius:16px;
   font-weight:700;
+  font-size:18px;
+  text-align:center;
   opacity:0;
   pointer-events:none;
   transition:opacity .25s ease;
-  z-index:9999;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  z-index:99999;
+  box-shadow:0 12px 32px rgba(0,0,0,.22);
+  max-width:min(92vw, 520px);
+  width:max-content;
 }
 
 @media (max-width: 1300px){
@@ -325,10 +330,10 @@ body{
   }
 
   #copyToast{
-    right:10px;
-    left:10px;
-    bottom:12px;
-    text-align:center;
+    width:calc(100vw - 32px);
+    max-width:420px;
+    font-size:16px;
+    padding:16px 18px;
   }
 }
 </style>
@@ -628,12 +633,12 @@ function updatePreview(){
 function showToast(message){
   const toast = document.getElementById('copyToast');
   if (!toast) return;
-  toast.textContent = message || 'Inhalt kopiert.';
+  toast.textContent = message || 'Fertig.';
   toast.style.opacity = '1';
   clearTimeout(window.copyToastTimer);
   window.copyToastTimer = setTimeout(() => {
     toast.style.opacity = '0';
-  }, 2200);
+  }, 3000);
 }
 
 function saveBrowser(){
@@ -655,6 +660,7 @@ function loadBrowser(){
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
     document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
+    showToast('Kein Browser-Stand gefunden.');
     return;
   }
 
@@ -669,6 +675,7 @@ function openPreview(){
   data.autoPrint = false;
   data.autoWhatsApp = false;
   localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  showToast('Kundenansicht wird geöffnet.');
   window.open('kundenbenachrichtigung.html', '_blank');
 }
 
@@ -677,11 +684,13 @@ function openPreviewAndPrint(){
   data.autoPrint = true;
   data.autoWhatsApp = false;
   localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
+  showToast('PDF-Ansicht wird geöffnet.');
   window.open('kundenbenachrichtigung.html', '_blank');
 }
 
 function openWhatsAppFromForm(){
   const msg = buildCustomerText(getFormData(true));
+  showToast('WhatsApp wird geöffnet.');
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 
@@ -726,6 +735,7 @@ function resetForm(){
   uploadImages = ["","",""];
   updatePreview();
   document.getElementById('statusLine').textContent = 'Formular geleert.';
+  showToast('Formular geleert.');
 }
 
 function bindImageUpload(inputId, index){
@@ -738,6 +748,7 @@ function bindImageUpload(inputId, index){
     if (!file) {
       uploadImages[index] = "";
       updatePreview();
+      showToast('Bild entfernt.');
       return;
     }
 
@@ -781,6 +792,7 @@ bindImageUpload('fileBild3', 2);
     if (raw) {
       setFormData(JSON.parse(raw));
       document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+      showToast('Browser-Stand geladen.');
       return;
     }
 
@@ -791,6 +803,7 @@ bindImageUpload('fileBild3', 2);
       delete cleaned.baustellenname;
       setFormData(cleaned);
       document.getElementById('statusLine').textContent = 'kundeninfo.json geladen.';
+      showToast('kundeninfo.json geladen.');
       return;
     }
   } catch(e) {}
