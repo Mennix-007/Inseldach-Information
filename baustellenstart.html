@@ -18,45 +18,84 @@ body{
 .topBar{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
   background:#163d7a;
   color:#fff;
-  padding:12px 18px;
+  padding:14px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
 .topBarTitle{
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
+  line-height:1.2;
 }
 
-.topBarActions{
+.topBarLogo img{
+  max-height:50px;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:10px;
+}
+
+.pageLayout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:20px;
+  max-width:1600px;
+  margin:20px auto;
+  padding:0 16px 24px;
+  align-items:start;
+}
+
+.sideBar{
+  background:#163d7a;
+  border-radius:18px;
+  padding:16px;
+  position:sticky;
+  top:90px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+}
+
+.sideBarTitle{
+  color:#fff;
+  text-align:center;
+  font-weight:800;
+  margin-bottom:14px;
+  font-size:18px;
+}
+
+.sideBarButtons{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:12px;
 }
 
 .btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
+  width:100%;
+  min-height:54px;
+  border-radius:12px;
+  padding:12px;
   font-size:15px;
   font-weight:700;
   cursor:pointer;
+  background:#fff;
+  color:#163d7a;
+  border:1px solid #d4dbe4;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  transition:all .15s ease;
 }
 
-.btnBlue{background:#fff;color:#163d7a;}
-.btnYellow{background:#ffd400;color:#000;}
-.btnGreen{background:#25D366;color:#111;}
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
 
 .page{
-  max-width:1180px;
-  margin:22px auto;
   background:#fff;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
   border-radius:18px;
@@ -260,12 +299,23 @@ body{
   color:#555;
 }
 
-@media (max-width: 900px){
-  .page{
-    margin:12px;
-    padding:18px;
+@media (max-width:1100px){
+  .pageLayout{
+    grid-template-columns:1fr;
   }
 
+  .sideBar{
+    position:static;
+  }
+
+  .sideBarButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+}
+
+@media (max-width:900px){
   .docHeader{
     flex-direction:column;
   }
@@ -279,12 +329,27 @@ body{
   .checkGrid4,
   .checkGrid2,
   .doubleGrid,
-  .imageGrid{
+  .imageGrid,
+  .sideBarButtons{
     grid-template-columns:1fr;
   }
 
   .topBar{
     position:static;
+    padding:12px 14px;
+  }
+
+  .topBarTitle{
+    font-size:20px;
+  }
+
+  .pageLayout{
+    padding:0 10px 18px;
+  }
+
+  .page,
+  .sideBar{
+    padding:18px;
   }
 }
 
@@ -293,8 +358,16 @@ body{
     background:#fff;
   }
 
-  .topBar{
+  .topBar,
+  .sideBar{
     display:none !important;
+  }
+
+  .pageLayout{
+    display:block;
+    max-width:none;
+    margin:0;
+    padding:0;
   }
 
   .page{
@@ -311,119 +384,130 @@ body{
 
 <div class="topBar">
   <div class="topBarTitle">Start neue Baustelle – Druckansicht</div>
-  <div class="topBarActions">
-    <button class="btn btnGreen" type="button" onclick="openWhatsApp()">WhatsApp</button>
-    <button class="btn btnBlue" type="button" onclick="openPolishVersion()">Polnisch</button>
-    <button class="btn btnYellow" type="button" onclick="window.print()">Drucken / PDF</button>
-    <button class="btn btnBlue" type="button" onclick="location.reload()">Neu laden</button>
+  <div class="topBarLogo">
+    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
   </div>
 </div>
 
-<div class="page">
-  <div class="docHeader">
-    <div class="docTitleWrap">
-      <h1 class="docTitle" id="docTitle">Neustart Baustelle</h1>
-      <p class="docSub" id="docDate"></p>
+<div class="pageLayout">
+
+  <aside class="sideBar">
+    <div class="sideBarTitle">Aktionen</div>
+    <div class="sideBarButtons">
+      <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
+      <button class="btn" type="button" onclick="openPolishVersion()">Polnisch</button>
+      <button class="btn" type="button" onclick="window.print()">Drucken / PDF</button>
+      <button class="btn" type="button" onclick="location.reload()">Neu laden</button>
     </div>
-    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
-  </div>
+  </aside>
 
-  <div class="section">
-    <h2 class="sectionTitle">Auftraggeber</h2>
-    <div class="box" id="baustellenname">—</div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Baustellenadresse</h2>
-    <div class="box addressBox" id="baustellenadresse">—</div>
-
-    <div class="infoRow">
-      <div class="smallInfoBox">
-        <div class="infoLabel">Suchbegriff Craftnote</div>
-        <div class="infoValue" id="craftnoteSuchbegriff">—</div>
+  <div class="page">
+    <div class="docHeader">
+      <div class="docTitleWrap">
+        <h1 class="docTitle" id="docTitle">Neustart Baustelle</h1>
+        <p class="docSub" id="docDate"></p>
       </div>
-      <div class="smallInfoBox">
-        <div class="infoLabel">Craftnote eingeladen</div>
-        <div class="infoValue" id="craftnoteEingeladen">—</div>
-      </div>
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
     </div>
-  </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Abrechnungsart</h2>
-    <div class="checkGrid4">
-      <div class="checkItem"><span class="mark" id="m_gesamt"></span><span>Gesamte Baustelle Stundenlohn</span></div>
-      <div class="checkItem"><span class="mark" id="m_teilweise"></span><span>Teilweise Stundenlohn</span></div>
-      <div class="checkItem"><span class="mark" id="m_eventuell"></span><span>Eventuell teilweise Stundenlohn</span></div>
-      <div class="checkItem"><span class="mark" id="m_festpreis"></span><span>Festpreisangebot</span></div>
+    <div class="section">
+      <h2 class="sectionTitle">Auftraggeber</h2>
+      <div class="box" id="baustellenname">—</div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Zugang / Baustellenhöhe</h2>
-    <div class="checkGrid2">
-      <div>
-        <div class="checkItem"><span class="mark" id="m_geruest"></span><span>Gerüst erforderlich</span></div>
-        <div style="height:10px"></div>
-        <div class="checkItem"><span class="mark" id="m_leiter"></span><span>Leiter reicht</span></div>
-      </div>
-      <div class="heightBox">
-        <strong>Baustellenhöhe:</strong>
-        <span id="baustellenhoehe">2,00 m</span>
+    <div class="section">
+      <h2 class="sectionTitle">Baustellenadresse</h2>
+      <div class="box addressBox" id="baustellenadresse">—</div>
+
+      <div class="infoRow">
+        <div class="smallInfoBox">
+          <div class="infoLabel">Suchbegriff Craftnote</div>
+          <div class="infoValue" id="craftnoteSuchbegriff">—</div>
+        </div>
+        <div class="smallInfoBox">
+          <div class="infoLabel">Craftnote eingeladen</div>
+          <div class="infoValue" id="craftnoteEingeladen">—</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Worum geht es hier / Was muss gemacht werden</h2>
-    <div class="box" id="worumGehtEs">—</div>
-  </div>
+    <div class="section">
+      <h2 class="sectionTitle">Abrechnungsart</h2>
+      <div class="checkGrid4">
+        <div class="checkItem"><span class="mark" id="m_gesamt"></span><span>Gesamte Baustelle Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_teilweise"></span><span>Teilweise Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_eventuell"></span><span>Eventuell teilweise Stundenlohn</span></div>
+        <div class="checkItem"><span class="mark" id="m_festpreis"></span><span>Festpreisangebot</span></div>
+      </div>
+    </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Was wird zur Baustelle geliefert</h2>
-    <div class="doubleGrid">
-      <div>
-        <div class="doubleColTitle">Feld 1</div>
-        <div class="box" id="lieferung1">—</div>
+    <div class="section">
+      <h2 class="sectionTitle">Zugang / Baustellenhöhe</h2>
+      <div class="checkGrid2">
+        <div>
+          <div class="checkItem"><span class="mark" id="m_geruest"></span><span>Gerüst erforderlich</span></div>
+          <div style="height:10px"></div>
+          <div class="checkItem"><span class="mark" id="m_leiter"></span><span>Leiter reicht</span></div>
+        </div>
+        <div class="heightBox">
+          <strong>Baustellenhöhe:</strong>
+          <span id="baustellenhoehe">2,00 m</span>
+        </div>
       </div>
-      <div>
-        <div class="doubleColTitle">Feld 2</div>
-        <div class="box" id="lieferung3">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Worum geht es hier / Was muss gemacht werden</h2>
+      <div class="box" id="worumGehtEs">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Was wird zur Baustelle geliefert</h2>
+      <div class="doubleGrid">
+        <div>
+          <div class="doubleColTitle">Feld 1</div>
+          <div class="box" id="lieferung1">—</div>
+        </div>
+        <div>
+          <div class="doubleColTitle">Feld 2</div>
+          <div class="box" id="lieferung3">—</div>
+        </div>
       </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Was muss mitgenommen werden vom Lager</h2>
+      <div class="doubleGrid">
+        <div>
+          <div class="doubleColTitle">Feld 1</div>
+          <div class="box" id="lager1">—</div>
+        </div>
+        <div>
+          <div class="doubleColTitle">Feld 2</div>
+          <div class="box" id="lager3">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Fotos vor Arbeitsbeginn</h2>
+      <div class="imageGrid">
+        <div class="imageCard empty" id="bildBox1">Kein Bild</div>
+        <div class="imageCard empty" id="bildBox2">Kein Bild</div>
+        <div class="imageCard empty" id="bildBox3">Kein Bild</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Sonstiges bitte nicht vergessen</h2>
+      <div class="box" id="sonstiges">—</div>
+    </div>
+
+    <div class="footerNote">
+      Inseldachdecker – automatisch erzeugte Baustellen-Startunterlage
     </div>
   </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Was muss mitgenommen werden vom Lager</h2>
-    <div class="doubleGrid">
-      <div>
-        <div class="doubleColTitle">Feld 1</div>
-        <div class="box" id="lager1">—</div>
-      </div>
-      <div>
-        <div class="doubleColTitle">Feld 2</div>
-        <div class="box" id="lager3">—</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Fotos vor Arbeitsbeginn</h2>
-    <div class="imageGrid">
-      <div class="imageCard empty" id="bildBox1">Kein Bild</div>
-      <div class="imageCard empty" id="bildBox2">Kein Bild</div>
-      <div class="imageCard empty" id="bildBox3">Kein Bild</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Sonstiges bitte nicht vergessen</h2>
-    <div class="box" id="sonstiges">—</div>
-  </div>
-
-  <div class="footerNote">
-    Inseldachdecker – automatisch erzeugte Baustellen-Startunterlage
-  </div>
 </div>
 
 <script>
