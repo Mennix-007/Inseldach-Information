@@ -6,10 +6,6 @@
 <title>Kundenbenachrichtigung</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
-
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
@@ -20,173 +16,53 @@ body{
 .topBar{
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:50;
   background:#163d7a;
   color:#fff;
-  padding:14px 22px;
+  padding:12px 18px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:16px;
+  gap:12px;
+  flex-wrap:wrap;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
 .topBarTitle{
-  font-size:24px;
+  font-size:22px;
   font-weight:800;
-  line-height:1.2;
 }
 
-.topBarLogo img{
-  max-height:50px;
-  background:#fff;
-  padding:4px 8px;
-  border-radius:10px;
-}
-
-.pageLayout{
-  display:grid;
-  grid-template-columns:260px 1fr;
-  gap:20px;
-  max-width:1600px;
-  margin:20px auto;
-  padding:0 16px 24px;
-  align-items:start;
-}
-
-.sideBar{
-  background:#163d7a;
-  border-radius:18px;
-  padding:16px;
-  position:sticky;
-  top:90px;
-  box-shadow:0 8px 28px rgba(0,0,0,.12);
-}
-
-.sideBarTitle{
-  color:#fff;
-  text-align:center;
-  font-weight:800;
-  margin-bottom:14px;
-  font-size:18px;
-}
-
-.sideBarButtons{
+.topBarActions{
   display:flex;
-  flex-direction:column;
-  gap:12px;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .btn{
-  width:100%;
-  min-height:54px;
-  border-radius:12px;
-  padding:12px;
+  border:none;
+  border-radius:10px;
+  padding:10px 14px;
   font-size:15px;
   font-weight:700;
   cursor:pointer;
-  background:#fff;
-  color:#163d7a;
-  border:1px solid #d4dbe4;
-  box-shadow:0 2px 6px rgba(0,0,0,.08);
-  transition:all .15s ease;
 }
 
-.btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 4px 10px rgba(0,0,0,.12);
-}
+.btnBlue{ background:#fff; color:#163d7a; }
+.btnYellow{ background:#ffd400; color:#000; }
+.btnGreen{ background:#25D366; color:#111; }
 
 .page{
+  max-width:1100px;
+  margin:22px auto;
   background:#fff;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
   border-radius:18px;
   padding:26px;
-  box-sizing:border-box;
-}
-
-.statusBar{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:16px;
-}
-
-.statusCard{
-  border:1px solid #d7e0ea;
-  border-radius:12px;
-  padding:10px 12px;
-  background:#f8fafc;
-}
-
-.statusLabel{
-  font-size:12px;
-  font-weight:800;
-  color:#163d7a;
-  text-transform:uppercase;
-  letter-spacing:.25px;
-  margin-bottom:4px;
-}
-
-.statusValue{
-  font-size:15px;
-  font-weight:700;
-}
-
-.statusOk{ color:#1c7c36; }
-.statusWarn{ color:#b06a00; }
-
-.alertBox{
-  display:none;
-  margin-bottom:16px;
-  border:1px solid #e4b200;
-  background:#fff4bf;
-  color:#5b4600;
-  border-radius:12px;
-  padding:12px 14px;
-  font-weight:700;
-}
-
-.docHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:20px;
-  margin-bottom:22px;
-  border-bottom:3px solid #163d7a;
-  padding-bottom:16px;
-}
-
-.docTitleWrap{
-  flex:1;
-  min-width:0;
-}
-
-.docTitle{
-  font-size:34px;
-  font-weight:900;
-  margin:0 0 8px;
-  color:#8b1e1e;
-}
-
-.docSub{
-  font-size:15px;
-  color:#444;
-  margin:0;
-  line-height:1.45;
-}
-
-.docLogo{
-  width:220px;
-  max-width:36%;
-  height:auto;
-  object-fit:contain;
 }
 
 .section{
   margin-bottom:18px;
-  break-inside:avoid;
-  page-break-inside:avoid;
 }
 
 .sectionTitle{
@@ -201,537 +77,161 @@ body{
   border-radius:12px;
   padding:12px 14px;
   background:#fbfcfd;
-  min-height:22px;
   white-space:pre-wrap;
-  line-height:1.5;
-}
-
-.leistungenBox{
-  columns:2;
-  column-gap:24px;
 }
 
 .imageGrid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(3,1fr);
   gap:14px;
-}
-
-.imageWrap{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.imageLabel{
-  font-size:15px;
-  font-weight:800;
-  color:#8b1e1e;
 }
 
 .imageCard{
   border:1px solid #cfd6df;
   border-radius:12px;
   background:#fbfcfd;
-  overflow:hidden;
-  min-height:220px;
+  min-height:200px;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.imageCard.empty{
-  color:#666;
-  font-weight:700;
-  background:repeating-linear-gradient(
-    45deg,
-    #f4f6f8,
-    #f4f6f8 12px,
-    #eef2f5 12px,
-    #eef2f5 24px
-  );
-}
-
 .imageCard img{
   width:100%;
-  height:230px;
+  height:200px;
   object-fit:contain;
-  display:block;
-  background:#fff;
-}
-
-.imageInfo{
-  margin-top:10px;
-  border:1px solid #d7e0ea;
-  border-radius:12px;
-  padding:10px 12px;
-  background:#f8fafc;
-  font-weight:700;
-  color:#444;
-}
-
-.feedbackGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-.footerNote{
-  margin-top:24px;
-  padding-top:14px;
-  border-top:2px solid #e6ebf0;
-  font-size:13px;
-  color:#555;
-}
-
-@media (max-width:1100px){
-  .pageLayout{
-    grid-template-columns:1fr;
-  }
-
-  .sideBar{
-    position:static;
-  }
-
-  .sideBarButtons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-  }
-}
-
-@media (max-width: 900px){
-  .statusBar,
-  .imageGrid,
-  .feedbackGrid,
-  .sideBarButtons{
-    grid-template-columns:1fr;
-  }
-
-  .leistungenBox{
-    columns:1;
-  }
-
-  .docHeader{
-    flex-direction:column;
-  }
-
-  .docLogo{
-    max-width:220px;
-    width:220px;
-  }
-
-  .topBar{
-    position:static;
-    padding:12px 14px;
-  }
-
-  .topBarTitle{
-    font-size:20px;
-  }
-
-  .pageLayout{
-    padding:0 10px 18px;
-  }
-
-  .page,
-  .sideBar{
-    padding:18px;
-  }
-}
-
-@media print{
-  body{
-    background:#fff;
-  }
-
-  .topBar,
-  .sideBar,
-  .screenOnly{
-    display:none !important;
-  }
-
-  .pageLayout{
-    display:block;
-    max-width:none;
-    margin:0;
-    padding:0;
-  }
-
-  .page{
-    max-width:none;
-    margin:0;
-    box-shadow:none;
-    border-radius:0;
-    padding:0;
-  }
-
-  .section{
-    break-inside:avoid;
-    page-break-inside:avoid;
-  }
-
-  .imageCard img{
-    height:200px;
-  }
 }
 </style>
 </head>
+
 <body>
 
 <div class="topBar">
-  <div class="topBarTitle">Kundenbenachrichtigung – Druckansicht</div>
-  <div class="topBarLogo">
-    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
+  <div class="topBarTitle">Kundenbenachrichtigung – Ansicht</div>
+
+  <div class="topBarActions">
+    <button class="btn btnBlue" onclick="openFormular()">← Formular</button>
+    <button class="btn btnBlue" onclick="reloadPage()">Neu laden</button>
+    <button class="btn btnYellow" onclick="window.print()">PDF erzeugen</button>
+    <button class="btn btnGreen" onclick="openWhatsApp()">WhatsApp</button>
   </div>
 </div>
 
-<div class="pageLayout">
+<div class="page">
 
-  <aside class="sideBar">
-    <div class="sideBarTitle">Aktionen</div>
-    <div class="sideBarButtons">
-      <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
-      <button class="btn" type="button" onclick="window.print()">Drucken / PDF</button>
-      <button class="btn" type="button" onclick="location.reload()">Neu laden</button>
+  <div class="section">
+    <h2 class="sectionTitle">Kunde</h2>
+    <div class="box" id="kunde">—</div>
+  </div>
+
+  <div class="section">
+    <h2 class="sectionTitle">Adresse</h2>
+    <div class="box" id="baustellenadresse">—</div>
+  </div>
+
+  <div class="section">
+    <h2 class="sectionTitle">Bilder</h2>
+    <div class="imageGrid">
+      <div class="imageCard" id="bild1">—</div>
+      <div class="imageCard" id="bild2">—</div>
+      <div class="imageCard" id="bild3">—</div>
     </div>
-  </aside>
+  </div>
 
-  <div class="page">
-    <div class="statusBar screenOnly">
-      <div class="statusCard">
-        <div class="statusLabel">Adresse</div>
-        <div class="statusValue" id="statusAdresse">—</div>
-      </div>
-      <div class="statusCard">
-        <div class="statusLabel">Bilder</div>
-        <div class="statusValue" id="statusBilder">—</div>
-      </div>
-      <div class="statusCard">
-        <div class="statusLabel">Kunde</div>
-        <div class="statusValue" id="statusKunde">—</div>
-      </div>
-    </div>
-
-    <div class="alertBox screenOnly" id="addressWarning">
-      Kein Google-Maps-Link möglich, Adresse fehlt.
-    </div>
-
-    <div class="docHeader">
-      <div class="docTitleWrap">
-        <h1 class="docTitle" id="docTitle">Kundenbenachrichtigung</h1>
-        <p class="docSub">
-          <strong>Inseldachdecker GmbH</strong><br>
-          Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
-          Telefon: 04922 9238028<br>
-          E-Mail: menne@email.de<br>
-          WhatsApp: 0151 61513028
-        </p>
-      </div>
-      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
-    </div>
-
-    <div class="section">
-      <div class="box" id="begruessung">Moin,
-
-wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren. Mit dieser kurzen Nachricht erhalten Sie einen Überblick über den derzeitigen Arbeitsstand, ergänzende Bilder sowie – wenn vorhanden – einen passenden Navigationslink zur Baustelle.
-
-So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden halten.</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Kunde</h2>
-      <div class="box" id="kunde">—</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Baustellenadresse</h2>
-      <div class="box" id="baustellenadresse">—</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Bilder</h2>
-      <div class="imageGrid">
-        <div class="imageWrap">
-          <div class="imageLabel">Bild 1</div>
-          <div class="imageCard empty" id="bildBox1">Kein Bild</div>
-        </div>
-        <div class="imageWrap">
-          <div class="imageLabel">Bild 2</div>
-          <div class="imageCard empty" id="bildBox2">Kein Bild</div>
-        </div>
-        <div class="imageWrap">
-          <div class="imageLabel">Bild 3</div>
-          <div class="imageCard empty" id="bildBox3">Kein Bild</div>
-        </div>
-      </div>
-      <div class="imageInfo screenOnly" id="imageInfo">Keine Bilder hinterlegt.</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Aktuelle Information</h2>
-      <div class="box" id="text">—</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Das können wir Ihnen auch anbieten</h2>
-      <div class="box leistungenBox">Dachdeckerarbeiten
-Zimmereiarbeiten
-Abdichtungen
-Dachfenster
-Reparaturen
-Gerüstbau
-Klempnerarbeiten
-Dachgaubenbau
-Holzrahmenbau
-Dachterrassen und Beläge
-Balkonabdichtung mit Triflex</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Ihre Rückmeldung</h2>
-      <div class="feedbackGrid">
-        <div class="box" id="frage1">—</div>
-        <div class="box" id="frage2">—</div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Antwortvorlage</h2>
-      <div class="box" id="antwortvorlage">—</div>
-    </div>
-
-    <div class="section">
-      <h2 class="sectionTitle">Sonstiges</h2>
-      <div class="box" id="sonstiges">—</div>
-    </div>
-
-    <div class="footerNote">
-      Diese Nachricht dient der Information zu Ihrem Bauvorhaben.
-    </div>
+  <div class="section">
+    <h2 class="sectionTitle">Information</h2>
+    <div class="box" id="text">—</div>
   </div>
 
 </div>
 
 <script>
-let kundenData = null;
 
-function setText(id, value){
-  const el = document.getElementById(id);
-  if (!el) return;
-  const txt = String(value || '').trim();
-  el.textContent = txt || '—';
+let data = null;
+
+// =========================
+// NAVIGATION
+// =========================
+
+function openFormular(){
+  window.location.href = 'kundenbenachrichtigung-formular.html';
 }
 
-function getImageUrl(uploadValue, pathValue){
-  const upload = String(uploadValue || '').trim();
-  const path = String(pathValue || '').trim();
-
-  if (upload) return upload;
-  if (!path) return '';
-
-  if (path.startsWith('http')) return path;
-  if (path.startsWith('data:image')) return path;
-
-  const base = location.origin + location.pathname.replace(/kundenbenachrichtigung\.html$/i, '');
-  return base.replace(/\/$/, '') + (path.startsWith('/') ? path : '/' + path);
+function reloadPage(){
+  location.reload();
 }
 
-function setImage(boxId, uploadValue, pathValue, emptyText){
-  const box = document.getElementById(boxId);
-  if (!box) return;
-
-  const resolved = getImageUrl(uploadValue, pathValue);
-
-  if (!resolved) {
-    box.className = 'imageCard empty';
-    box.textContent = emptyText;
-    return;
-  }
-
-  box.className = 'imageCard';
-  box.innerHTML = `<img src="${resolved}" alt="Kundenbild" loading="eager" onerror="this.parentElement.className='imageCard empty'; this.parentElement.textContent='Bild nicht gefunden';">`;
-}
-
-function buildGoogleMapsLink(data){
-  const adresse = String(data?.baustellenadresse || '').trim();
-  const kunde = String(data?.kunde || '').trim();
-  const query = adresse || kunde;
-  if (!query) return '';
-  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
-}
-
-function buildImageLinks(data){
-  return [
-    getImageUrl(data?.uploadBild1, data?.bild1),
-    getImageUrl(data?.uploadBild2, data?.bild2),
-    getImageUrl(data?.uploadBild3, data?.bild3)
-  ].filter(Boolean);
-}
-
-function updateStatusBar(data){
-  const hasAddress = !!String(data?.baustellenadresse || '').trim();
-  const imageCount = buildImageLinks(data).length;
-  const kunde = String(data?.kunde || '').trim();
-
-  const statusAdresse = document.getElementById('statusAdresse');
-  const statusBilder = document.getElementById('statusBilder');
-  const statusKunde = document.getElementById('statusKunde');
-  const addressWarning = document.getElementById('addressWarning');
-  const imageInfo = document.getElementById('imageInfo');
-
-  if (statusAdresse) {
-    statusAdresse.textContent = hasAddress ? 'Vorhanden' : 'Fehlt';
-    statusAdresse.className = 'statusValue ' + (hasAddress ? 'statusOk' : 'statusWarn');
-  }
-
-  if (statusBilder) {
-    statusBilder.textContent = imageCount + ' Bild(er) vorhanden';
-    statusBilder.className = 'statusValue ' + (imageCount > 0 ? 'statusOk' : 'statusWarn');
-  }
-
-  if (statusKunde) {
-    statusKunde.textContent = kunde || 'Nicht eingetragen';
-    statusKunde.className = 'statusValue ' + (kunde ? 'statusOk' : 'statusWarn');
-  }
-
-  if (addressWarning) {
-    addressWarning.style.display = hasAddress ? 'none' : 'block';
-  }
-
-  if (imageInfo) {
-    imageInfo.textContent = imageCount > 0
-      ? imageCount + ' Bild(er) hinterlegt.'
-      : 'Keine Bilder hinterlegt.';
-  }
-}
-
-function buildCustomerVersionText(data){
-  const mapsLink = buildGoogleMapsLink(data);
-  const imageLinks = buildImageLinks(data);
-
-  const lines = [];
-  lines.push("Moin,");
-  lines.push("");
-  lines.push("wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren.");
-  lines.push("");
-
-  if (data.kunde) {
-    lines.push("Kunde:");
-    lines.push(String(data.kunde).trim());
-    lines.push("");
-  }
-
-  if (data.baustellenadresse) {
-    lines.push("Baustellenadresse:");
-    lines.push(String(data.baustellenadresse).trim());
-    lines.push("");
-  }
-
-  if (mapsLink) {
-    lines.push("Google Maps:");
-    lines.push(mapsLink);
-    lines.push("");
-  }
-
-  if (imageLinks.length) {
-    lines.push("Bilder:");
-    imageLinks.forEach((link, idx) => {
-      lines.push("Bild " + (idx + 1) + ":");
-      lines.push(link);
-    });
-    lines.push("");
-  }
-
-  if (data.text) {
-    lines.push("Aktuelle Information:");
-    lines.push(String(data.text).trim());
-    lines.push("");
-  }
-
-  lines.push("Das können wir Ihnen auch anbieten:");
-  lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex");
-  lines.push("");
-
-  if (data.feedbackFrage1) lines.push(String(data.feedbackFrage1).trim());
-  if (data.feedbackFrage2) lines.push(String(data.feedbackFrage2).trim());
-  lines.push("");
-  if (data.feedbackAntwortVorlage) lines.push(String(data.feedbackAntwortVorlage).trim());
-
-  if (data.sonstiges) {
-    lines.push("");
-    lines.push("Sonstiges:");
-    lines.push(String(data.sonstiges).trim());
-  }
-
-  return lines.join("\n").trim();
-}
-
-function buildWhatsAppText(data){
-  return buildCustomerVersionText(data);
-}
-
-function confirmChecked() {
-  return confirm("Ist die Kundenbenachrichtigung vollständig geprüft?");
-}
+// =========================
+// WHATSAPP
+// =========================
 
 function openWhatsApp(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
+  if(!data){
+    alert("Keine Daten geladen");
     return;
   }
 
-  if (!confirmChecked()) return;
+  let msg = "";
 
-  const msg = buildWhatsAppText(kundenData);
-  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-  window.open(url, "_blank");
-}
-
-async function loadKundeninfo() {
-  try {
-    const raw = localStorage.getItem('kundenbenachrichtigung_preview_data');
-    if (raw) {
-      kundenData = JSON.parse(raw);
-    } else {
-      const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      kundenData = await res.json();
-    }
-
-    const data = kundenData;
-
-    document.getElementById('docTitle').textContent = data.title || 'Kundenbenachrichtigung';
-
-    setText('kunde', data.kunde);
-    setText('baustellenadresse', data.baustellenadresse);
-    setText('text', data.text);
-    setText('sonstiges', data.sonstiges);
-    setText('frage1', data.feedbackFrage1);
-    setText('frage2', data.feedbackFrage2);
-    setText('antwortvorlage', data.feedbackAntwortVorlage);
-
-    setImage('bildBox1', data.uploadBild1, data.bild1, 'Kein Bild');
-    setImage('bildBox2', data.uploadBild2, data.bild2, 'Kein Bild');
-    setImage('bildBox3', data.uploadBild3, data.bild3, 'Kein Bild');
-
-    updateStatusBar(data);
-
-    const autoPrint = !!data.autoPrint;
-
-    if (autoPrint) {
-      data.autoPrint = false;
-      data.autoWhatsApp = false;
-      localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
-      setTimeout(() => window.print(), 400);
-    }
-
-  } catch (err) {
-    alert('kundeninfo.json konnte nicht geladen werden.');
+  if(data.kunde){
+    msg += "Kunde:\n" + data.kunde + "\n\n";
   }
+
+  if(data.baustellenadresse){
+    msg += "Adresse:\n" + data.baustellenadresse + "\n\n";
+  }
+
+  if(data.text){
+    msg += data.text;
+  }
+
+  window.open("https://wa.me/?text=" + encodeURIComponent(msg));
 }
 
-loadKundeninfo();
+// =========================
+// LOAD DATA
+// =========================
+
+function setText(id, val){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = val || "—";
+}
+
+function setImage(id, val){
+  const el = document.getElementById(id);
+  if(!el) return;
+
+  if(!val){
+    el.textContent = "Kein Bild";
+    return;
+  }
+
+  el.innerHTML = `<img src="${val}">`;
+}
+
+async function load(){
+  const raw = localStorage.getItem("kundenbenachrichtigung_preview_data");
+
+  if(raw){
+    data = JSON.parse(raw);
+  } else {
+    alert("Keine Daten gefunden");
+    return;
+  }
+
+  setText("kunde", data.kunde);
+  setText("baustellenadresse", data.baustellenadresse);
+  setText("text", data.text);
+
+  setImage("bild1", data.uploadBild1 || data.bild1);
+  setImage("bild2", data.uploadBild2 || data.bild2);
+  setImage("bild3", data.uploadBild3 || data.bild3);
+}
+
+load();
+
 </script>
+
 </body>
 </html>
