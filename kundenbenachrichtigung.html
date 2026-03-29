@@ -677,21 +677,28 @@ function buildWhatsAppText(data){
   return buildCustomerVersionText(data);
 }
 
-function confirmChecked() {
-  return confirm("Ist die Kundenbenachrichtigung vollständig geprüft?");
-}
-
 function openWhatsApp(){
   if (!kundenData) {
     alert("Kundendaten sind noch nicht geladen.");
     return;
   }
 
-  if (!confirmChecked()) return;
-
   const msg = buildWhatsAppText(kundenData);
   const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-  location.href = url;
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => {
+    if (document.hasFocus()) {
+      window.location.href = url;
+    }
+  }, 500);
 }
 
 function openPrintDialog(){
