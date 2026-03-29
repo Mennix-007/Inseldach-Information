@@ -235,18 +235,23 @@ body{
 
 #copyToast{
   position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#163d7a;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(22,61,122,0.96);
   color:#fff;
-  padding:12px 18px;
-  border-radius:12px;
+  padding:18px 28px;
+  border-radius:16px;
   font-weight:700;
+  font-size:18px;
+  text-align:center;
   opacity:0;
   pointer-events:none;
   transition:opacity .25s ease;
-  z-index:9999;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  z-index:99999;
+  box-shadow:0 12px 32px rgba(0,0,0,.22);
+  max-width:min(92vw, 520px);
+  width:max-content;
 }
 
 @media (max-width:1300px){
@@ -297,10 +302,10 @@ body{
   }
 
   #copyToast{
-    right:10px;
-    left:10px;
-    bottom:12px;
-    text-align:center;
+    width:calc(100vw - 32px);
+    max-width:420px;
+    font-size:16px;
+    padding:16px 18px;
   }
 }
 </style>
@@ -611,6 +616,14 @@ function getFormData() {
   return d;
 }
 
+function getBrowserSaveData() {
+  const d = getFormData();
+  d.uploadBild1 = "";
+  d.uploadBild2 = "";
+  d.uploadBild3 = "";
+  return d;
+}
+
 function setFormData(data) {
   document.getElementById('baustellenname').value = data.baustellenname || '';
   document.getElementById('baustellenadresse').value = data.baustellenadresse || '';
@@ -773,30 +786,44 @@ function updatePreview(){
 function showCopyToast(message){
   const toast = document.getElementById('copyToast');
   if (!toast) return;
-  toast.textContent = message || 'Inhalt kopiert – Drag and Drop bereit.';
+  toast.textContent = message || 'Fertig.';
   toast.style.opacity = '1';
   clearTimeout(window.copyToastTimer);
   window.copyToastTimer = setTimeout(() => {
     toast.style.opacity = '0';
-  }, 1800);
+  }, 3000);
 }
 
 function saveBrowser(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
-  updatePreview();
-  document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
-  showCopyToast('Im Browser gespeichert.');
-  alert('Hinweis: Beim nächsten Aufrufen dieser Datei müssen die Bilder bei Bedarf erneut hochgeladen werden.');
+  try{
+    document.getElementById('statusLine').textContent = 'Speicherung läuft ...';
+    showCopyToast('Speicherung läuft ...');
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(getBrowserSaveData()));
+    updatePreview();
+    document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
+    showCopyToast('Im Browser gespeichert.');
+    alert('Hinweis: Beim nächsten Aufrufen dieser Datei müssen die Bilder bei Bedarf erneut hochgeladen werden.');
+  }catch(e){
+    document.getElementById('statusLine').textContent = 'Speichern fehlgeschlagen.';
+    showCopyToast('Speichern fehlgeschlagen.');
+  }
 }
 
 function loadBrowser(){
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
     document.getElementById('statusLine').textContent = 'Kein Browser-Stand gefunden.';
+    showCopyToast('Kein Browser-Stand gefunden.');
     return;
   }
   setFormData(JSON.parse(raw));
-  document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+  document.getElementById('fileBild1').value = '';
+  document.getElementById('fileBild2').value = '';
+  document.getElementById('fileBild3').value = '';
+  uploadImages = ["","",""];
+  updatePreview();
+  document.getElementById('statusLine').textContent = 'Browser-Stand geladen. Bilder werden nicht aus dem Browser-Stand geladen.';
+  showCopyToast('Browser-Stand geladen.');
 }
 
 function openPreview(){
@@ -804,6 +831,7 @@ function openPreview(){
   data.autoPrint = false;
   data.autoWhatsApp = false;
   localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  showCopyToast('Vorschau wird geöffnet.');
   window.open('baustellenstart.html', '_blank');
 }
 
@@ -812,6 +840,7 @@ function openPreviewPl(){
   data.autoPrint = false;
   data.autoWhatsApp = false;
   localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  showCopyToast('Polnische Ansicht wird geöffnet.');
   window.open('baustellenstart-pl.html', '_blank');
 }
 
@@ -820,11 +849,13 @@ function openPreviewAndPrint(){
   data.autoPrint = true;
   data.autoWhatsApp = false;
   localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
+  showCopyToast('PDF-Ansicht wird geöffnet.');
   window.open('baustellenstart.html', '_blank');
 }
 
 function openWhatsAppFromForm(){
   const msg = buildSiteVersionText(getFormData());
+  showCopyToast('WhatsApp wird geöffnet.');
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 
@@ -856,8 +887,8 @@ async function copyTextForCraftnote(){
     document.execCommand('copy');
     ta.remove();
   }
-  document.getElementById('statusLine').textContent = 'Inhalt kopiert – Drag and Drop bereit.';
-  showCopyToast('Inhalt kopiert – Drag and Drop bereit.');
+  document.getElementById('statusLine').textContent = 'Für Craftnote kopiert – Drag and Drop bereit.';
+  showCopyToast('Für Craftnote kopiert – Drag and Drop bereit.');
 }
 
 function resetForm(){
@@ -869,19 +900,42 @@ function resetForm(){
   uploadImages = ["","",""];
   updatePreview();
   document.getElementById('statusLine').textContent = 'Formular geleert.';
+  showCopyToast('Formular geleert.');
 }
 
 function bindImageUpload(inputId, index){
   const input = document.getElementById(inputId);
   if (!input) return;
+
   input.addEventListener('change', (event) => {
     const file = event.target.files && event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadImages[index] = e.target.result;
+
+    if (!file) {
+      uploadImages[index] = "";
       updatePreview();
+      showCopyToast('Bild entfernt.');
+      return;
+    }
+
+    document.getElementById('statusLine').textContent = 'Bild wird verarbeitet ...';
+    showCopyToast('Bild wird verarbeitet ...');
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      uploadImages[index] = e.target.result || "";
+      updatePreview();
+      document.getElementById('statusLine').textContent = 'Bild übernommen.';
+      showCopyToast('Bild übernommen.');
     };
+
+    reader.onerror = () => {
+      uploadImages[index] = "";
+      updatePreview();
+      document.getElementById('statusLine').textContent = 'Bild konnte nicht verarbeitet werden.';
+      showCopyToast('Bild konnte nicht verarbeitet werden.');
+    };
+
     reader.readAsDataURL(file);
   });
 }
@@ -900,7 +954,13 @@ bindImageUpload('fileBild3', 2);
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       setFormData(JSON.parse(raw));
-      document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+      document.getElementById('fileBild1').value = '';
+      document.getElementById('fileBild2').value = '';
+      document.getElementById('fileBild3').value = '';
+      uploadImages = ["","",""];
+      updatePreview();
+      document.getElementById('statusLine').textContent = 'Browser-Stand geladen. Bilder werden nicht aus dem Browser-Stand geladen.';
+      showCopyToast('Browser-Stand geladen.');
       return;
     }
 
@@ -909,6 +969,7 @@ bindImageUpload('fileBild3', 2);
       const data = await res.json();
       setFormData({...defaultData(), ...data});
       document.getElementById('statusLine').textContent = 'baustellenstart.json geladen.';
+      showCopyToast('baustellenstart.json geladen.');
       return;
     }
   } catch(e) {}
