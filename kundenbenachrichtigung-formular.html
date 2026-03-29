@@ -167,8 +167,9 @@ body{
   font-weight:700;
 }
 
-.fieldWrap input,
-.fieldWrap textarea{
+.fieldWrap input[type="text"],
+.fieldWrap textarea,
+.fieldWrap input[type="file"]{
   width:100%;
   border:1px solid #cfd6df;
   border-radius:10px;
@@ -180,6 +181,35 @@ body{
 .fieldWrap textarea{
   resize:vertical;
   min-height:110px;
+}
+
+.checkboxGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 14px;
+}
+
+.checkboxItem{
+  border:1px solid #d7e0ea;
+  border-radius:10px;
+  background:#f8fafc;
+  padding:10px 12px;
+  line-height:1.4;
+}
+
+.checkboxItem label{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:700;
+}
+
+.checkboxItem input[type="checkbox"]{
+  margin-top:2px;
+  transform:scale(1.05);
+  flex:0 0 auto;
 }
 
 .helper{
@@ -273,7 +303,7 @@ body{
   transition:opacity .25s ease;
   z-index:99999;
   box-shadow:0 12px 32px rgba(0,0,0,.22);
-  max-width:min(92vw, 520px);
+  max-width:min(92vw, 560px);
   width:max-content;
 }
 
@@ -296,6 +326,12 @@ body{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:12px;
+  }
+}
+
+@media (max-width: 900px){
+  .checkboxGrid{
+    grid-template-columns:1fr;
   }
 }
 
@@ -450,6 +486,34 @@ body{
             <textarea id="sonstiges" placeholder="Optionaler Zusatzhinweis"></textarea>
           </div>
         </div>
+
+        <div class="section">
+          <h2 class="sectionTitle">Leistungen auswählbar</h2>
+          <div class="checkboxGrid">
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungDachdeckerarbeiten"> Dachdeckerarbeiten</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungZimmereiarbeiten"> Zimmereiarbeiten</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungAbdichtungen"> Abdichtungen (Flachdach / Balkon / Terrasse)</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungDachfenster"> Dachfenster (VELUX) – Lieferung und Einbau</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungReparaturen"> Reparaturen und Leckageortung</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungGeruestbau"> Gerüstbau</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungKlempnerarbeiten"> Klempnerarbeiten (Zink / Kupfer / Aluminium)</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungDachgaubenbau"> Dachgaubenbau</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungHolzrahmenbau"> Holzrahmenbau</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungDachterrassen"> Dachterrassen und Beläge (z. B. WPC)</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungBalkonabdichtung"> Balkonabdichtung mit Triflex</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungWartung"> Wartung und Inspektion von Dächern</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungSturmschaeden"> Sturmschadenbeseitigung</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungNotdienst"> Notdienst bei Undichtigkeiten</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungFlachdachsanierung"> Sanierung von Flachdächern</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungAttika"> Erneuerung von Attika- und Randprofilen</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungRinnen"> Rinnen- und Fallrohrreinigung / Austausch</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungLichtkuppeln"> Einbau von Lichtkuppeln</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungDaemmarbeiten"> Dämmarbeiten (Aufsparren / Zwischensparren)</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungFassaden"> Fassadenbekleidung (z. B. Kronoart)</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungRueckbau"> Rückbau- und Demontagearbeiten</label></div>
+            <div class="checkboxItem"><label><input type="checkbox" id="leistungLogistik"> Materiallogistik und Baustellenorganisation</label></div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -469,17 +533,7 @@ body{
 
         <div class="section">
           <h2 class="sectionTitle">Fester Leistungsblock</h2>
-          <div class="previewBox">Dachdeckerarbeiten
-Zimmereiarbeiten
-Abdichtungen
-Dachfenster
-Reparaturen
-Gerüstbau
-Klempnerarbeiten
-Dachgaubenbau
-Holzrahmenbau
-Dachterrassen und Beläge
-Balkonabdichtung mit Triflex</div>
+          <div class="previewBox" id="servicePreview"></div>
         </div>
 
         <div class="previewActions">
@@ -492,7 +546,7 @@ Balkonabdichtung mit Triflex</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'kundenbenachrichtigung_formular_v8';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v9';
 let uploadImages = ["", "", ""];
 
 function defaultData() {
@@ -507,7 +561,29 @@ function defaultData() {
     sonstiges: "",
     feedbackFrage1: "Finden Sie es gut, dass Sie von uns eine Benachrichtigung über WhatsApp erhalten?",
     feedbackFrage2: "Möchten Sie auch in Zukunft weiter Nachrichten von der Firma Inseldachdecker erhalten?",
-    feedbackAntwortVorlage: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:"
+    feedbackAntwortVorlage: "Antwort bitte kurz per WhatsApp:\n1. Benachrichtigung gut? Ja / Nein\n2. Weitere Nachrichten? Ja / Nein\n3. Falls gewünscht, Ihre Anmerkung:",
+    leistungDachdeckerarbeiten: true,
+    leistungZimmereiarbeiten: true,
+    leistungAbdichtungen: true,
+    leistungDachfenster: true,
+    leistungReparaturen: true,
+    leistungGeruestbau: true,
+    leistungKlempnerarbeiten: true,
+    leistungDachgaubenbau: true,
+    leistungHolzrahmenbau: true,
+    leistungDachterrassen: true,
+    leistungBalkonabdichtung: true,
+    leistungWartung: false,
+    leistungSturmschaeden: false,
+    leistungNotdienst: false,
+    leistungFlachdachsanierung: false,
+    leistungAttika: false,
+    leistungRinnen: false,
+    leistungLichtkuppeln: false,
+    leistungDaemmarbeiten: false,
+    leistungFassaden: false,
+    leistungRueckbau: false,
+    leistungLogistik: false
   };
 }
 
@@ -520,6 +596,29 @@ function getFormData(includeImages = true) {
   d.bild2 = document.getElementById('bild2').value.trim();
   d.bild3 = document.getElementById('bild3').value.trim();
   d.sonstiges = document.getElementById('sonstiges').value.trim();
+
+  d.leistungDachdeckerarbeiten = document.getElementById('leistungDachdeckerarbeiten').checked;
+  d.leistungZimmereiarbeiten = document.getElementById('leistungZimmereiarbeiten').checked;
+  d.leistungAbdichtungen = document.getElementById('leistungAbdichtungen').checked;
+  d.leistungDachfenster = document.getElementById('leistungDachfenster').checked;
+  d.leistungReparaturen = document.getElementById('leistungReparaturen').checked;
+  d.leistungGeruestbau = document.getElementById('leistungGeruestbau').checked;
+  d.leistungKlempnerarbeiten = document.getElementById('leistungKlempnerarbeiten').checked;
+  d.leistungDachgaubenbau = document.getElementById('leistungDachgaubenbau').checked;
+  d.leistungHolzrahmenbau = document.getElementById('leistungHolzrahmenbau').checked;
+  d.leistungDachterrassen = document.getElementById('leistungDachterrassen').checked;
+  d.leistungBalkonabdichtung = document.getElementById('leistungBalkonabdichtung').checked;
+  d.leistungWartung = document.getElementById('leistungWartung').checked;
+  d.leistungSturmschaeden = document.getElementById('leistungSturmschaeden').checked;
+  d.leistungNotdienst = document.getElementById('leistungNotdienst').checked;
+  d.leistungFlachdachsanierung = document.getElementById('leistungFlachdachsanierung').checked;
+  d.leistungAttika = document.getElementById('leistungAttika').checked;
+  d.leistungRinnen = document.getElementById('leistungRinnen').checked;
+  d.leistungLichtkuppeln = document.getElementById('leistungLichtkuppeln').checked;
+  d.leistungDaemmarbeiten = document.getElementById('leistungDaemmarbeiten').checked;
+  d.leistungFassaden = document.getElementById('leistungFassaden').checked;
+  d.leistungRueckbau = document.getElementById('leistungRueckbau').checked;
+  d.leistungLogistik = document.getElementById('leistungLogistik').checked;
 
   if (includeImages) {
     d.uploadBild1 = uploadImages[0] || "";
@@ -543,6 +642,29 @@ function setFormData(data) {
   document.getElementById('bild3').value = data.bild3 || '';
   document.getElementById('sonstiges').value = data.sonstiges || '';
 
+  document.getElementById('leistungDachdeckerarbeiten').checked = !!data.leistungDachdeckerarbeiten;
+  document.getElementById('leistungZimmereiarbeiten').checked = !!data.leistungZimmereiarbeiten;
+  document.getElementById('leistungAbdichtungen').checked = !!data.leistungAbdichtungen;
+  document.getElementById('leistungDachfenster').checked = !!data.leistungDachfenster;
+  document.getElementById('leistungReparaturen').checked = !!data.leistungReparaturen;
+  document.getElementById('leistungGeruestbau').checked = !!data.leistungGeruestbau;
+  document.getElementById('leistungKlempnerarbeiten').checked = !!data.leistungKlempnerarbeiten;
+  document.getElementById('leistungDachgaubenbau').checked = !!data.leistungDachgaubenbau;
+  document.getElementById('leistungHolzrahmenbau').checked = !!data.leistungHolzrahmenbau;
+  document.getElementById('leistungDachterrassen').checked = !!data.leistungDachterrassen;
+  document.getElementById('leistungBalkonabdichtung').checked = !!data.leistungBalkonabdichtung;
+  document.getElementById('leistungWartung').checked = !!data.leistungWartung;
+  document.getElementById('leistungSturmschaeden').checked = !!data.leistungSturmschaeden;
+  document.getElementById('leistungNotdienst').checked = !!data.leistungNotdienst;
+  document.getElementById('leistungFlachdachsanierung').checked = !!data.leistungFlachdachsanierung;
+  document.getElementById('leistungAttika').checked = !!data.leistungAttika;
+  document.getElementById('leistungRinnen').checked = !!data.leistungRinnen;
+  document.getElementById('leistungLichtkuppeln').checked = !!data.leistungLichtkuppeln;
+  document.getElementById('leistungDaemmarbeiten').checked = !!data.leistungDaemmarbeiten;
+  document.getElementById('leistungFassaden').checked = !!data.leistungFassaden;
+  document.getElementById('leistungRueckbau').checked = !!data.leistungRueckbau;
+  document.getElementById('leistungLogistik').checked = !!data.leistungLogistik;
+
   updatePreview();
 }
 
@@ -559,6 +681,39 @@ function buildMapsLink(data){
   const query = data.baustellenadresse || data.kunde;
   if(!query) return "";
   return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
+}
+
+function buildServiceBlock(data){
+  const services = [];
+
+  if (data.leistungDachdeckerarbeiten) services.push("Dachdeckerarbeiten");
+  if (data.leistungZimmereiarbeiten) services.push("Zimmereiarbeiten");
+  if (data.leistungAbdichtungen) services.push("Abdichtungen (Flachdach / Balkon / Terrasse)");
+  if (data.leistungDachfenster) services.push("Dachfenster (VELUX) – Lieferung und Einbau");
+  if (data.leistungReparaturen) services.push("Reparaturen und Leckageortung");
+  if (data.leistungGeruestbau) services.push("Gerüstbau");
+  if (data.leistungKlempnerarbeiten) services.push("Klempnerarbeiten (Zink / Kupfer / Aluminium)");
+  if (data.leistungDachgaubenbau) services.push("Dachgaubenbau");
+  if (data.leistungHolzrahmenbau) services.push("Holzrahmenbau");
+  if (data.leistungDachterrassen) services.push("Dachterrassen und Beläge (z. B. WPC)");
+  if (data.leistungBalkonabdichtung) services.push("Balkonabdichtung mit Triflex");
+  if (data.leistungWartung) services.push("Wartung und Inspektion von Dächern");
+  if (data.leistungSturmschaeden) services.push("Sturmschadenbeseitigung");
+  if (data.leistungNotdienst) services.push("Notdienst bei Undichtigkeiten");
+  if (data.leistungFlachdachsanierung) services.push("Sanierung von Flachdächern");
+  if (data.leistungAttika) services.push("Erneuerung von Attika- und Randprofilen");
+  if (data.leistungRinnen) services.push("Rinnen- und Fallrohrreinigung / Austausch");
+  if (data.leistungLichtkuppeln) services.push("Einbau von Lichtkuppeln");
+  if (data.leistungDaemmarbeiten) services.push("Dämmarbeiten (Aufsparren / Zwischensparren)");
+  if (data.leistungFassaden) services.push("Fassadenbekleidung (z. B. Kronoart)");
+  if (data.leistungRueckbau) services.push("Rückbau- und Demontagearbeiten");
+  if (data.leistungLogistik) services.push("Materiallogistik und Baustellenorganisation");
+
+  if (!services.length) {
+    return "Keine zusätzlichen Leistungen ausgewählt.";
+  }
+
+  return services.join("\n");
 }
 
 function buildCustomerText(data){
@@ -589,7 +744,7 @@ function buildCustomerText(data){
   }
 
   t += "Das können wir Ihnen auch anbieten:\n";
-  t += "Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex\n\n";
+  t += buildServiceBlock(data) + "\n\n";
 
   t += data.feedbackFrage1 + "\n";
   t += data.feedbackFrage2 + "\n\n";
@@ -616,6 +771,11 @@ function updateImagePreview(boxId, uploadValue, pathValue){
 function updatePreview(){
   const data = getFormData(true);
   document.getElementById('previewText').textContent = buildCustomerText(data);
+
+  const servicePreview = document.getElementById('servicePreview');
+  if (servicePreview) {
+    servicePreview.textContent = buildServiceBlock(data);
+  }
 
   updateImagePreview('previewImage1', data.uploadBild1, data.bild1);
   updateImagePreview('previewImage2', data.uploadBild2, data.bild2);
@@ -785,7 +945,8 @@ function bindImageUpload(inputId, index){
 document.querySelectorAll('input[type="text"], textarea').forEach(el => {
   el.addEventListener('input', updatePreview);
 });
-document.querySelectorAll('input[type="text"], textarea, input[type="file"]').forEach(el => {
+
+document.querySelectorAll('input[type="text"], textarea, input[type="file"], input[type="checkbox"]').forEach(el => {
   el.addEventListener('change', updatePreview);
 });
 
