@@ -110,21 +110,6 @@ body{
   box-shadow:0 4px 10px rgba(0,0,0,.12);
 }
 
-.btnBlue{
-  background:#fff;
-  color:#163d7a;
-}
-
-.btnYellow{
-  background:#fff;
-  color:#163d7a;
-}
-
-.btnGreen{
-  background:#fff;
-  color:#163d7a;
-}
-
 .btnRed{
   background:#fff;
   color:#8b1e1e;
@@ -271,6 +256,22 @@ body{
   line-height:1.5;
 }
 
+#copyToast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#163d7a;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:700;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:9999;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
 @media (max-width: 1300px){
   .wrap{
     grid-template-columns:1fr;
@@ -322,10 +323,19 @@ body{
   .sideBar{
     padding:16px;
   }
+
+  #copyToast{
+    right:10px;
+    left:10px;
+    bottom:12px;
+    text-align:center;
+  }
 }
 </style>
 </head>
 <body>
+
+<div id="copyToast">Inhalt kopiert – Drag and Drop bereit.</div>
 
 <div class="topBar">
   <div class="topBarTitle">Kundenbenachrichtigung – Formular</div>
@@ -338,16 +348,13 @@ body{
   <aside class="sideBar">
     <h2 class="sideBarTitle">Aktionen</h2>
     <div class="sideBarButtons">
-      <button class="btn btnGreen" type="button" onclick="saveBrowser()">Im Browser speichern</button>
-      <button class="btn btnBlue" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
-      <button class="btn btnBlue" type="button" onclick="showDataInNewTab()">Eingegebene Daten</button>
-      <button class="btn btnYellow" type="button" onclick="downloadData()">Daten herunterladen</button>
-      <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
-      <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-      <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
-      <button class="btn btnGreen" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
-      <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde</button>
-      <button class="btn btnBlue" type="button" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
+      <button class="btn" type="button" onclick="saveBrowser()">Im Browser speichern</button>
+      <button class="btn" type="button" onclick="loadBrowser()">Browser-Stand laden</button>
+      <button class="btn" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+      <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
+      <button class="btn" type="button" onclick="openWhatsAppFromForm()">WhatsApp</button>
+      <button class="btn" type="button" onclick="copyCustomerVersion()">Kopie Kunde</button>
+      <button class="btn" type="button" onclick="copyTextForCraftnote()">Für Craftnote kopieren</button>
       <button class="btn btnRed" type="button" onclick="resetForm()">Formular leeren</button>
     </div>
   </aside>
@@ -468,9 +475,8 @@ Balkonabdichtung mit Triflex</div>
         </div>
 
         <div class="previewActions">
-          <button class="btn btnBlue" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
-          <button class="btn btnYellow" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
-          <button class="btn btnGreen" type="button" onclick="openPreviewPrintAndWhatsApp()">PDF + WhatsApp</button>
+          <button class="btn" type="button" onclick="openPreview()">Kundenansicht öffnen</button>
+          <button class="btn" type="button" onclick="openPreviewAndPrint()">PDF erzeugen</button>
         </div>
       </div>
     </div>
@@ -478,7 +484,7 @@ Balkonabdichtung mit Triflex</div>
 </div>
 
 <script>
-const STORAGE_KEY = 'kundenbenachrichtigung_formular_v5';
+const STORAGE_KEY = 'kundenbenachrichtigung_formular_v6';
 let uploadImages = ["", "", ""];
 
 function defaultData() {
@@ -572,7 +578,7 @@ function buildCustomerText(data){
     t += "Bilder sind im Formular enthalten\n\n";
   }
 
-  t += "Das können wir Ihnen aus anbieten:\n";
+  t += "Das können wir Ihnen auch anbieten:\n";
   t += "Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex\n\n";
 
   t += data.feedbackFrage1 + "\n";
@@ -594,7 +600,7 @@ function updateImagePreview(boxId, uploadValue, pathValue){
     box.innerHTML = 'Kein Bild';
     return;
   }
-  box.innerHTML = `<img src="${url}" alt="Vorschau">`;
+  box.innerHTML = `<img src="${url}" alt="Vorschau" onerror="this.parentElement.innerHTML='Bild nicht gefunden';">`;
 }
 
 function updatePreview(){
@@ -614,10 +620,22 @@ function updatePreview(){
   document.getElementById('statusLine').textContent = status.join(' | ');
 }
 
+function showToast(message){
+  const toast = document.getElementById('copyToast');
+  if (!toast) return;
+  toast.textContent = message || 'Inhalt kopiert.';
+  toast.style.opacity = '1';
+  clearTimeout(window.copyToastTimer);
+  window.copyToastTimer = setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 1800);
+}
+
 function saveBrowser(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(getFormData()));
   updatePreview();
   document.getElementById('statusLine').textContent = 'Im Browser gespeichert.';
+  showToast('Im Browser gespeichert.');
 }
 
 function loadBrowser(){
@@ -628,48 +646,6 @@ function loadBrowser(){
   }
   setFormData(JSON.parse(raw));
   document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
-}
-
-function showDataInNewTab(){
-  const data = getFormData();
-  const clean = {
-    kunde: data.kunde,
-    baustellenadresse: data.baustellenadresse,
-    text: data.text,
-    sonstiges: data.sonstiges,
-    bilder: [
-      data.uploadBild1 || data.bild1 ? "Bild vorhanden" : "",
-      data.uploadBild2 || data.bild2 ? "Bild vorhanden" : "",
-      data.uploadBild3 || data.bild3 ? "Bild vorhanden" : ""
-    ],
-    feedbackFrage1: data.feedbackFrage1,
-    feedbackFrage2: data.feedbackFrage2,
-    feedbackAntwortVorlage: data.feedbackAntwortVorlage
-  };
-
-  const win = window.open('', '_blank');
-  win.document.write('<pre>' + JSON.stringify(clean, null, 2) + '</pre>');
-}
-
-function downloadData(){
-  const data = getFormData();
-  const clean = {
-    kunde: data.kunde,
-    baustellenadresse: data.baustellenadresse,
-    text: data.text,
-    sonstiges: data.sonstiges,
-    feedbackFrage1: data.feedbackFrage1,
-    feedbackFrage2: data.feedbackFrage2,
-    feedbackAntwortVorlage: data.feedbackAntwortVorlage
-  };
-
-  const blob = new Blob([JSON.stringify(clean, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'kundeninfo.json';
-  a.click();
-  URL.revokeObjectURL(url);
 }
 
 function openPreview(){
@@ -688,14 +664,6 @@ function openPreviewAndPrint(){
   window.open('kundenbenachrichtigung.html', '_blank');
 }
 
-function openPreviewPrintAndWhatsApp(){
-  const data = getFormData();
-  data.autoPrint = true;
-  data.autoWhatsApp = true;
-  localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
-  window.open('kundenbenachrichtigung.html', '_blank');
-}
-
 function openWhatsAppFromForm(){
   const msg = buildCustomerText(getFormData());
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
@@ -705,7 +673,6 @@ async function copyCustomerVersion(){
   const msg = buildCustomerText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -713,15 +680,15 @@ async function copyCustomerVersion(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
   }
+  document.getElementById('statusLine').textContent = 'Kundenkopie für Drag and Drop kopiert.';
+  showToast('Kundenkopie kopiert – Drag and Drop bereit.');
 }
 
 async function copyTextForCraftnote(){
   const msg = buildCustomerText(getFormData());
   try{
     await navigator.clipboard.writeText(msg);
-    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
   }catch(e){
     const ta = document.createElement('textarea');
     ta.value = msg;
@@ -729,8 +696,9 @@ async function copyTextForCraftnote(){
     ta.select();
     document.execCommand('copy');
     ta.remove();
-    document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
   }
+  document.getElementById('statusLine').textContent = 'Text für Craftnote-Drag and Drop kopiert.';
+  showToast('Für Craftnote kopiert – Drag and Drop bereit.');
 }
 
 function resetForm(){
@@ -746,6 +714,7 @@ function resetForm(){
 
 function bindImageUpload(inputId, index){
   const input = document.getElementById(inputId);
+  if (!input) return;
   input.addEventListener('change', (event) => {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
@@ -761,6 +730,9 @@ function bindImageUpload(inputId, index){
 document.querySelectorAll('input[type="text"], textarea').forEach(el => {
   el.addEventListener('input', updatePreview);
 });
+document.querySelectorAll('input[type="text"], textarea, input[type="file"]').forEach(el => {
+  el.addEventListener('change', updatePreview);
+});
 
 bindImageUpload('fileBild1', 0);
 bindImageUpload('fileBild2', 1);
@@ -768,6 +740,13 @@ bindImageUpload('fileBild3', 2);
 
 (async function init(){
   try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      setFormData(JSON.parse(raw));
+      document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+      return;
+    }
+
     const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
@@ -778,6 +757,7 @@ bindImageUpload('fileBild3', 2);
       return;
     }
   } catch(e) {}
+
   setFormData(defaultData());
 })();
 </script>
