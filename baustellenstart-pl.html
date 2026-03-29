@@ -18,45 +18,72 @@ body{
 .topBar{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
   background:#163d7a;
   color:#fff;
-  padding:12px 18px;
+  padding:14px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
 .topBarTitle{
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
 }
 
-.topBarActions{
+.topBarLogo img{
+  max-height:50px;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:10px;
+}
+
+.pageLayout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:20px;
+  max-width:1600px;
+  margin:20px auto;
+  padding:0 16px 24px;
+}
+
+.sideBar{
+  background:#163d7a;
+  border-radius:18px;
+  padding:16px;
+  position:sticky;
+  top:90px;
+}
+
+.sideBarTitle{
+  color:#fff;
+  text-align:center;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.sideBarButtons{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:12px;
 }
 
 .btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
-  font-size:15px;
+  width:100%;
+  min-height:54px;
+  border-radius:12px;
+  padding:12px;
   font-weight:700;
   cursor:pointer;
+  background:#fff;
+  color:#163d7a;
+  border:1px solid #d4dbe4;
 }
 
-.btnBlue{background:#fff;color:#163d7a;}
-.btnYellow{background:#ffd400;color:#000;}
-.btnGreen{background:#25D366;color:#111;}
-
 .page{
-  max-width:1180px;
-  margin:22px auto;
   background:#fff;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
   border-radius:18px;
@@ -73,165 +100,42 @@ body{
   padding-bottom:16px;
 }
 
-.docTitleWrap{
-  flex:1;
-  min-width:0;
-}
-
 .docTitle{
   font-size:34px;
   font-weight:900;
-  margin:0 0 8px;
   color:#8b1e1e;
 }
 
-.docSub{
-  font-size:15px;
-  color:#444;
-  margin:0;
-}
-
-.docLogo{
-  width:220px;
-  max-width:36%;
-  height:auto;
-  object-fit:contain;
-}
-
-.section{
-  margin-bottom:18px;
-}
-
 .sectionTitle{
-  margin:0 0 8px;
   font-size:20px;
   font-weight:800;
   color:#163d7a;
+  margin-bottom:8px;
 }
 
 .box{
   border:1px solid #cfd6df;
   border-radius:12px;
-  padding:12px 14px;
+  padding:12px;
   background:#fbfcfd;
-  min-height:22px;
   white-space:pre-wrap;
-  line-height:1.45;
-}
-
-.addressBox{
-  min-height:56px;
-  max-height:56px;
-  overflow:hidden;
-}
-
-.infoRow{
-  display:grid;
-  grid-template-columns:1fr 260px;
-  gap:12px;
-  margin-top:12px;
-}
-
-.smallInfoBox{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:22px;
-}
-
-.infoLabel{
-  font-size:13px;
-  font-weight:800;
-  color:#163d7a;
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:.2px;
-}
-
-.infoValue{
-  white-space:pre-wrap;
-  line-height:1.35;
-}
-
-.checkGrid4{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-}
-
-.checkGrid2{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  align-items:start;
-}
-
-.checkItem{
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-height:24px;
-}
-
-.mark{
-  width:22px;
-  height:22px;
-  border:2px solid #555;
-  border-radius:4px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:16px;
-  font-weight:900;
-  flex:0 0 22px;
-}
-
-.mark.active{
-  background:#163d7a;
-  color:#fff;
-  border-color:#163d7a;
-}
-
-.heightBox{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  border:1px solid #cfd6df;
-  border-radius:12px;
-  padding:12px 14px;
-  background:#fbfcfd;
-  min-height:24px;
 }
 
 .doubleGrid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:1fr 1fr;
   gap:14px;
-}
-
-.doubleColTitle{
-  font-size:15px;
-  font-weight:800;
-  margin:0 0 8px;
-  color:#8b1e1e;
 }
 
 .imageGrid{
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(3,1fr);
   gap:14px;
 }
 
 .imageCard{
   border:1px solid #cfd6df;
   border-radius:12px;
-  background:#fbfcfd;
-  overflow:hidden;
   min-height:220px;
   display:flex;
   align-items:center;
@@ -239,388 +143,143 @@ body{
 }
 
 .imageCard.empty{
+  background:#eef2f5;
   color:#666;
   font-weight:700;
-  background:repeating-linear-gradient(45deg,#f4f6f8,#f4f6f8 12px,#eef2f5 12px,#eef2f5 24px);
-}
-
-.imageCard img{
-  width:100%;
-  height:220px;
-  object-fit:contain;
-  display:block;
-  background:#fff;
-}
-
-.footerNote{
-  margin-top:24px;
-  padding-top:14px;
-  border-top:2px solid #e6ebf0;
-  font-size:13px;
-  color:#555;
-}
-
-@media (max-width: 900px){
-  .page{
-    margin:12px;
-    padding:18px;
-  }
-
-  .docHeader{
-    flex-direction:column;
-  }
-
-  .docLogo{
-    max-width:220px;
-    width:220px;
-  }
-
-  .infoRow,
-  .checkGrid4,
-  .checkGrid2,
-  .doubleGrid,
-  .imageGrid{
-    grid-template-columns:1fr;
-  }
-
-  .topBar{
-    position:static;
-  }
 }
 
 @media print{
-  body{
-    background:#fff;
-  }
-
-  .topBar{
-    display:none !important;
-  }
-
-  .page{
-    max-width:none;
-    margin:0;
-    box-shadow:none;
-    border-radius:0;
-    padding:0;
-  }
+  .topBar,.sideBar{display:none !important;}
+  .pageLayout{display:block;}
+  .page{box-shadow:none;border-radius:0;padding:0;}
 }
 </style>
 </head>
+
 <body>
 
 <div class="topBar">
-  <div class="topBarTitle">Nowy start budowy – widok do druku</div>
-  <div class="topBarActions">
-    <button class="btn btnGreen" type="button" onclick="openWhatsApp()">WhatsApp Polski</button>
-    <button class="btn btnYellow" type="button" onclick="window.print()">Drukuj / PDF</button>
-    <button class="btn btnBlue" type="button" onclick="location.reload()">Odśwież</button>
+  <div class="topBarTitle">Nowy start budowy</div>
+  <div class="topBarLogo">
+    <img src="Logo_Menne_min.png">
   </div>
 </div>
 
+<div class="pageLayout">
+
+<!-- Sidebar -->
+<aside class="sideBar">
+  <div class="sideBarTitle">Akcje</div>
+
+  <div class="sideBarButtons">
+    <button class="btn" onclick="openWhatsApp()">WhatsApp</button>
+    <button class="btn" onclick="window.print()">Drukuj / PDF</button>
+    <button class="btn" onclick="location.reload()">Odśwież</button>
+  </div>
+</aside>
+
+<!-- Inhalt -->
 <div class="page">
-  <div class="docHeader">
-    <div class="docTitleWrap">
-      <h1 class="docTitle" id="docTitle">Nowy start budowy</h1>
-      <p class="docSub" id="docDate"></p>
-    </div>
-    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
-  </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Zleceniodawca</h2>
-    <div class="box" id="baustellenname">—</div>
+<div class="docHeader">
+  <div>
+    <h1 class="docTitle">Nowy start budowy</h1>
+    <p id="docDate"></p>
   </div>
+  <img src="Logo_Menne_min.png" style="width:200px">
+</div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Adres budowy</h2>
-    <div class="box addressBox" id="baustellenadresse">—</div>
+<div class="section">
+  <div class="sectionTitle">Zleceniodawca</div>
+  <div class="box" id="baustellenname"></div>
+</div>
 
-    <div class="infoRow">
-      <div class="smallInfoBox">
-        <div class="infoLabel">Hasło wyszukiwania Craftnote</div>
-        <div class="infoValue" id="craftnoteSuchbegriff">—</div>
-      </div>
-      <div class="smallInfoBox">
-        <div class="infoLabel">Zaproszono do Craftnote</div>
-        <div class="infoValue" id="craftnoteEingeladen">—</div>
-      </div>
-    </div>
+<div class="section">
+  <div class="sectionTitle">Adres budowy</div>
+  <div class="box" id="baustellenadresse"></div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">Opis prac</div>
+  <div class="box" id="worumGehtEs"></div>
+</div>
+
+<div class="section">
+  <div class="sectionTitle">Dostawa</div>
+  <div class="doubleGrid">
+    <div class="box" id="lieferung1"></div>
+    <div class="box" id="lieferung3"></div>
   </div>
+</div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Rodzaj rozliczenia</h2>
-    <div class="checkGrid4">
-      <div class="checkItem"><span class="mark" id="m_gesamt"></span><span>Cała budowa – robocizna godzinowa</span></div>
-      <div class="checkItem"><span class="mark" id="m_teilweise"></span><span>Częściowo robocizna godzinowa</span></div>
-      <div class="checkItem"><span class="mark" id="m_eventuell"></span><span>Ewentualnie częściowo robocizna godzinowa</span></div>
-      <div class="checkItem"><span class="mark" id="m_festpreis"></span><span>Oferta ryczałtowa</span></div>
-    </div>
+<div class="section">
+  <div class="sectionTitle">Magazyn</div>
+  <div class="doubleGrid">
+    <div class="box" id="lager1"></div>
+    <div class="box" id="lager3"></div>
   </div>
+</div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Dostęp / wysokość budowy</h2>
-    <div class="checkGrid2">
-      <div>
-        <div class="checkItem"><span class="mark" id="m_geruest"></span><span>Wymagane rusztowanie</span></div>
-        <div style="height:10px"></div>
-        <div class="checkItem"><span class="mark" id="m_leiter"></span><span>Wystarczy drabina</span></div>
-      </div>
-      <div class="heightBox">
-        <strong>Wysokość budowy:</strong>
-        <span id="baustellenhoehe">2,00 m</span>
-      </div>
-    </div>
+<div class="section">
+  <div class="sectionTitle">Zdjęcia</div>
+  <div class="imageGrid">
+    <div class="imageCard empty" id="img1">Brak zdjęcia</div>
+    <div class="imageCard empty" id="img2">Brak zdjęcia</div>
+    <div class="imageCard empty" id="img3">Brak zdjęcia</div>
   </div>
+</div>
 
-  <div class="section">
-    <h2 class="sectionTitle">O co tutaj chodzi / co należy wykonać</h2>
-    <div class="box" id="worumGehtEs">—</div>
-  </div>
+<div class="section">
+  <div class="sectionTitle">Pozostałe</div>
+  <div class="box" id="sonstiges"></div>
+</div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Co zostanie dostarczone na budowę</h2>
-    <div class="doubleGrid">
-      <div>
-        <div class="doubleColTitle">Pole 1</div>
-        <div class="box" id="lieferung1">—</div>
-      </div>
-      <div>
-        <div class="doubleColTitle">Pole 2</div>
-        <div class="box" id="lieferung3">—</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Co należy zabrać z magazynu</h2>
-    <div class="doubleGrid">
-      <div>
-        <div class="doubleColTitle">Pole 1</div>
-        <div class="box" id="lager1">—</div>
-      </div>
-      <div>
-        <div class="doubleColTitle">Pole 2</div>
-        <div class="box" id="lager3">—</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Zdjęcia przed rozpoczęciem prac</h2>
-    <div class="imageGrid">
-      <div class="imageCard empty" id="bildBox1">Brak zdjęcia</div>
-      <div class="imageCard empty" id="bildBox2">Brak zdjęcia</div>
-      <div class="imageCard empty" id="bildBox3">Brak zdjęcia</div>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Pozostałe ważne informacje</h2>
-    <div class="box" id="sonstiges">—</div>
-  </div>
-
-  <div class="footerNote">
-    Inseldachdecker – automatycznie wygenerowana karta rozpoczęcia budowy
-  </div>
+</div>
 </div>
 
 <script>
-let sourceData = null;
+let data=null;
 
-function setText(id, value){
-  const el = document.getElementById(id);
-  if (!el) return;
-  const txt = String(value || '').trim();
-  el.textContent = txt || '—';
+function setText(id,val){
+  document.getElementById(id).textContent=val||"—";
 }
 
-function setMark(id, active){
-  const el = document.getElementById(id);
-  if (!el) return;
-
-  if (active) {
-    el.classList.add('active');
-    el.textContent = '✓';
-  } else {
-    el.classList.remove('active');
-    el.textContent = '';
-  }
-}
-
-function resolveImageUrl(rawValue){
-  const raw = String(rawValue || '').trim();
-  if (!raw) return '';
-  if (raw.startsWith('http')) return raw;
-  if (raw.startsWith('data:image')) return raw;
-
-  const base = location.origin + location.pathname.replace(/baustellenstart-pl\.html$/i, '');
-  return base.replace(/\/$/, '') + (raw.startsWith('/') ? raw : '/' + raw);
-}
-
-function setImage(boxId, value, emptyText){
-  const box = document.getElementById(boxId);
-  if (!box) return;
-
-  const raw = resolveImageUrl(value);
-  if (!raw) {
-    box.className = 'imageCard empty';
-    box.textContent = emptyText;
-    return;
-  }
-
-  box.className = 'imageCard';
-  box.innerHTML = `<img src="${raw}" alt="Zdjęcie budowy" loading="eager" onerror="this.parentElement.className='imageCard empty'; this.parentElement.textContent='Nie znaleziono zdjęcia';">`;
-}
-
-function craftnoteDisplayPl(value){
-  return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
-}
-
-function buildPolishWhatsAppText(data){
-  const abrechnung = [];
-  if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
-  if (data.teilweiseStundenlohn) abrechnung.push("Częściowo robocizna godzinowa");
-  if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Ewentualnie częściowo robocizna godzinowa");
-  if (data.festpreisangebot) abrechnung.push("Oferta ryczałtowa");
-
-  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean).join("\n");
-  const lager = [data.lager1, data.lager3].filter(Boolean).join("\n");
-
-  const maps = data.baustellenadresse
-    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse)
-    : "";
-
-  const lines = [];
-  lines.push("Nowy start budowy");
-  lines.push("");
-
-  if (data.baustellenname) {
-    lines.push("Zleceniodawca:");
-    lines.push(data.baustellenname);
-    lines.push("");
-  }
-
-  if (data.baustellenadresse) {
-    lines.push("Adres budowy:");
-    lines.push(data.baustellenadresse);
-    lines.push("");
-  }
-
-  if (maps) {
-    lines.push("Google Maps:");
-    lines.push(maps);
-    lines.push("");
-  }
-
-  if (data.craftnoteSuchbegriff) {
-    lines.push("Hasło wyszukiwania Craftnote:");
-    lines.push(data.craftnoteSuchbegriff);
-    lines.push("");
-  }
-
-  lines.push("Zaproszono do Craftnote:");
-  lines.push(craftnoteDisplayPl(data.craftnoteEingeladen));
-  lines.push("");
-
-  if (abrechnung.length) {
-    lines.push("Rodzaj rozliczenia:");
-    lines.push(abrechnung.join(", "));
-    lines.push("");
-  }
-
-  lines.push("Dostęp / wysokość:");
-  lines.push((data.zugang === "geruest" ? "Wymagane rusztowanie" : "Wystarczy drabina") + " / " + (data.baustellenhoehe || ""));
-  lines.push("");
-
-  if (data.worumGehtEs) {
-    lines.push("Co należy wykonać:");
-    lines.push(data.worumGehtEs);
-    lines.push("");
-  }
-
-  if (lieferung) {
-    lines.push("Dostawa na budowę:");
-    lines.push(lieferung);
-    lines.push("");
-  }
-
-  if (lager) {
-    lines.push("Zabrać z magazynu:");
-    lines.push(lager);
-    lines.push("");
-  }
-
-  if (data.sonstiges) {
-    lines.push("Pozostałe informacje:");
-    lines.push(data.sonstiges);
-  }
-
-  return lines.join("\n").trim();
+function setImage(id,val){
+  const box=document.getElementById(id);
+  if(!val){box.className="imageCard empty";box.textContent="Brak zdjęcia";return;}
+  box.className="imageCard";
+  box.innerHTML=`<img src="${val}" style="width:100%;height:220px;object-fit:contain">`;
 }
 
 function openWhatsApp(){
-  if (!sourceData) {
-    alert("Dane nie zostały jeszcze załadowane.");
-    return;
-  }
-
-  const msg = buildPolishWhatsAppText(sourceData);
-  window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
+  if(!data)return;
+  const txt="Nowy start budowy\n\n"+(data.baustellenname||"");
+  window.open("https://wa.me/?text="+encodeURIComponent(txt));
 }
 
-async function loadBaustellenstart() {
-  try {
-    const raw = localStorage.getItem('baustellenstart_preview_data');
+async function load(){
+  const raw=localStorage.getItem('baustellenstart_preview_data');
+  if(!raw)return;
+  data=JSON.parse(raw);
 
-    if (raw) {
-      sourceData = JSON.parse(raw);
-    } else {
-      const res = await fetch('baustellenstart.json?ts=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      sourceData = await res.json();
-    }
+  setText("baustellenname",data.baustellenname);
+  setText("baustellenadresse",data.baustellenadresse);
+  setText("worumGehtEs",data.worumGehtEs);
+  setText("lieferung1",data.lieferung1);
+  setText("lieferung3",data.lieferung3);
+  setText("lager1",data.lager1);
+  setText("lager3",data.lager3);
+  setText("sonstiges",data.sonstiges);
 
-    const data = sourceData || {};
+  setImage("img1",data.uploadBild1||data.bild1);
+  setImage("img2",data.uploadBild2||data.bild2);
+  setImage("img3",data.uploadBild3||data.bild3);
 
-    document.getElementById('docTitle').textContent = 'Nowy start budowy';
-    document.getElementById('docDate').textContent = 'Utworzono dnia: ' + new Date().toLocaleDateString('pl-PL');
-
-    setText('baustellenname', data.baustellenname);
-    setText('baustellenadresse', data.baustellenadresse);
-    setText('craftnoteSuchbegriff', data.craftnoteSuchbegriff);
-    setText('craftnoteEingeladen', craftnoteDisplayPl(data.craftnoteEingeladen));
-    setText('baustellenhoehe', data.baustellenhoehe);
-    setText('worumGehtEs', data.worumGehtEs);
-    setText('lieferung1', data.lieferung1);
-    setText('lieferung3', data.lieferung3);
-    setText('lager1', data.lager1);
-    setText('lager3', data.lager3);
-    setText('sonstiges', data.sonstiges);
-
-    setMark('m_gesamt', !!data.gesamteBaustelleStundenlohn);
-    setMark('m_teilweise', !!data.teilweiseStundenlohn);
-    setMark('m_eventuell', !!data.eventuellTeilweiseStundenlohn);
-    setMark('m_festpreis', !!data.festpreisangebot);
-    setMark('m_geruest', data.zugang === 'geruest');
-    setMark('m_leiter', data.zugang === 'leiter');
-
-    setImage('bildBox1', data.uploadBild1 || data.bild1, 'Brak zdjęcia');
-    setImage('bildBox2', data.uploadBild2 || data.bild2, 'Brak zdjęcia');
-    setImage('bildBox3', data.uploadBild3 || data.bild3, 'Brak zdjęcia');
-
-    if (data.autoPrint) {
-      data.autoPrint = false;
-      localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-      setTimeout(() => window.print(), 300);
-    }
-
-  } catch (err) {
-    alert('Polska karta rozpoczęcia budowy nie mogła zostać załadowana.');
-  }
+  document.getElementById("docDate").textContent=new Date().toLocaleDateString('pl-PL');
 }
 
-loadBaustellenstart();
+load();
 </script>
+
 </body>
 </html>
