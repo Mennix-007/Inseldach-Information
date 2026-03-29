@@ -666,6 +666,13 @@ function loadBrowser(){
 
   const data = JSON.parse(raw);
   setFormData(data);
+
+  document.getElementById('fileBild1').value = '';
+  document.getElementById('fileBild2').value = '';
+  document.getElementById('fileBild3').value = '';
+  uploadImages = ["","",""];
+
+  updatePreview();
   document.getElementById('statusLine').textContent = 'Browser-Stand geladen. Bilder werden nicht aus dem Browser-Stand geladen.';
   showToast('Browser-Stand geladen.');
 }
@@ -791,7 +798,14 @@ bindImageUpload('fileBild3', 2);
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       setFormData(JSON.parse(raw));
-      document.getElementById('statusLine').textContent = 'Browser-Stand geladen.';
+
+      document.getElementById('fileBild1').value = '';
+      document.getElementById('fileBild2').value = '';
+      document.getElementById('fileBild3').value = '';
+      uploadImages = ["","",""];
+
+      updatePreview();
+      document.getElementById('statusLine').textContent = 'Browser-Stand geladen. Bilder werden nicht aus dem Browser-Stand geladen.';
       showToast('Browser-Stand geladen.');
       return;
     }
