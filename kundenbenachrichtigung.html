@@ -6,6 +6,10 @@
 <title>Kundenbenachrichtigung</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   font-family:Arial,Helvetica,sans-serif;
@@ -16,52 +20,84 @@ body{
 .topBar{
   position:sticky;
   top:0;
-  z-index:50;
+  z-index:100;
   background:#163d7a;
   color:#fff;
-  padding:12px 18px;
+  padding:14px 22px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  gap:16px;
   box-shadow:0 2px 10px rgba(0,0,0,.12);
 }
 
 .topBarTitle{
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
+  line-height:1.2;
 }
 
-.topBarActions{
+.topBarLogo img{
+  max-height:50px;
+  background:#fff;
+  padding:4px 8px;
+  border-radius:10px;
+}
+
+.pageLayout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:20px;
+  max-width:1600px;
+  margin:20px auto;
+  padding:0 16px 24px;
+  align-items:start;
+}
+
+.sideBar{
+  background:#163d7a;
+  border-radius:18px;
+  padding:16px;
+  position:sticky;
+  top:90px;
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+}
+
+.sideBarTitle{
+  color:#fff;
+  text-align:center;
+  font-weight:800;
+  margin-bottom:14px;
+  font-size:18px;
+}
+
+.sideBarButtons{
   display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:12px;
 }
 
 .btn{
-  border:none;
-  border-radius:10px;
-  padding:10px 14px;
+  width:100%;
+  min-height:54px;
+  border-radius:12px;
+  padding:12px;
   font-size:15px;
   font-weight:700;
   cursor:pointer;
+  background:#fff;
+  color:#163d7a;
+  border:1px solid #d4dbe4;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  transition:all .15s ease;
 }
 
-.btnBlue{ background:#fff; color:#163d7a; }
-.btnYellow{ background:#ffd400; color:#000; }
-.btnGreen{ background:#25D366; color:#111; }
-.btnMain{
-  background:#25D366;
-  color:#111;
-  padding:12px 18px;
-  font-size:16px;
-  box-shadow:0 2px 10px rgba(0,0,0,.18);
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 4px 10px rgba(0,0,0,.12);
 }
 
 .page{
-  max-width:1100px;
-  margin:22px auto;
   background:#fff;
   box-shadow:0 8px 28px rgba(0,0,0,.12);
   border-radius:18px;
@@ -248,10 +284,32 @@ body{
   color:#555;
 }
 
+@media (max-width:1100px){
+  .pageLayout{
+    grid-template-columns:1fr;
+  }
+
+  .sideBar{
+    position:static;
+  }
+
+  .sideBarButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+}
+
 @media (max-width: 900px){
-  .page{
-    margin:12px;
-    padding:18px;
+  .statusBar,
+  .imageGrid,
+  .feedbackGrid,
+  .sideBarButtons{
+    grid-template-columns:1fr;
+  }
+
+  .leistungenBox{
+    columns:1;
   }
 
   .docHeader{
@@ -263,18 +321,22 @@ body{
     width:220px;
   }
 
-  .statusBar,
-  .imageGrid,
-  .feedbackGrid{
-    grid-template-columns:1fr;
-  }
-
-  .leistungenBox{
-    columns:1;
-  }
-
   .topBar{
     position:static;
+    padding:12px 14px;
+  }
+
+  .topBarTitle{
+    font-size:20px;
+  }
+
+  .pageLayout{
+    padding:0 10px 18px;
+  }
+
+  .page,
+  .sideBar{
+    padding:18px;
   }
 }
 
@@ -284,8 +346,16 @@ body{
   }
 
   .topBar,
+  .sideBar,
   .screenOnly{
     display:none !important;
+  }
+
+  .pageLayout{
+    display:block;
+    max-width:none;
+    margin:0;
+    padding:0;
   }
 
   .page{
@@ -311,96 +381,101 @@ body{
 
 <div class="topBar">
   <div class="topBarTitle">Kundenbenachrichtigung – Druckansicht</div>
-  <div class="topBarActions">
-    <button class="btn btnGreen btnMain" type="button" onclick="printAndOpenWhatsApp()">PDF + WhatsApp</button>
-    <button class="btn btnGreen" type="button" onclick="openWhatsApp()">WhatsApp</button>
-    <button class="btn btnBlue" type="button" onclick="copyCustomerVersion()">Kopie Kunde (Drag and Drop)</button>
-    <button class="btn btnBlue" type="button" onclick="copyText()">Kopieren für Craftnote-Drag and Drop</button>
-    <button class="btn btnBlue" type="button" onclick="testGoogleMaps()">Google Maps testen</button>
-    <button class="btn btnYellow" type="button" onclick="window.print()">Drucken / PDF</button>
-    <button class="btn btnBlue" type="button" onclick="location.reload()">Neu laden</button>
+  <div class="topBarLogo">
+    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" onerror="this.style.display='none'">
   </div>
 </div>
 
-<div class="page">
-  <div class="statusBar screenOnly">
-    <div class="statusCard">
-      <div class="statusLabel">Adresse</div>
-      <div class="statusValue" id="statusAdresse">—</div>
-    </div>
-    <div class="statusCard">
-      <div class="statusLabel">Bilder</div>
-      <div class="statusValue" id="statusBilder">—</div>
-    </div>
-    <div class="statusCard">
-      <div class="statusLabel">Kunde</div>
-      <div class="statusValue" id="statusKunde">—</div>
-    </div>
-  </div>
+<div class="pageLayout">
 
-  <div class="alertBox screenOnly" id="addressWarning">
-    Kein Google-Maps-Link möglich, Adresse fehlt.
-  </div>
-
-  <div class="docHeader">
-    <div class="docTitleWrap">
-      <h1 class="docTitle" id="docTitle">Kundenbenachrichtigung</h1>
-      <p class="docSub">
-        <strong>Inseldachdecker GmbH</strong><br>
-        Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
-        Telefon: 04922 9238028<br>
-        E-Mail: menne@email.de<br>
-        WhatsApp: 0151 61513028
-      </p>
+  <aside class="sideBar">
+    <div class="sideBarTitle">Aktionen</div>
+    <div class="sideBarButtons">
+      <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
+      <button class="btn" type="button" onclick="window.print()">Drucken / PDF</button>
+      <button class="btn" type="button" onclick="location.reload()">Neu laden</button>
     </div>
-    <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
-  </div>
+  </aside>
 
-  <div class="section">
-    <div class="box" id="begruessung">Moin,
+  <div class="page">
+    <div class="statusBar screenOnly">
+      <div class="statusCard">
+        <div class="statusLabel">Adresse</div>
+        <div class="statusValue" id="statusAdresse">—</div>
+      </div>
+      <div class="statusCard">
+        <div class="statusLabel">Bilder</div>
+        <div class="statusValue" id="statusBilder">—</div>
+      </div>
+      <div class="statusCard">
+        <div class="statusLabel">Kunde</div>
+        <div class="statusValue" id="statusKunde">—</div>
+      </div>
+    </div>
+
+    <div class="alertBox screenOnly" id="addressWarning">
+      Kein Google-Maps-Link möglich, Adresse fehlt.
+    </div>
+
+    <div class="docHeader">
+      <div class="docTitleWrap">
+        <h1 class="docTitle" id="docTitle">Kundenbenachrichtigung</h1>
+        <p class="docSub">
+          <strong>Inseldachdecker GmbH</strong><br>
+          Alter Damenpfad 1, 26757 Nordseebad Borkum<br>
+          Telefon: 04922 9238028<br>
+          E-Mail: menne@email.de<br>
+          WhatsApp: 0151 61513028
+        </p>
+      </div>
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
+    </div>
+
+    <div class="section">
+      <div class="box" id="begruessung">Moin,
 
 wir möchten Sie heute über den aktuellen Stand Ihrer Baustelle informieren. Mit dieser kurzen Nachricht erhalten Sie einen Überblick über den derzeitigen Arbeitsstand, ergänzende Bilder sowie – wenn vorhanden – einen passenden Navigationslink zur Baustelle.
 
 So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden halten.</div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Kunde</h2>
-    <div class="box" id="kunde">—</div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Baustellenadresse</h2>
-    <div class="box" id="baustellenadresse">—</div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Bilder</h2>
-    <div class="imageGrid">
-      <div class="imageWrap">
-        <div class="imageLabel">Bild 1</div>
-        <div class="imageCard empty" id="bildBox1">Kein Bild</div>
-      </div>
-      <div class="imageWrap">
-        <div class="imageLabel">Bild 2</div>
-        <div class="imageCard empty" id="bildBox2">Kein Bild</div>
-      </div>
-      <div class="imageWrap">
-        <div class="imageLabel">Bild 3</div>
-        <div class="imageCard empty" id="bildBox3">Kein Bild</div>
-      </div>
     </div>
-    <div class="imageInfo screenOnly" id="imageInfo">Keine Bilder hinterlegt.</div>
-  </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Aktuelle Information</h2>
-    <div class="box" id="text">—</div>
-  </div>
+    <div class="section">
+      <h2 class="sectionTitle">Kunde</h2>
+      <div class="box" id="kunde">—</div>
+    </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Das können wir Ihnen aus anbieten</h2>
-    <div class="box leistungenBox">Dachdeckerarbeiten
+    <div class="section">
+      <h2 class="sectionTitle">Baustellenadresse</h2>
+      <div class="box" id="baustellenadresse">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Bilder</h2>
+      <div class="imageGrid">
+        <div class="imageWrap">
+          <div class="imageLabel">Bild 1</div>
+          <div class="imageCard empty" id="bildBox1">Kein Bild</div>
+        </div>
+        <div class="imageWrap">
+          <div class="imageLabel">Bild 2</div>
+          <div class="imageCard empty" id="bildBox2">Kein Bild</div>
+        </div>
+        <div class="imageWrap">
+          <div class="imageLabel">Bild 3</div>
+          <div class="imageCard empty" id="bildBox3">Kein Bild</div>
+        </div>
+      </div>
+      <div class="imageInfo screenOnly" id="imageInfo">Keine Bilder hinterlegt.</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Aktuelle Information</h2>
+      <div class="box" id="text">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Das können wir Ihnen auch anbieten</h2>
+      <div class="box leistungenBox">Dachdeckerarbeiten
 Zimmereiarbeiten
 Abdichtungen
 Dachfenster
@@ -411,34 +486,35 @@ Dachgaubenbau
 Holzrahmenbau
 Dachterrassen und Beläge
 Balkonabdichtung mit Triflex</div>
-  </div>
+    </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Ihre Rückmeldung</h2>
-    <div class="feedbackGrid">
-      <div class="box" id="frage1">—</div>
-      <div class="box" id="frage2">—</div>
+    <div class="section">
+      <h2 class="sectionTitle">Ihre Rückmeldung</h2>
+      <div class="feedbackGrid">
+        <div class="box" id="frage1">—</div>
+        <div class="box" id="frage2">—</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Antwortvorlage</h2>
+      <div class="box" id="antwortvorlage">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Sonstiges</h2>
+      <div class="box" id="sonstiges">—</div>
+    </div>
+
+    <div class="footerNote">
+      Diese Nachricht dient der Information zu Ihrem Bauvorhaben.
     </div>
   </div>
 
-  <div class="section">
-    <h2 class="sectionTitle">Antwortvorlage</h2>
-    <div class="box" id="antwortvorlage">—</div>
-  </div>
-
-  <div class="section">
-    <h2 class="sectionTitle">Sonstiges</h2>
-    <div class="box" id="sonstiges">—</div>
-  </div>
-
-  <div class="footerNote">
-    Diese Nachricht dient der Information zu Ihrem Bauvorhaben.
-  </div>
 </div>
 
 <script>
 let kundenData = null;
-let pendingWhatsAppAction = null;
 
 function setText(id, value){
   const el = document.getElementById(id);
@@ -474,13 +550,13 @@ function setImage(boxId, uploadValue, pathValue, emptyText){
   }
 
   box.className = 'imageCard';
-  box.innerHTML = `<img src="${resolved}" alt="Kundenbild" loading="eager">`;
+  box.innerHTML = `<img src="${resolved}" alt="Kundenbild" loading="eager" onerror="this.parentElement.className='imageCard empty'; this.parentElement.textContent='Bild nicht gefunden';">`;
 }
 
 function buildGoogleMapsLink(data){
   const adresse = String(data?.baustellenadresse || '').trim();
-  const name = String(data?.baustellenname || '').trim();
-  const query = adresse || name;
+  const kunde = String(data?.kunde || '').trim();
+  const query = adresse || kunde;
   if (!query) return '';
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
@@ -573,7 +649,7 @@ function buildCustomerVersionText(data){
     lines.push("");
   }
 
-  lines.push("Das können wir Ihnen aus anbieten:");
+  lines.push("Das können wir Ihnen auch anbieten:");
   lines.push("Dachdeckerarbeiten, Zimmereiarbeiten, Abdichtungen, Dachfenster, Reparaturen, Gerüstbau, Klempnerarbeiten, Dachgaubenbau, Holzrahmenbau, Dachterrassen und Beläge, Balkonabdichtung mit Triflex");
   lines.push("");
 
@@ -595,50 +671,6 @@ function buildWhatsAppText(data){
   return buildCustomerVersionText(data);
 }
 
-async function copyText(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
-    return;
-  }
-
-  const msg = buildWhatsAppText(kundenData);
-
-  try {
-    await navigator.clipboard.writeText(msg);
-    alert("Text wurde für Craftnote-Drag and Drop kopiert.");
-  } catch(e) {
-    const ta = document.createElement('textarea');
-    ta.value = msg;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-    alert("Text wurde für Craftnote-Drag and Drop kopiert.");
-  }
-}
-
-async function copyCustomerVersion(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
-    return;
-  }
-
-  const msg = buildCustomerVersionText(kundenData);
-
-  try {
-    await navigator.clipboard.writeText(msg);
-    alert("Kundenkopie wurde für Drag and Drop kopiert.");
-  } catch(e) {
-    const ta = document.createElement('textarea');
-    ta.value = msg;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-    alert("Kundenkopie wurde für Drag and Drop kopiert.");
-  }
-}
-
 function confirmChecked() {
   return confirm("Ist die Kundenbenachrichtigung vollständig geprüft?");
 }
@@ -656,60 +688,11 @@ function openWhatsApp(){
   window.open(url, "_blank");
 }
 
-function testGoogleMaps(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
-    return;
-  }
-
-  const mapsLink = buildGoogleMapsLink(kundenData);
-  if (!mapsLink) {
-    alert("Kein Google-Maps-Link möglich, Adresse fehlt.");
-    return;
-  }
-
-  window.open(mapsLink, "_blank");
-}
-
-function printAndOpenWhatsApp(){
-  if (!kundenData) {
-    alert("Kundendaten sind noch nicht geladen.");
-    return;
-  }
-
-  if (!confirmChecked()) return;
-
-  pendingWhatsAppAction = () => {
-    const msg = buildWhatsAppText(kundenData);
-    const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-    window.open(url, "_blank");
-  };
-
-  window.print();
-
-  setTimeout(() => {
-    if (pendingWhatsAppAction) {
-      const fn = pendingWhatsAppAction;
-      pendingWhatsAppAction = null;
-      fn();
-    }
-  }, 1200);
-}
-
-window.addEventListener('afterprint', () => {
-  if (pendingWhatsAppAction) {
-    const fn = pendingWhatsAppAction;
-    pendingWhatsAppAction = null;
-    setTimeout(fn, 300);
-  }
-});
-
 async function loadKundeninfo() {
   try {
     const raw = localStorage.getItem('kundenbenachrichtigung_preview_data');
     if (raw) {
-      const data = JSON.parse(raw);
-      kundenData = data;
+      kundenData = JSON.parse(raw);
     } else {
       const res = await fetch('kundeninfo.json?ts=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -735,19 +718,11 @@ async function loadKundeninfo() {
     updateStatusBar(data);
 
     const autoPrint = !!data.autoPrint;
-    const autoWhatsApp = !!data.autoWhatsApp;
 
     if (autoPrint) {
       data.autoPrint = false;
       data.autoWhatsApp = false;
       localStorage.setItem('kundenbenachrichtigung_preview_data', JSON.stringify(data));
-
-      pendingWhatsAppAction = autoWhatsApp ? () => {
-        const msg = buildWhatsAppText(kundenData);
-        const url = "https://wa.me/?text=" + encodeURIComponent(msg);
-        window.open(url, "_blank");
-      } : null;
-
       setTimeout(() => window.print(), 400);
     }
 
