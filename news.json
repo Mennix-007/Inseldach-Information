@@ -1,19 +1,17 @@
 {
   "heuteWichtig": [
-    "Hallo heute Abend um 17:45 Uhr Besprechung im Aufenthaltsraum, bitte alle da sein.",
-    "Bald haben wir es geschafft, dann haben wir bald Pause"
+    "Heute bitte alle Maschinen prüfen",
+    "Proszę dzisiaj sprawdzić wszystkie maszyny",
+    "Denkt an Sicherheit auf der Baustelle",
+    "Pamiętajcie o bezpieczeństwie na placu budowy"
   ],
   "daueranzeige": [
-    "So jetzt geben wir noch einmal Gas vor Ostern, wir müssen!",
-    "Grillen fällt aus wegen dem Wetter, holen wir aber nach. "
+    "Morgen beginnt neue Baustelle",
+    "Jutro rusza nowy plac budowy",
+    "Werkzeug bitte vollständig prüfen",
+    "Proszę dokładnie sprawdzić narzędzia"
   ],
-  "langzeitInfo": [
-    "Osterferien für unser Betrieb ist vom 03.04.2026 bis 07.04.2026 einschließlich, Am 08.04.2026 sind alle wieder da",
-    "Sommerferien sind ab den 13.07.2026 geplant für 3 Wochen, (keine feste Zusage)",
-    "Ab 30.03.2026 2 Wochen Lärmschutz auf Borkum.---Środki ochrony przed hałasem będą obowiązywać na wyspie Borkum przez dwa tygodnie, począwszy od 26 marca 2026 r."
-  ],
-  "ticker": [
-    "Achtung heute beginnt die Lärmschutzverordnung !  ---   Uwaga, dziś wchodzą w życie przepisy dotyczące kontroli hałasu!"
-  ],
-  "daueranzeigeBild": "/uploads/1744897200402.jpg"
+  "langzeitInfo": [],
+  "ticker": [],
+  "daueranzeigeBild": ""
 }
