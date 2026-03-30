@@ -1,18 +1,22 @@
 {
   "heuteWichtig": [
-    "Heute bitte alle Maschinen prüfen",
-    "Denkt an Sicherheit auf der Baustelle"
+    "Guten Morgen, ich hoffe alle sind wieder gut drauf denn heute regnet es nicht",
+    "Dzień dobry, mam nadzieję, że wszyscy są znów w dobrym nastroju, bo dzisiaj nie pada",
+    "Denkt jetzt, also sofort an unsere Regeln, das ist wichtig, danke Euch",
+    "Pamiętajcie teraz, czyli od razu, o naszych zasadach – to ważne, dziękuję"
   ],
   "daueranzeige": [
-    "Morgen beginnt neue grosse Baustelle",
-    "Werkzeug bitte vollständig prüfen"
+    "Heute sollte die Baustelle Janus Braun fertig werden, bitte strengt Euch an",
+    "Dzisiaj ma się zakończyć budowa Janus Braun, proszę, dajcie z siebie wszystko",
+    "Im Programm stand drin das hier dunkelgraue Dachbahn verwendet werden soll, hoffentlich wird die rote Dachbahn akzeptiert",
+    "W instrukcji napisano, że należy użyć tej ciemnoszarej membrany dachowej; mam nadzieję, że ta czerwona membrana zostanie zaakceptowana"
   ],
   "langzeitInfo": [
-    "Osterferien vom 03.04 bis 07.04.2026 am 08.04.2026 sind alle wieder da.",
+    "Osterferien vom 02.04 bis 07.04.2026 am 08.04.2026 sind alle wieder da.",
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Diese Woche und nächste Woche gilt die Lärmschutzverordnung  ---  Rozporządzenie w sprawie kontroli hałasu wchodzi w życie w tym i przyszłym tygodniu."
+    "Achtung achte auf die Lärmschutzverordnung und auf die Parksituation  ---  Proszę zwrócić uwagę na przepisy dotyczące ochrony przed hałasem oraz sytuację parkingową."
   ],
-  "daueranzeigeBild": "/uploads/1744897200402.jpg"
+  "daueranzeigeBild": "/uploads/2021_menne_003.jpg"
 }
