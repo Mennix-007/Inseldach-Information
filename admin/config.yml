@@ -19,15 +19,15 @@ collections:
     files:
 
       # =========================
-      # NEWS / HAUPTANZEIGE
+      # NEWS / HAUPTANZEIGE (MIT ÜBERSETZUNG)
       # =========================
       - name: "news"
         label: "Kacheln & Laufband"
-        file: "news.json"
+        file: "news-source.json"
         format: "json"
         fields:
 
-          - label: "Heute wichtig (2x Deutsch, Polnisch automatisch)"
+          - label: "Heute wichtig (2x Deutsch → Polnisch automatisch)"
             name: "heuteWichtig"
             widget: "list"
             allow_add: false
@@ -42,7 +42,7 @@ collections:
               name: "item"
               widget: "string"
 
-          - label: "Hinweise (2x Deutsch, Polnisch automatisch)"
+          - label: "Hinweise (2x Deutsch → Polnisch automatisch)"
             name: "daueranzeige"
             widget: "list"
             allow_add: false
