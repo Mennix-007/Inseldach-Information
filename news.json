@@ -1,14 +1,11 @@
 {
-  "heuteWichtig max 4 Felder": [
+  "heuteWichtig": [
     "Waldeck bitte heute Abend dran denken das Tor abzuschließen.",
-    "Nächste Woche fahren wir zur Ausstellung, nehmt Eure Westen mit, anziehen auf der Ausstellung",
     "Vergesst nicht nach Öl und Wasser zu schauen, Daumen hoch wenn erledigt."
   ],
   "daueranzeige": [
-    "so jetzt geben wir noch einmal Gas vor Ostern, wir müssen !",
-    "Więc musimy jeszcze raz wcisnąć gaz przed Wielkanocą, musimy!",
-    "Grillen fällt aus wegen dem Wetter, holen wir aber nach. Treffen uns alle heute Abend hier zur Besprechung.",
-    "Grill jest odwołany z powodu pogody, ale przełożymy go na inny termin. Spotkamy się tu wszyscy dziś wieczorem na naradzie."
+    "So jetzt geben wir noch einmal Gas vor Ostern, wir müssen!",
+    "Grillen fällt aus wegen dem Wetter, holen wir aber nach. Treffen uns alle heute Abend hier zur Besprechung."
   ],
   "langzeitInfo": [
     "Osterferien für unser Betrieb ist vom 03.04.2026 bis 07.04.2026 einschließlich, Am 08.04.2026 sind alle wieder da",
@@ -17,12 +14,6 @@
   ],
   "ticker": [
     "Achtung heute beginnt die Lärmschutzverordnung !  ---   Uwaga, dziś wchodzą w życie przepisy dotyczące kontroli hałasu!"
-  ],
-  "heuteWichtig": [
-    "Moin ",
-    "Dzień dobry",
-    "Man will ja nicht immer meckern, aber man wird auch mal was sagen dürfen weil es einfach nicht richtig war",
-    "Nie zawsze warto narzekać, ale czasami powinno się mieć prawo powiedzieć coś, co po prostu jest nie tak."
   ],
   "daueranzeigeBild": "/uploads/1744897200402.jpg"
 }
