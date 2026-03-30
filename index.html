@@ -1172,6 +1172,35 @@
         .filter(x => x.length > 0);
     }
 
+    async function buildBilingualFourLines(items, maxGermanLines = 2) {
+      const cleaned = normalizeList(items).slice(0, 4);
+
+      if (!cleaned.length) return [];
+
+      // Rückwärtskompatibel:
+      // Wenn bereits 3 oder 4 Zeilen manuell gepflegt sind, unverändert anzeigen.
+      if (cleaned.length >= 3) {
+        return cleaned.slice(0, 4);
+      }
+
+      const germanLines = cleaned.slice(0, maxGermanLines);
+
+      try {
+        const polishLines = await translateTextArray(germanLines);
+        const result = [];
+
+        germanLines.forEach((de, idx) => {
+          result.push(de);
+          result.push((polishLines[idx] || '').trim() || de);
+        });
+
+        return result.slice(0, 4);
+      } catch (err) {
+        console.error('Automatische Übersetzung fehlgeschlagen:', err);
+        return germanLines;
+      }
+    }
+
     function fitListToBox(listId, boxId, settings = {}) {
       const list = document.getElementById(listId);
       const box = document.getElementById(boxId);
@@ -1493,7 +1522,8 @@
         const ul = document.getElementById('heuteWichtig');
         if (ul) {
           ul.innerHTML = '';
-          normalizeList(data.heuteWichtig).forEach(t => {
+          const heuteItems = await buildBilingualFourLines(data.heuteWichtig, 2);
+          heuteItems.forEach(t => {
             const li = document.createElement('li');
             li.textContent = t;
             ul.appendChild(li);
@@ -1503,7 +1533,8 @@
         const ulDur = document.getElementById('daueranzeige');
         if (ulDur) {
           ulDur.innerHTML = '';
-          normalizeList(data.daueranzeige).forEach(t => {
+          const dauerItems = await buildBilingualFourLines(data.daueranzeige, 2);
+          dauerItems.forEach(t => {
             const li = document.createElement('li');
             li.textContent = t;
             ulDur.appendChild(li);
