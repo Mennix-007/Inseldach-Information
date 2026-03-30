@@ -204,6 +204,8 @@ body{
   min-height:22px;
   white-space:pre-wrap;
   line-height:1.5;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .leistungenBox{
@@ -427,7 +429,7 @@ body{
           WhatsApp: 0151 61513028
         </p>
       </div>
-      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo" onerror="this.style.display='none'">
     </div>
 
     <div class="section">
@@ -446,6 +448,11 @@ So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden h
     <div class="section">
       <h2 class="sectionTitle">Baustellenadresse</h2>
       <div class="box" id="baustellenadresse">—</div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Google Maps</h2>
+      <div class="box" id="mapsLink">—</div>
     </div>
 
     <div class="section">
@@ -474,23 +481,7 @@ So möchten wir Sie auf einfachem Weg transparent und direkt auf dem Laufenden h
 
     <div class="section">
       <h2 class="sectionTitle">Das können wir Ihnen auch anbieten</h2>
-      <div class="box leistungenBox">Dachdeckerarbeiten
-Zimmereiarbeiten
-Abdichtungen
-Dachfenster
-Reparaturen
-Gerüstbau
-Klempnerarbeiten
-Dachgaubenbau
-Holzrahmenbau
-Dachterrassen und Beläge
-Balkonabdichtung mit Triflex
-<strong>Photovoltaik- und Solaranlagenbau – alles aus einer Hand</strong>
-<strong>Fertiggauben in nur einem Tag – schnell und sauber montiert</strong>
-<strong>Regelmäßige Dachwartung – frühzeitig Schäden erkennen und Kosten sparen</strong>
-<strong>Schneller Sturmschaden-Service – wir sind kurzfristig für Sie da</strong>
-<strong>Arbeiten rund um Ihr Haus – flexibel und zuverlässig umgesetzt</strong>
-<strong>Energieberatung inklusive Förderanträgen – wir holen das Maximum für Sie raus</strong></div>
+      <div class="box leistungenBox" id="leistungen">—</div>
     </div>
 
     <div class="section">
@@ -566,6 +557,39 @@ function buildGoogleMapsLink(data){
   return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
 }
 
+function buildServiceBlock(data){
+  const services = [];
+
+  if (data?.leistungDachdeckerarbeiten) services.push("Dachdeckerarbeiten");
+  if (data?.leistungZimmereiarbeiten) services.push("Zimmereiarbeiten");
+  if (data?.leistungAbdichtungen) services.push("Abdichtungen (Flachdach / Balkon / Terrasse)");
+  if (data?.leistungDachfenster) services.push("Dachfenster (VELUX) – Lieferung und Einbau");
+  if (data?.leistungReparaturen) services.push("Reparaturen und Leckageortung");
+  if (data?.leistungGeruestbau) services.push("Gerüstbau");
+  if (data?.leistungKlempnerarbeiten) services.push("Klempnerarbeiten (Zink / Kupfer / Aluminium)");
+  if (data?.leistungDachgaubenbau) services.push("Dachgaubenbau");
+  if (data?.leistungHolzrahmenbau) services.push("Holzrahmenbau");
+  if (data?.leistungDachterrassen) services.push("Dachterrassen und Beläge (z. B. WPC)");
+  if (data?.leistungBalkonabdichtung) services.push("Balkonabdichtung mit Triflex");
+  if (data?.leistungWartung) services.push("Wartung und Inspektion von Dächern");
+  if (data?.leistungSturmschaeden) services.push("Sturmschadenbeseitigung");
+  if (data?.leistungNotdienst) services.push("Notdienst bei Undichtigkeiten");
+  if (data?.leistungFlachdachsanierung) services.push("Sanierung von Flachdächern");
+  if (data?.leistungAttika) services.push("Erneuerung von Attika- und Randprofilen");
+  if (data?.leistungRinnen) services.push("Rinnen- und Fallrohrreinigung / Austausch");
+  if (data?.leistungLichtkuppeln) services.push("Einbau von Lichtkuppeln");
+  if (data?.leistungDaemmarbeiten) services.push("Dämmarbeiten (Aufsparren / Zwischensparren)");
+  if (data?.leistungFassaden) services.push("Fassadenbekleidung (z. B. Kronoart)");
+  if (data?.leistungRueckbau) services.push("Rückbau- und Demontagearbeiten");
+  if (data?.leistungLogistik) services.push("Materiallogistik und Baustellenorganisation");
+
+  if (!services.length) {
+    return "Keine zusätzlichen Leistungen ausgewählt.";
+  }
+
+  return services.join("\n");
+}
+
 function buildImageLinks(data){
   return [
     getImageUrl(data?.uploadBild1, data?.bild1),
@@ -622,17 +646,19 @@ async function loadKundeninfo() {
       kundenData = await res.json();
     }
 
-    const data = kundenData;
+    const data = kundenData || {};
 
     document.getElementById('docTitle').textContent = data.title || 'Kundenbenachrichtigung';
 
     setText('kunde', data.kunde);
     setText('baustellenadresse', data.baustellenadresse);
+    setText('mapsLink', buildGoogleMapsLink(data));
     setText('text', data.text);
     setText('sonstiges', data.sonstiges);
     setText('frage1', data.feedbackFrage1);
     setText('frage2', data.feedbackFrage2);
     setText('antwortvorlage', data.feedbackAntwortVorlage);
+    setText('leistungen', buildServiceBlock(data));
 
     setImage('bildBox1', data.uploadBild1, data.bild1, 'Kein Bild');
     setImage('bildBox2', data.uploadBild2, data.bild2, 'Kein Bild');
