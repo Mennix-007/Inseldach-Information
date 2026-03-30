@@ -139,6 +139,8 @@ body{
 
 .section{
   margin-bottom:18px;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .sectionTitle{
@@ -219,6 +221,8 @@ body{
   align-items:center;
   gap:10px;
   min-height:24px;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .mark{
@@ -249,6 +253,8 @@ body{
   padding:12px 14px;
   background:#fbfcfd;
   min-height:24px;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .doubleGrid{
@@ -268,6 +274,8 @@ body{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:14px;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .imageCard{
@@ -279,6 +287,8 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .imageCard.empty{
@@ -293,6 +303,8 @@ body{
   object-fit:contain;
   display:block;
   background:#fff;
+  break-inside:avoid;
+  page-break-inside:avoid;
 }
 
 .footerNote{
@@ -380,6 +392,21 @@ body{
     box-shadow:none;
     border-radius:0;
     padding:0;
+  }
+
+  .section,
+  .imageGrid,
+  .imageCard,
+  .checkItem,
+  .heightBox{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  .imageCard img{
+    height:200px;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
   }
 }
 </style>
