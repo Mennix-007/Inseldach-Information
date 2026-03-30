@@ -156,6 +156,8 @@ body{
   min-height:22px;
   white-space:pre-wrap;
   line-height:1.45;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .addressBox{
@@ -191,6 +193,8 @@ body{
 .infoValue{
   white-space:pre-wrap;
   line-height:1.35;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .checkGrid4{
@@ -396,8 +400,8 @@ body{
     <div class="sideBarButtons">
       <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp</button>
       <button class="btn" type="button" onclick="openPolishVersion()">Polnisch</button>
-      <button class="btn" type="button" onclick="window.print()">Drucken / PDF</button>
-      <button class="btn" type="button" onclick="location.reload()">Neu laden</button>
+      <button class="btn" type="button" onclick="openPrintDialog()">Drucken / PDF</button>
+      <button class="btn" type="button" onclick="reloadView()">Neu laden</button>
     </div>
   </aside>
 
@@ -407,7 +411,7 @@ body{
         <h1 class="docTitle" id="docTitle">Neustart Baustelle</h1>
         <p class="docSub" id="docDate"></p>
       </div>
-      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo" onerror="this.style.display='none'">
     </div>
 
     <div class="section">
@@ -429,6 +433,11 @@ body{
           <div class="infoValue" id="craftnoteEingeladen">—</div>
         </div>
       </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Google Maps</h2>
+      <div class="box" id="mapsLink">—</div>
     </div>
 
     <div class="section">
@@ -562,6 +571,12 @@ function craftnoteDisplay(value){
   return String(value || '').trim().toLowerCase() === 'ja' ? 'Ja' : 'Nein';
 }
 
+function buildMapsLink(data){
+  const query = String(data?.baustellenadresse || '').trim() || String(data?.baustellenname || '').trim();
+  if (!query) return '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+}
+
 function buildGermanWhatsAppText(data){
   const abrechnung = [];
   if (data.gesamteBaustelleStundenlohn) abrechnung.push("Gesamte Baustelle Stundenlohn");
@@ -569,12 +584,9 @@ function buildGermanWhatsAppText(data){
   if (data.eventuellTeilweiseStundenlohn) abrechnung.push("Eventuell teilweise Stundenlohn");
   if (data.festpreisangebot) abrechnung.push("Festpreisangebot");
 
-  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean).join("\n");
-  const lager = [data.lager1, data.lager3].filter(Boolean).join("\n");
-
-  const maps = data.baustellenadresse
-    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse)
-    : "";
+  const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean);
+  const lager = [data.lager1, data.lager3].filter(Boolean);
+  const maps = buildMapsLink(data);
 
   const lines = [];
   lines.push("Neustart Baustelle");
@@ -624,15 +636,15 @@ function buildGermanWhatsAppText(data){
     lines.push("");
   }
 
-  if (lieferung) {
+  if (lieferung.length) {
     lines.push("Lieferung zur Baustelle:");
-    lines.push(lieferung);
+    lieferung.forEach(v => lines.push("- " + v));
     lines.push("");
   }
 
-  if (lager) {
+  if (lager.length) {
     lines.push("Mitnahme aus dem Lager:");
-    lines.push(lager);
+    lager.forEach(v => lines.push("- " + v));
     lines.push("");
   }
 
@@ -658,6 +670,17 @@ function openPolishVersion(){
   window.open("baustellenstart-pl.html", "_blank");
 }
 
+function openPrintDialog(){
+  window.focus();
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+function reloadView(){
+  location.reload();
+}
+
 async function loadBaustellenstart() {
   try {
     const raw = localStorage.getItem('baustellenstart_preview_data');
@@ -679,6 +702,7 @@ async function loadBaustellenstart() {
     setText('baustellenadresse', data.baustellenadresse);
     setText('craftnoteSuchbegriff', data.craftnoteSuchbegriff);
     setText('craftnoteEingeladen', craftnoteDisplay(data.craftnoteEingeladen));
+    setText('mapsLink', buildMapsLink(data));
     setText('baustellenhoehe', data.baustellenhoehe);
     setText('worumGehtEs', data.worumGehtEs);
     setText('lieferung1', data.lieferung1);
@@ -701,7 +725,7 @@ async function loadBaustellenstart() {
     if (data.autoPrint) {
       data.autoPrint = false;
       localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-      setTimeout(() => window.print(), 300);
+      setTimeout(() => openPrintDialog(), 300);
     }
 
   } catch (err) {
