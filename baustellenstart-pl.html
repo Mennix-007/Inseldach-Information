@@ -156,6 +156,8 @@ body{
   min-height:22px;
   white-space:pre-wrap;
   line-height:1.45;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .addressBox{
@@ -191,6 +193,8 @@ body{
 .infoValue{
   white-space:pre-wrap;
   line-height:1.35;
+  overflow-wrap:anywhere;
+  word-break:break-word;
 }
 
 .checkGrid4{
@@ -395,8 +399,8 @@ body{
     <div class="sideBarTitle">Akcje</div>
     <div class="sideBarButtons">
       <button class="btn" type="button" onclick="openWhatsApp()">WhatsApp Polski</button>
-      <button class="btn" type="button" onclick="window.print()">Drukuj / PDF</button>
-      <button class="btn" type="button" onclick="location.reload()">Odśwież</button>
+      <button class="btn" type="button" onclick="openPrintDialog()">Drukuj / PDF</button>
+      <button class="btn" type="button" onclick="reloadView()">Odśwież</button>
     </div>
   </aside>
 
@@ -406,7 +410,7 @@ body{
         <h1 class="docTitle" id="docTitle">Nowy start budowy</h1>
         <p class="docSub" id="docDate"></p>
       </div>
-      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo">
+      <img src="Logo_Menne_min.png?v=200" alt="Inseldachdecker Logo" class="docLogo" onerror="this.style.display='none'">
     </div>
 
     <div class="section">
@@ -428,6 +432,11 @@ body{
           <div class="infoValue" id="craftnoteEingeladen">—</div>
         </div>
       </div>
+    </div>
+
+    <div class="section">
+      <h2 class="sectionTitle">Google Maps</h2>
+      <div class="box" id="mapsLink">—</div>
     </div>
 
     <div class="section">
@@ -561,6 +570,12 @@ function craftnoteDisplayPl(value){
   return String(value || '').trim().toLowerCase() === 'ja' ? 'Tak' : 'Nie';
 }
 
+function buildMapsLink(data){
+  const query = String(data?.baustellenadresse || '').trim() || String(data?.baustellenname || '').trim();
+  if (!query) return '';
+  return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+}
+
 function buildPolishWhatsAppText(data){
   const abrechnung = [];
   if (data.gesamteBaustelleStundenlohn) abrechnung.push("Cała budowa – robocizna godzinowa");
@@ -571,10 +586,7 @@ function buildPolishWhatsAppText(data){
   const lieferung = [data.lieferung1, data.lieferung3].filter(Boolean);
   const lager = [data.lager1, data.lager3].filter(Boolean);
   const hasImages = !!(data.uploadBild1 || data.uploadBild2 || data.uploadBild3 || data.bild1 || data.bild2 || data.bild3);
-
-  const maps = data.baustellenadresse
-    ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(data.baustellenadresse)
-    : "";
+  const maps = buildMapsLink(data);
 
   const lines = [];
   lines.push("Nowy start budowy");
@@ -659,6 +671,17 @@ function openWhatsApp(){
   window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
 }
 
+function openPrintDialog(){
+  window.focus();
+  setTimeout(() => {
+    window.print();
+  }, 100);
+}
+
+function reloadView(){
+  location.reload();
+}
+
 async function loadBaustellenstart() {
   try {
     const raw = localStorage.getItem('baustellenstart_preview_data');
@@ -680,6 +703,7 @@ async function loadBaustellenstart() {
     setText('baustellenadresse', data.baustellenadresse);
     setText('craftnoteSuchbegriff', data.craftnoteSuchbegriff);
     setText('craftnoteEingeladen', craftnoteDisplayPl(data.craftnoteEingeladen));
+    setText('mapsLink', buildMapsLink(data));
     setText('baustellenhoehe', data.baustellenhoehe);
     setText('worumGehtEs', data.worumGehtEs);
     setText('lieferung1', data.lieferung1);
@@ -702,7 +726,7 @@ async function loadBaustellenstart() {
     if (data.autoPrint) {
       data.autoPrint = false;
       localStorage.setItem('baustellenstart_preview_data', JSON.stringify(data));
-      setTimeout(() => window.print(), 300);
+      setTimeout(() => openPrintDialog(), 300);
     }
 
   } catch (err) {
