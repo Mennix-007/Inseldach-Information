@@ -27,29 +27,33 @@ collections:
         format: "json"
         fields:
 
-          - label: "Heute wichtig"
+          - label: "Heute wichtig (2x Deutsch, Polnisch automatisch)"
             name: "heuteWichtig"
             widget: "list"
             allow_add: false
             allow_delete: false
-            min: 4
-            max: 4
+            min: 2
+            max: 2
             default:
               - ""
               - ""
-              - ""
-              - ""
             field:
-              label: "Eintrag"
+              label: "Deutscher Eintrag"
               name: "item"
               widget: "string"
 
-          - label: "Hinweise"
+          - label: "Hinweise (2x Deutsch, Polnisch automatisch)"
             name: "daueranzeige"
             widget: "list"
-            allow_add: true
+            allow_add: false
+            allow_delete: false
+            min: 2
+            max: 2
+            default:
+              - ""
+              - ""
             field:
-              label: "Eintrag"
+              label: "Deutscher Eintrag"
               name: "item"
               widget: "string"
 
@@ -233,42 +237,52 @@ collections:
           - label: "Was wird zur Baustelle geliefert - Feld 1"
             name: "lieferung1"
             widget: "text"
+            required: false
 
           - label: "Was wird zur Baustelle geliefert - Feld 2"
             name: "lieferung2"
             widget: "text"
+            required: false
 
           - label: "Was wird zur Baustelle geliefert - Feld 3"
             name: "lieferung3"
             widget: "text"
+            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 1"
             name: "lager1"
             widget: "text"
+            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 2"
             name: "lager2"
             widget: "text"
+            required: false
 
           - label: "Was muss mitgenommen werden vom Lager - Feld 3"
             name: "lager3"
             widget: "text"
+            required: false
 
           - label: "Bild 1"
             name: "bild1"
             widget: "image"
+            required: false
 
           - label: "Bild 2"
             name: "bild2"
             widget: "image"
+            required: false
 
           - label: "Bild 3"
             name: "bild3"
             widget: "image"
+            required: false
 
           - label: "Sonstiges bitte nicht vergessen"
             name: "sonstiges"
             widget: "text"
+            required: false
 
       # =========================
       # KUNDENBENACHRICHTIGUNG
