@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen",
-    "Dzień dobry",
-    "Bitte denkt an die weißen Karten wegen parken, bitte ausfüllen und die Ausweise müssen gut sichtbar sein.",
-    "Proszę pamiętać o białych kartach parkingowych – należy je wypełnić, a dokumenty tożsamości muszą być dobrze widoczne."
+    "Guten Morgen, heute arbeiten wir bis 14:30 Uhr, dabei fällt die Mittagstunde aus, bitte weiterlesen.",
+    "Dzień dobry, dzisiaj pracujemy do godziny 14:30, nie ma przerwy obiadowej – proszę o zapoznanie się z dalszą treścią.",
+    "Mittagstunde dennoch notieren, Arbeitszeitende 15:30 Uhr aufschreiben in der Zeiterfassung",
+    "Należy jednak odnotować godzinę 12:00, a w rejestrze czasu pracy wpisać, że koniec pracy to godzina 15:30"
   ],
   "daueranzeige": [
-    "Wer hat Zeit Samstag zu arbeiten, bitte an die weiße Tafel schreiben wegen Planung.",
-    "Kto ma czas pracować w sobotę, proszę zapisać się na białej tablicy, żebyśmy mogli to zaplanować.",
-    "Bitte am Freitag die WQasser und Ölstände bei den Autos prüfen, mDaumen hoch wenn erldigt (Whatapp)",
-    "Proszę sprawdzić w piątek poziom wody i oleju w samochodach; dajcie znać, jeśli wszystko w porządku (WhatsApp)"
+    "Samstagsarbeit, bitte dann auch kommen, bei fester Zusage Danke",
+    "Praca w sobotę – proszę się wtedy zgłosić, jeśli na pewno się zgadzasz. Dziękuję.",
+    "Habt Ihr nach Oel und Wasser an den Autos geprüft ?",
+    "Czy sprawdziliście poziom oleju i wody w samochodach?"
   ],
   "langzeitInfo": [
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag",
-    "Erstmal ab jetzt ist Urlaubsperre, bitte um Verständnis, Anträge stellen, nur wenn es wichtig ist und besprechen"
+    "Erstmal ab jetzt ist Urlaubsperre, Anträge stellen, nur wenn es wichtig ist bitte zuvor besprechen"
   ],
   "ticker": [
-    "Nur noch diese Woche, Lärmschutz, passt auf  ---  Tylko w tym tygodniu, ochrona przed hałasem, uważaj"
+    "Achtung, Lärmschutzverordnung gilt auch noch Samstag, (Morgen)  ---  Uwaga, przepisy dotyczące ochrony przed hałasem obowiązują również w sobotę (jutro)."
   ],
-  "daueranzeigeBild": "/uploads/img_4293.jpeg"
+  "daueranzeigeBild": "/uploads/inseldachdecker_2025_126.jpg"
 }
