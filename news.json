@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, wir wünschen Euch ein schönes Wochenende",
-    "Dzień dobry, życzymy Wam miłego weekendu",
-    "Schaut bitte heute nach Öl und Wasser bei den Fahrzeugen",
-    "Proszę sprawdzić dzisiaj poziom oleju i wody w pojazdach"
+    "Guten Morgen, es müsste bei Euch im Drucker ein paar Hinweise liegen",
+    "Dzień dobry, w waszej drukarce powinno być kilka wskazówek",
+    "Bitte schaut genau drauf, es ist Wichtig, wir telefonieren wegen Wetter.",
+    "Proszę, przyjrzyjcie się temu dokładnie, to ważne – dzwonimy w sprawie pogody."
   ],
   "daueranzeige": [
-    ".",
-    ".",
-    ".",
-    "."
+    "Wir müssen in der Hindenburgstraße soweit abreißen, so das wir eine neue Holzlänge wieder verlegen können.",
+    "Musimy wyburzyć fragment ulicy Hindenburgstraße na tyle, abyśmy mogli ponownie ułożyć nowy odcinek drewnianej nawierzchni.",
+    "Ich bin heute Mittag bei Euch, Wolfgang",
+    "Będę u was dzisiaj w południe, Wolfgang"
   ],
   "langzeitInfo": [
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag",
     "Erstmal ab jetzt ist Urlaubsperre, Anträge stellen, nur wenn es wichtig ist bitte zuvor besprechen"
   ],
   "ticker": [
-    "Achtung, Lärmschutzverordnung gilt auch noch Samstag, (Morgen)  ---  Uwaga, przepisy dotyczące ochrony przed hałasem obowiązują również w sobotę (jutro)."
+    "Lärmschutz ist vorbei, Achtung jedoch zwischen 13:00 und 15:00 Uhr aufpassen.  --  Środki ochrony przed hałasem nie obowiązują, ale prosimy zachować ostrożność między 13:00 a 15:00."
   ],
-  "daueranzeigeBild": "/uploads/menne-inseldachdecker-borkum-08.2025-0617.jpg"
+  "daueranzeigeBild": "/uploads/inseldachdecker_menne_095.jpg"
 }
