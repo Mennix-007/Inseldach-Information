@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen",
-    "Dzień dobry",
-    "Wir haben gutes Wetter diese Woche",
-    "W tym tygodniu mamy ładną pogodę"
+    "Guten Morgen, wer hat Samstag Zeit, es ist dringend, Gerüst muss weg, Richthofenstraße abholen",
+    "Dzień dobry, kto ma czas w sobotę? To pilne – trzeba zdemontować rusztowanie i odebrać je z Richthofenstraße",
+    "Hartmann Strandstraße 41 abbauen, das wäre was für Samstag",
+    "Rozebranie budynku przy ulicy Hartmann Strandstraße 41 – to byłoby coś na sobotę"
   ],
   "daueranzeige": [
-    "Wir machen heute 10 m frei in der Hindenburgstrasse",
-    "Dzisiaj zwalniamy 10 metrów na ulicy Hindenburgstrasse",
-    "Bei dem Wetter gehen wir kein Risiko ein",
-    "Przy takiej pogodzie nie będziemy ryzykować"
+    "Bitte die Rasenfläche absuchen nach Gerüstteile, es wird gemäht, Richthofenstraße Moby Dick",
+    "Proszę sprawdzić trawnik pod kątem elementów rusztowania – będzie koszenie, Richthofenstraße Moby Dick",
+    "Wir haben Terminschwierigkeiten, bitte helft mit",
+    "Mamy problemy z terminami, prosimy o pomoc"
   ],
   "langzeitInfo": [
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag",
     "Erstmal ab jetzt ist Urlaubsperre, Anträge stellen, nur wenn es wichtig ist bitte zuvor besprechen"
   ],
   "ticker": [
-    "Lärmschutz ist vorbei, Achtung jedoch zwischen 13:00 und 15:00 Uhr aufpassen.  --  Środki ochrony przed hałasem nie obowiązują, ale prosimy zachować ostrożność między 13:00 a 15:00."
+    "Wenn wir 1 Mai Freitag frei machen wollen, dann kommt bitte die zwei Samstage  --  Jeśli chcemy mieć wolny piątek, 1 maja, to prosimy o przybycie w obie soboty."
   ],
-  "daueranzeigeBild": "/uploads/inseldachdecker_2025_121.jpg"
+  "daueranzeigeBild": "/uploads/ba_20240514_112938835_neu.jpg"
 }
