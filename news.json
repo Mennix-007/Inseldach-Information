@@ -1,15 +1,15 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, heute morgen fängt es an zu regnen, bitte nochmal nach der Baustelle schauen, ob alles ok ?",
-    "Dzień dobry, dziś rano zaczęło padać. Proszę jeszcze raz sprawdzić plac budowy, czy wszystko w porządku?",
-    "Das Gerüst muss weg von der Richthofenstraße, bitte Anhänger mitnehmen und den Canter.",
-    "Należy usunąć rusztowanie z ulicy Richthofenstraße; proszę zabrać przyczepę i samochód Canter."
+    "Guten Morgen, heute müssen wir den Rest wegholen von der Richthofenstraße Gerüst",
+    "Dzień dobry, dzisiaj musimy zabrać resztę z rusztowania przy Richthofenstraße",
+    "Die Gerüstteile müssen weg vor dem roten Tor. Habt Ihr nach Oel geschaut bei den Fahrzeugen ?",
+    "Elementy rusztowania trzeba usunąć przed czerwoną bramą. Sprawdziliście, czy w pojazdach jest olej?"
   ],
   "daueranzeige": [
-    "Es sind Teile liegen geblieben die uns gehören in der Ankerstraße, hatte ich Dominik gesagt, mitnehmen.",
-    "„W Ankerstraße zostały rzeczy, które do nas należą” – powiedziałem Dominikowi – „weź je ze sobą”.",
-    "Bitte helft aneinander Euch, nicht so wie Freitag, das Müll liegen geblieben ist in der Neuen Straße",
-    "Proszę, pomóżcie sobie nawzajem, żeby nie było tak jak w piątek, kiedy śmieci leżały na Neue Straße"
+    "Marrek ist heute nicht da, wir müssen aber weiter in der Hindenburgstraße, Flachdach, gutes Wetter",
+    "Marrek dzisiaj nie ma, ale musimy iść dalej ulicą Hindenburgstraße, płaski dach, ładna pogoda",
+    "Leute die kein Führerschein haben müssen sich mit Kollegen gut stellen, sprecht Euch ab, wenn was abgefahren werden muss",
+    "Osoby, które nie mają prawa jazdy, powinny utrzymywać dobre relacje z kolegami; uzgadniajcie między sobą, kiedy trzeba gdzieś pojechać"
   ],
   "langzeitInfo": [
     "Es landen wieder Strafmandate rein, bitte beachtet die Straßenverkehrsordnung",
@@ -18,5 +18,5 @@
   "ticker": [
     "Bitte aneinander helfen, wenn was ist, Müll abfahren Neuestraße, Olli musste wieder Samstag hinterher, das geht doch nicht so  ---  Proszę, pomóżcie sobie nawzajem, jeśli coś jest nie tak, wynieście śmieci na Neuestraße, Olli musiał pójść z wami w sobotę, to po prostu nie w porządku."
   ],
-  "daueranzeigeBild": "/uploads/inseldachdecker_2025_157.jpg"
+  "daueranzeigeBild": "/uploads/inseldachdecker-09.2025-zimmermannsarbeiten-8028.jpg"
 }
