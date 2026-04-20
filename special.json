@@ -1,10 +1,10 @@
 {
-  "active": false,
+  "active": true,
   "title": "Grüsse von der Brücke ",
-  "text": "Heute Abend, wie immer Donnerstag räumen wir im Lager alle 15 Min auf bitte !\nDzisiaj wieczorem, jak zawsze w czwartki, będziemy sprzątać magazyn co 15 minut, prosimy!",
-  "image": "/uploads/inseldachdecker-09.2025-zimmermannsarbeiten-1406.jpg",
-  "dateFrom": "2026-04-07",
-  "dateTo": "2026-04-09",
+  "text": "Wer ist dabei am diesem Samstag ? Nächste Woche ist langes Wochenende !\n\nKto wpadnie w tę sobotę? W przyszłym tygodniu długi weekend!",
+  "image": "/uploads/inseldachdecker_menne_068.jpg",
+  "dateFrom": "2026-04-20",
+  "dateTo": "2026-04-24",
   "showDuration": 15,
   "hideDuration": 30
 }
