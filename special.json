@@ -1,10 +1,10 @@
 {
-  "active": false,
+  "active": true,
   "title": "Grüsse von der Brücke !",
-  "text": "Dominik hat Geburtstag, das gesamte Inseldachdecker-Team gratuliert\n\n\nDominik ma urodziny, cała ekipa dekarzy składa mu gratulacje",
-  "image": "/uploads/imgl6355.jpg",
-  "dateFrom": "2026-04-22",
-  "dateTo": "2026-04-23",
-  "showDuration": 15,
+  "text": "Freut Euch Nils ist da, unterstützt Ihn bitte so gut es geht.\n\nCieszcie się, Nils jest tutaj, prosimy, wesprzyjcie go jak możecie.\n\nAllen ein freundlichen Tag !\n\nMiłego dnia wszystkim!",
+  "image": "/uploads/bildschirmfoto-2026-04-23-um-20.19.21.png",
+  "dateFrom": "2026-04-23",
+  "dateTo": "2026-04-25",
+  "showDuration": 12,
   "hideDuration": 30
 }
