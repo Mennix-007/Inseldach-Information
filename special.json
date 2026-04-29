@@ -1,10 +1,10 @@
 {
-  "active": false,
+  "active": true,
   "title": "Grüsse von der Brücke !",
-  "text": "Schönes Wochenende wünschen wir Euch mit super Wetter. \n\nŻyczymy Państwu cudownego weekendu i pięknej pogody.",
+  "text": "Allen ein schönes langes Wochenende und 1. Mai.\n\nŻyczę wszystkim miłego długiego weekendu i szczęśliwego 1 maja.",
   "image": "/uploads/schones-wochenende-400-70026374.jpg",
-  "dateFrom": "2026-04-24",
-  "dateTo": "2026-04-25",
-  "showDuration": 15,
+  "dateFrom": "2026-04-29",
+  "dateTo": "2026-05-01",
+  "showDuration": 12,
   "hideDuration": 15
 }
