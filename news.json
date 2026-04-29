@@ -1,13 +1,13 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, heute löst mich Nils ab, Nils kommt heute zu Euch",
-    "Dzień dobry, dzisiaj zastępuje mnie Nils, Nils przyjedzie dziś do was",
+    "Guten Morgen, schönes Wetter gibt es zum 1.Mai.",
+    "Dzień dobry, 1 maja mamy piękną pogodę.",
     "Nochmal, bitte Abends im Aufenthaltsraum die restlichen Stundenzettel schreiben, Pflicht !",
     "Jeszcze raz proszę: wieczorem w pokoju socjalnym wypełnijcie pozostałe karty ewidencji czasu pracy – to obowiązkowe!"
   ],
   "daueranzeige": [
-    "Diese Woche gibt es die Einweisung und Lehrgang für unseren Kran. Sicherheit geht vor.",
-    "W tym tygodniu odbędzie się szkolenie wprowadzające i kurs obsługi naszego dźwigu. Bezpieczeństwo przede wszystkim.",
+    "Heute nochmal Einweisung und Lehrgang für unseren Kran.",
+    "Dzisiaj kolejna instruktaż i szkolenie dotyczące naszego dźwigu.",
     "Bitte Morgens hier lesen, kann sein, dass hier was wichtiges sich ändert.",
     "Proszę przeczytać to rano, bo mogą pojawić się ważne zmiany."
   ],
@@ -16,7 +16,7 @@
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Stellt Euch den Wecker, in Craftnote bitte Bilder einsetzen, Mittags und Abends.  XXX  Ustaw budzik i wstawiaj obrazy do Craftnote o godzinie 12:00 i wieczorem."
+    "Allen einen erfolgreichen Tag. XXX. Życzę wszystkim udanego dnia"
   ],
-  "daueranzeigeBild": "/uploads/imgl6639.jpg"
+  "daueranzeigeBild": ""
 }
