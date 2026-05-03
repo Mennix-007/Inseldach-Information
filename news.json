@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, schönes Wetter gibt es zum 1.Mai..",
-    "Dzień dobry, 1 maja mamy piękną pogodę...",
-    "Nochmal, bitte Abends im Aufenthaltsraum die restlichen Stundenzettel schreiben, Pflicht !",
-    "Jeszcze raz proszę: wieczorem w pokoju socjalnym wypełnijcie pozostałe karty ewidencji czasu pracy – to obowiązkowe!"
+    "Guten Morgen, wir hoffen Ihr hattet einen schönen 1.Mai..",
+    "Dzień dobry, mamy nadzieję, że mieliście miłego 1 maja...",
+    "Krystian hatte Geburtstag, alle haben dran gedacht",
+    "Krystian miał urodziny, wszyscy o tym pamiętali"
   ],
   "daueranzeige": [
-    "Heute nochmal Einweisung und Lehrgang für unseren Kran.",
-    "Dzisiaj kolejna instruktaż i szkolenie dotyczące naszego dźwigu.",
+    "Alle dran denken an die Stundenzettel insbesondere an die Stundenlohnzettel, danke Wolfgang",
+    "Proszę wszystkich o pamięć o kartach ewidencji czasu pracy, a zwłaszcza o kartach wynagrodzenia godzinowego. Dziękuję, Wolfgang",
     "Bitte Morgens hier lesen, kann sein, dass hier was wichtiges sich ändert.",
     "Proszę przeczytać to rano, bo mogą pojawić się ważne zmiany."
   ],
   "langzeitInfo": [
-    "Am Donnerstag ist schon Wochenende, 1.Mai, die Arbeitszeit am Donnerstag ist bis 18:00 Uhr",
+    "Nächste Woche Donnerstag ist Himmelfahrt-Feiertag, Freitag ist nicht frei, kann sich ändern wegen Wetter",
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Allen einen erfolgreichen Tag. XXX. Życzę wszystkim udanego dnia"
+    "Nächste Woche ist am Donnerstag ein Feiertag. Es ist nicht geplant Freitag frei zu machen. Mittwoch nächste Woche, sagen wir Bescheid, kann sich das ändern wegen Wetter"
   ],
-  "daueranzeigeBild": ""
+  "daueranzeigeBild": "/uploads/menne-inseldachdecker-borkum-08.2025-0745.jpg"
 }
