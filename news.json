@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen liebes Team",
-    "Dzień dobry, drogi zespole",
-    "Heute kommt Nils zu Euch, morgen komme ich hinzu Wolfgang zieht Euch warm an, Ha Ha",
-    "Dzisiaj przyjedzie do was Nils, a jutro dołączę ja. Wolfgang, ubierzcie się ciepło, ha ha"
+    "Guten Morgen, hey ruft mal die Jungs an wie es Ihnen geht, unsere kranken Hühner",
+    "Dzień dobry, hej, zadzwońcie do chłopaków i zapytajcie, jak się mają, nasze chore kurczaki",
+    "Heute wieder bis 14:30 Uhr arbeiten, aufschreiben bis 15:30 Uhr mit einer Stunden Mittag",
+    "Dzisiaj znowu praca do 14:30, a potem do 15:30 z godziną przerwy na lunch"
   ],
   "daueranzeige": [
-    "Alle dran denken an die Stundenzettel insbesondere an die Stundenlohnzettel, danke Wolfgang",
-    "Proszę wszystkich o pamięć o kartach ewidencji czasu pracy, a zwłaszcza o kartach wynagrodzenia godzinowego. Dziękuję, Wolfgang",
-    "Dran denken, muss ich immer wieder sagen, schlimm, Abends ist Feierabend auf der Baustelle",
-    "Muszę ciągle o tym przypominać, szkoda, że wieczorem na budowie kończy się praca"
+    "Wenn Ihr nicht sicher seid, ist das Stundenlohn oder nicht, dann ruft Nils /Wolfgang einfach an",
+    "Jeśli nie jesteście pewni, czy to stawka godzinowa, czy nie, po prostu zadzwońcie do Nilsa lub Wolfganga",
+    "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen.",
+    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za to dodatkowe wynagrodzenie."
   ],
   "langzeitInfo": [
     "Nächste Woche Donnerstag ist Himmelfahrt-Feiertag, Freitag ist nicht frei, kann sich ändern wegen Wetter",
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Nächste Woche ist am Donnerstag ein Feiertag. Es ist nicht geplant Freitag frei zu machen. Mittwoch nächste Woche, sagen wir Bescheid, kann sich das ändern wegen Wetter  XXX   W najbliższy czwartek przypada święto państwowe. Obecnie nie planujemy brania wolnego w piątek. Poinformujemy Państwa w przyszłą środę, jeśli sytuacja pogodowa ulegnie zmianie."
+    "Nächste Woche ist am Donnerstag ein Feiertag. Es ist nicht geplant Freitag frei zu machen. Mittwoch nächste Woche, sagen wir Bescheid, kann sich das ändern wegen Wetter  XXX    W najbliższy czwartek przypada święto państwowe. Obecnie nie planujemy brania wolnego w piątek. Poinformujemy Państwa w przyszłą środę, jeśli sytuacja pogodowa ulegnie zmianie."
   ],
-  "daueranzeigeBild": "/uploads/2021_menne_156.jpg"
+  "daueranzeigeBild": "/uploads/imgl7074.jpg"
 }
