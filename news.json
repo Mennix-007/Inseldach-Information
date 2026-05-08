@@ -1,15 +1,15 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, hey ruft mal die Jungs an wie es Ihnen geht, unsere kranken Hühner",
-    "Dzień dobry, hej, zadzwońcie do chłopaków i zapytajcie, jak się mają, nasze chore kurczaki",
-    "Heute wieder bis 14:30 Uhr arbeiten, aufschreiben bis 15:30 Uhr mit einer Stunden Mittag",
-    "Dzisiaj znowu praca do 14:30, a potem do 15:30 z godziną przerwy na lunch"
+    "Guten Morgen, danke das Ihr heute gekommen seid",
+    "Dzień dobry, dziękuję za przybycie",
+    "Allen ein schönes Wochenende",
+    "Życzę wszystkim miłego weekendu"
   ],
   "daueranzeige": [
     "Wenn Ihr nicht sicher seid, ist das Stundenlohn oder nicht, dann ruft Nils /Wolfgang einfach an",
     "Jeśli nie jesteście pewni, czy to stawka godzinowa, czy nie, po prostu zadzwońcie do Nilsa lub Wolfganga",
     "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen.",
-    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za to dodatkowe wynagrodzenie."
+    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za nią dodatkowe wynagrodzenie."
   ],
   "langzeitInfo": [
     "Nächste Woche Donnerstag ist Himmelfahrt-Feiertag, Freitag ist nicht frei, kann sich ändern wegen Wetter",
@@ -18,5 +18,5 @@
   "ticker": [
     "Nächste Woche ist am Donnerstag ein Feiertag. Es ist nicht geplant Freitag frei zu machen. Mittwoch nächste Woche, sagen wir Bescheid, kann sich das ändern wegen Wetter  XXX    W najbliższy czwartek przypada święto państwowe. Obecnie nie planujemy brania wolnego w piątek. Poinformujemy Państwa w przyszłą środę, jeśli sytuacja pogodowa ulegnie zmianie."
   ],
-  "daueranzeigeBild": "/uploads/imgl7074.jpg"
+  "daueranzeigeBild": "/uploads/schones-wochenende-400-70026374.jpg"
 }
