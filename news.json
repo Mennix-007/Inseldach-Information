@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, wir hoffen Ihr hattet eine gute Zeit",
-    "Dzień dobry, mamy nadzieję, że dobrze się bawiliście",
-    "Nils kommt heute Morgen zu Euch",
-    "Nils przyjdzie do was dziś rano"
+    "Guten Morgen, heute bitte lesen",
+    "Dzień dobry, proszę przeczytać dzisiaj",
+    "Wir möchten Samstag am Flachdach arbeiten, bitte melden",
+    "W sobotę chcielibyśmy pracować na płaskim dachu, prosimy o zgłoszenie"
   ],
   "daueranzeige": [
     "Kommenden Montag ist Feiertag, schön wäre es, wenn Ihr Samstag kommen würdet",
-    "W najbliższy poniedziałek jest dzień wolny od pracy, byłoby miło, gdybyście przyszli w sobotę",
+    "W najbliższy poniedziałek jest święto, byłoby miło, gdybyście przyszli w sobotę",
     "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen.",
-    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za to dodatkowe wynagrodzenie."
+    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za nią dodatkowe wynagrodzenie."
   ],
   "langzeitInfo": [
     "Am 28.06.2026 ist wieder Lärmschutzverordnung",
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Guten Start in die Woche  XXX   Miłego początku tygodnia!"
+    "Am Wochenende wird es warm und Sommerlich  XXX  Weekend będzie ciepły i letni."
   ],
-  "daueranzeigeBild": "/uploads/2021_menne_134.jpg"
+  "daueranzeigeBild": "/uploads/inseldachdecker_menne_075.jpg"
 }
