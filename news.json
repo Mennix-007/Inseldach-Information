@@ -1,13 +1,13 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, heute bitte lesen hier. Weisss einer wie es unseren kranken Hühner geht ?",
-    "Dzień dobry, proszę przeczytać to dzisiaj. Czy ktoś wie, jak się czują nasze chore kury?",
-    "Bitte heute die Pappe wegbringen, gleich mitnehmen, morgen bitte am Lager etwas aufräumen und den Aufenthaltsraum durchfegen, Danke",
-    "Proszę dzisiaj wyrzucić karton, zabrać go ze sobą, a jutro posprzątać trochę magazyn i zamieść pokój socjalny. Dziękuję"
+    "Guten Morgen, heute Freitag bis 14:30 Uhr arbeiten, bis 15:30 aufschreiben mit 1 Stunde Mittag",
+    "Dzień dobry, dzisiaj w piątek pracuję do 14:30, a do 15:30 mam dyżur z godziną przerwy na lunch",
+    "Nächste Woche kommt ein Praktikant nach Borkum, er mochte Dachdecker lernen, heißen wir herzlich Willkommen",
+    "W przyszłym tygodniu do Borkum przyjedzie stażysta, który chce nauczyć się zawodu dekarza – serdecznie go witamy"
   ],
   "daueranzeige": [
-    "Kommenden Montag ist Feiertag, schön wäre es, wenn Ihr Samstag kommen würdet",
-    "W najbliższy poniedziałek jest święto, byłoby miło, gdybyście przyszli w sobotę",
+    "Kommenden Montag ist Feiertag, schön wäre es, wenn Ihr Samstag pünktlich seid.",
+    "W najbliższy poniedziałek jest dzień wolny od pracy, więc byłoby miło, gdybyście w sobotę przyszli punktualnie.",
     "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen.",
     "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za nią dodatkowe wynagrodzenie."
   ],
@@ -16,7 +16,7 @@
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Am Wochenende wird es warm und Sommerlich  XXX  Weekend będzie ciepły i letni."
+    "Hat Olli ein ein ausgegeben auf seinem Geburtstag ?  XXX   Czy Olli wydał coś na swoje urodziny?"
   ],
   "daueranzeigeBild": "/uploads/b31cf67e-c586-43e8-9cd9-aadc44614334.jpeg"
 }
