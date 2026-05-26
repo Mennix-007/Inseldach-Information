@@ -1,10 +1,10 @@
 {
-  "active": true,
+  "active": false,
   "title": "Grüße von der Brücke !",
   "text": "Herzlich Willkommen Marlon auf Borkum, du kommst in einen super Team. Viel Spaß in deinem Praktikum\n\nWitamy Marlona w Borkum, dołączasz do świetnego zespołu.\n\n",
-  "image": "/uploads/b31cf67e-c586-43e8-9cd9-aadc44614334.jpeg",
+  "image": "/uploads/5e9347f1-8b45-4714-9e76-ba76253bf7c5.jpeg",
   "dateFrom": "2026-05-25",
-  "dateTo": "2026-05-26",
+  "dateTo": "2026-05-27",
   "showDuration": 8,
   "hideDuration": 15
 }
