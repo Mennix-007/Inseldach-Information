@@ -1,22 +1,22 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, Ich hoffe Ihr hatte ein schönes Wochenende, heute bitte hier alles lesen.",
-    "Dzień dobry, mam nadzieję, że mieliście miły weekend. Proszę, przeczytajcie dzisiaj wszystko tutaj.",
-    "Heute müssen wir eine neue Baustelle beginnen, bitte alles aufladen, nichts vergessen, Zettel liegt im Drucker",
-    "Dzisiaj musimy rozpocząć nowe prace budowlane, proszę załadować wszystko, niczego nie zapomnieć, lista znajduje się w drukarce"
+    "Guten Morgen, Ich hoffe Ihr hatte ein schönes Wochenende, und ja haltet durch bei diesem Wetter.",
+    "Dzień dobry, mam nadzieję, że mieliście miły weekend i trzymajcie się przy tej pogodzie.",
+    "Wolfgang ist nachher auf der Insel, bei Rückfragen für Baustellen, gerne Wolfgang anrufen.",
+    "Wolfgang będzie później na wyspie; w razie pytań dotyczących placów budowy proszę dzwonić do Wolfganga."
   ],
   "daueranzeige": [
-    "Immer wieder fehlen Fotos Mittags und Abends, denkt doch bitte dran",
-    "Często brakuje zdjęć z pory obiadowej i wieczornej, proszę o tym pamiętać",
-    "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen.",
-    "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za nią dodatkowe wynagrodzenie."
+    "Diese Woche nicht so gutes Wetter voraus gesagt,, da müssen wir flexibel sein, Mittagstunde und so.",
+    "Prognozy pogody na ten tydzień nie są zbyt obiecujące, więc musimy być elastyczni, zwłaszcza w porze obiadowej i tak dalej.",
+    "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen. Immer wieder fragen bitte bei Unsicherheit.",
+    "Musimy uważać, aby w przypadku pracy rozliczanej według stawki godzinowej otrzymać za nią dodatkowe wynagrodzenie. W razie wątpliwości prosimy o kontakt."
   ],
   "langzeitInfo": [
-    "Am 28.06.2026 ist wieder Lärmschutzverordnung, jetzt schon Mittag 13:00-15:00 Uhr,die Arbeit bitte so einplanen.",
+    "Wir dürfen im Juni erst ab 9:00 Uhr laute Arbeiten machen, außer auf der Baustelle Kirchstraße 2",
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Wann wollen wir grillen, wird mal wieder Zeit alle miteinander.  XXX    Kiedy chcemy zrobić grilla? Najwyższy czas, żebyśmy się znowu wszyscy spotkali."
+    "Am 19.Juni wollen wir gemeinsam grillen, endlich mal wieder, gleich nach Feierabend ab 15:00 Uhr  XXX   19 czerwca chcemy w końcu zrobić wspólnego grilla, zaraz po pracy od godz. 15.00."
   ],
-  "daueranzeigeBild": "/uploads/img_4632.jpeg"
+  "daueranzeigeBild": "/uploads/inseldachdecker_2025_68.jpg"
 }
