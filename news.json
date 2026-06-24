@@ -1,13 +1,13 @@
 {
   "heuteWichtig": [
-    "Guten Morgen, heute brauche ich Euch für eine Sonderaktion Arbeit",
-    "Dzień dobry, dzisiaj potrzebuję was do pracy przy specjalnej akcji",
-    "Wir haben echt viel zu tun, ich brauche Euch morgen Nachmittag/Abend, ich erkläre es Euch",
-    "Mamy naprawdę dużo pracy, potrzebuję was jutro po południu/wieczorem, wszystko wam wyjaśnię"
+    "Guten Morgen, heute vielleicht noch gute Temperaturen, Freitag sehr heiß, wir reagieren.",
+    "Dzień dobry, dzisiaj temperatury mogą być jeszcze przyjemne, w piątek będzie bardzo gorąco – reagujemy na to.",
+    "Danke für Eure gute Arbeit, auch wenn mal wieder eine Bohrmaschine fehlte",
+    "Dziękujemy za waszą dobrą pracę, nawet jeśli po raz kolejny zabrakło wiertarki"
   ],
   "daueranzeige": [
-    "Stephanie ist auch Mittwoch da, wenn Fragen sind, bitte vor den gemeinsamen Grillen melden",
-    "Stephanie będzie obecna również w środę; jeśli macie jakieś pytania, proszę zgłaszać je przed wspólnym grillowaniem",
+    "Stephanie ist heute Mittwoch da, wenn Fragen sind, bitte vor den gemeinsamen Grillen melden",
+    "Stephanie będzie dzisiaj, w środę. Jeśli macie jakieś pytania, proszę zgłaszać je przed wspólnym grillowaniem.",
     "Wir müssen aufpassen, wenn was Stundenlohn ist, das wir das auch extra bezahlt bekommen. Immer wieder fragen bitte bei Unsicherheit.",
     "Musimy uważać, żeby w przypadku pracy za stawkę godzinową otrzymać za nią dodatkowe wynagrodzenie. W razie wątpliwości prosimy o ciągłe zadawanie pytań."
   ],
@@ -16,7 +16,7 @@
     "Sommerferien geplant im Juli vom 13.07. - 31.07.2026 jeweils erster und letzter Urlaubstag"
   ],
   "ticker": [
-    "Heute Nachmittag oder Abend ist Teamarbeit gefragt, kriegen wir hin     Dziś po południu lub wieczorem potrzebna będzie praca zespołowa, damy radę."
+    "Grillen heute schon um 14:00 Uhr       Grillowanie dzisiaj o 14:00"
   ],
-  "daueranzeigeBild": "/uploads/download.jpg"
+  "daueranzeigeBild": "/uploads/2021_menne_156.jpg"
 }
