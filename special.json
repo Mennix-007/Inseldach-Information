@@ -1,10 +1,10 @@
 {
-  "active": false,
+  "active": true,
   "title": "Grüße von der Brücke !",
-  "text": "MITTWOCH DEN 24.06.2026 UM 17:00 Uhr, alle bitte da sein Leckeres und Neues gibt es !\n\nŚRODA, 24.06.2026 O 17:00, proszę, bądźcie wszyscy! Czekają na Was pyszne i nowe rzeczy!",
+  "text": "Achtung, Heute UM 14:00 Uhr, alle bitte da sein Leckeres und Neues gibt es !\n\nUwaga, proszę być dzisiaj o 14:00! Czekają na Was pyszne i nowe rzeczy!",
   "image": "/uploads/98e2ae2d-5bc6-43e4-a4a4-1bc326e90397.png",
-  "dateFrom": "2026-06-21",
+  "dateFrom": "2026-06-24",
   "dateTo": "2026-06-24",
-  "showDuration": 6,
+  "showDuration": 9,
   "hideDuration": 15
 }
