@@ -1,10 +1,10 @@
 {
-  "active": false,
+  "active": true,
   "title": "Grüße von der Brücke !",
-  "text": "Achtung, Heute UM 14:00 Uhr, alle bitte da sein Leckeres und Neues gibt es !\n\nUwaga, proszę być dzisiaj o 14:00! Czekają na Was pyszne i nowe rzeczy!",
-  "image": "/uploads/98e2ae2d-5bc6-43e4-a4a4-1bc326e90397.png",
-  "dateFrom": "2026-06-24",
-  "dateTo": "2026-06-24",
+  "text": "Hinweis / Änderung, Alle Leute fangen nach den Urlaub erst am 05.08.26 an, erster Arbeitstag !! \nDas Büro kommt am 03.08.26 zurück, erster Arbeitstag, Planungen Besprechungen.\n\nUwaga/Zmiana: Wszyscy wrócą z urlopu 5 sierpnia 2026 r., pierwszego dnia powrotu do pracy! Biuro powróci 3 sierpnia 2026 r., pierwszego dnia powrotu do pracy, z planem i spotkaniami.",
+  "image": "/uploads/inseldachdecker_menne_075.jpg",
+  "dateFrom": "2026-06-26",
+  "dateTo": "2026-06-30",
   "showDuration": 9,
   "hideDuration": 15
 }
